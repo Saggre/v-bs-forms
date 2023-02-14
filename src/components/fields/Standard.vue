@@ -18,10 +18,7 @@
           }"
           :placeholder="field.placeholder"
         />
-        <jet-label
-          :for="field.title"
-          :value="field.title"
-        />
+        <jet-label :for="field.title" :value="field.title" />
         <jet-input-error :message="error" />
       </div>
     </div>
@@ -53,10 +50,7 @@
             {{ option }}
           </option>
         </select>
-        <jet-label
-          :for="field.title"
-          :value="field.title"
-        />
+        <jet-label :for="field.title" :value="field.title" />
         <jet-input-error :message="error" />
       </div>
     </div>
@@ -80,10 +74,7 @@
           }"
           :rows="field.rows ?? 3"
         />
-        <jet-label
-          :for="field.title"
-          :value="field.title"
-        />
+        <jet-label :for="field.title" :value="field.title" />
         <jet-input-error :message="error" />
       </div>
     </div>
@@ -117,10 +108,7 @@
           :deselect-group-label="$t('Press enter to deselect group')"
           @input="$emit('update:modelValue', $event.target.value)"
         />
-        <jet-label
-          :for="field.title"
-          :value="field.title"
-        />
+        <jet-label :for="field.title" :value="field.title" />
         <jet-input-error :message="error" />
       </div>
     </div>
@@ -142,10 +130,8 @@
           :disabled="field.loading ?? false"
           type="submit"
         >
-          {{ field.title }}<i
-            v-if="!!field.icon"
-            :class="`ms-3 ${field.icon || ''}`"
-          />
+          {{ field.title
+          }}<i v-if="!!field.icon" :class="`ms-3 ${field.icon || ''}`" />
         </button>
       </div>
     </div>
@@ -195,7 +181,17 @@ export default defineComponent({
   },
   methods: {
     isRegular(): boolean {
-      return ['text', 'date', 'number', 'time', 'email', 'tel', 'url', 'password', 'hidden'].includes(this.field.type);
+      return [
+        'text',
+        'date',
+        'number',
+        'time',
+        'email',
+        'tel',
+        'url',
+        'password',
+        'hidden',
+      ].includes(this.field.type);
     },
     isTextarea(): boolean {
       return this.field.type === 'textarea';

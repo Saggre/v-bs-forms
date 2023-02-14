@@ -1,8 +1,5 @@
 <template>
-  <div
-    :id="form.title"
-    class="row pb-3 overflow-visible position-relative"
-  >
+  <div :id="form.title" class="row pb-3 overflow-visible position-relative">
     <div class="col-md-4">
       <jet-section-title>
         <template #title>
@@ -19,10 +16,7 @@
     <div class="col-md-8">
       <div class="card shadow">
         <div class="card-body">
-          <AppForm
-            ref="form"
-            :form="form"
-          >
+          <AppForm ref="form" :form="form">
             <template #head>
               <slot name="head" />
             </template>

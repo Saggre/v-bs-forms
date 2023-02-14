@@ -1,21 +1,18 @@
 <template>
   <div class="w-100">
-    <jet-label
-      :for="`${field.title}-list-group`"
-      :value="field.title"
-    />
+    <jet-label :for="`${field.title}-list-group`" :value="field.title" />
     <jet-input-error :message="error" />
     <div class="list-group">
       <a
-        v-for="(item) in field.items"
+        v-for="item in field.items"
         :key="item.key"
         href="#"
         class="list-group-item list-group-item-action"
-        :class="{'text-black-50': isSelected(item)}"
+        :class="{ 'text-black-50': isSelected(item) }"
         @click.prevent="onSelect(item)"
       >
         <div>
-          <span :class="{'font-weight-bold': isSelected(item)}">
+          <span :class="{ 'font-weight-bold': isSelected(item) }">
             {{ item.name }}
           </span>
 
@@ -29,7 +26,9 @@
             stroke-width="2"
             stroke="currentColor"
             viewBox="0 0 24 24"
-          ><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          >
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
         </div>
 
         <div class="mt-2">

@@ -17,10 +17,7 @@
         }"
         :placeholder="field.placeholder"
       />
-      <jet-label
-        :for="`${field.title}-date`"
-        :value="field.title"
-      />
+      <jet-label :for="`${field.title}-date`" :value="field.title" />
     </div>
     <div
       class="mb-3"
@@ -39,10 +36,7 @@
         }"
         :placeholder="field.placeholder"
       />
-      <jet-label
-        :for="`${field.title}-time`"
-        :value="field.title"
-      />
+      <jet-label :for="`${field.title}-time`" :value="field.title" />
       <jet-input-error :message="error" />
     </div>
   </div>

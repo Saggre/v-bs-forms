@@ -18,10 +18,7 @@
       v-if="loading"
       class="position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center bg-muted-light"
     >
-      <div
-        class="spinner-border"
-        role="status"
-      >
+      <div class="spinner-border" role="status">
         <span class="visually-hidden">{{ $t('Loading...') }}</span>
       </div>
     </div>

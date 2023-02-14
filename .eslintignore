@@ -4,7 +4,7 @@ node_modules/
 src/shims-tsx.d.ts
 src/shims-vue.d.ts
 *.config.js
-src/main.ts
+src/demo.ts
 test/
 dist/*.hot-update.json
 dist/index.html

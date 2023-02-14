@@ -8,7 +8,7 @@
           [field.containerClass]: !!field.containerClass,
         }"
       >
-        <jet-input
+        <FieldInput
           :id="field.title"
           v-model="value"
           :type="field.type"
@@ -18,8 +18,8 @@
           }"
           :placeholder="field.placeholder"
         />
-        <jet-label :for="field.title" :value="field.title" />
-        <jet-input-error :message="error" />
+        <FieldLabel :for="field.title" :value="field.title" />
+        <FieldInputError :message="error" />
       </div>
     </div>
   </div>
@@ -50,8 +50,8 @@
             {{ option }}
           </option>
         </select>
-        <jet-label :for="field.title" :value="field.title" />
-        <jet-input-error :message="error" />
+        <FieldLabel :for="field.title" :value="field.title" />
+        <FieldInputError :message="error" />
       </div>
     </div>
   </div>
@@ -74,8 +74,8 @@
           }"
           :rows="field.rows ?? 3"
         />
-        <jet-label :for="field.title" :value="field.title" />
-        <jet-input-error :message="error" />
+        <FieldLabel :for="field.title" :value="field.title" />
+        <FieldInputError :message="error" />
       </div>
     </div>
   </div>
@@ -108,8 +108,8 @@
           :deselect-group-label="$t('Press enter to deselect group')"
           @input="$emit('update:modelValue', $event.target.value)"
         />
-        <jet-label :for="field.title" :value="field.title" />
-        <jet-input-error :message="error" />
+        <FieldLabel :for="field.title" :value="field.title" />
+        <FieldInputError :message="error" />
       </div>
     </div>
   </div>
@@ -139,20 +139,17 @@
 </template>
 
 <script lang="ts">
-import JetInput from '@/Jetstream/Input.vue';
-import JetInputError from '@/Jetstream/InputError.vue';
-import JetLabel from '@/Jetstream/Label.vue';
 import { defineComponent, PropType } from 'vue';
-import { AppFormField } from '@/utils/appForm';
-// noinspection TypeScriptCheckImport
-import VueMultiselect from 'vue-multiselect';
+import { FormField } from '@/use/fields';
+import FieldLabel from '@/components/fields/standard/Label.vue';
+import FieldInput from '@/components/fields/standard/Input.vue';
+import FieldInputError from '@/components/fields/standard/InputError.vue';
 
 export default defineComponent({
   components: {
-    JetInput,
-    JetInputError,
-    JetLabel,
-    VueMultiselect,
+    FieldLabel,
+    FieldInput,
+    FieldInputError,
   },
   props: {
     error: {
@@ -160,7 +157,7 @@ export default defineComponent({
       default: '',
     },
     field: {
-      type: Object as PropType<AppFormField>,
+      type: Object as PropType<FormField>,
       required: true,
     },
     modelValue: {

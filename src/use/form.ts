@@ -1,59 +1,61 @@
-import { InertiaForm } from '@inertiajs/inertia-vue3';
-import { ValidationResult } from '@/use/fields/base';
+import { _FormData, ValidationResult } from '@/use/fields/base';
 import { FormField } from '@/use/fields';
 
-export type Form<T extends FormData> = {
-  title: string;
-  description: string;
-  form: InertiaForm<T>;
-  fields: { [key in keyof T]: FormField };
+export interface FormAccessors<T extends _FormData> {
+  data: () => T;
+  errors: () => Record<string, string>;
+}
+
+export type FormInputFields<T extends _FormData> = {
+  [key in keyof T]: FormField;
+};
+
+export type Form<T extends _FormData> = {
+  title?: string;
+  description?: string;
+  accessors: FormAccessors<T>;
+  fields: FormInputFields<T>;
   onSubmit: (data: Form<T>) => Promise<void>;
 };
 
-/**
- * TODO: Cleanup types.
- * @param form
- */
-function validateFields<T extends FormData>(
+function validateFields<T extends _FormData>(
   form: Form<T>,
 ): Record<keyof T, ValidationResult> {
-  if (!form.fields) {
-    return {} as Record<keyof T, ValidationResult>;
-  }
-
   const results: Record<keyof T, ValidationResult> = {} as Record<
     keyof T,
     ValidationResult
   >;
 
-  // eslint-disable-next-line no-restricted-syntax
+  if (!form.fields) {
+    return results;
+  }
+
   for (const [key, field] of Object.entries(form.fields)) {
     if (!field.validate) {
       continue;
     }
 
-    const value = form.form.data()[key];
-    results[key as keyof T] = field.validate(value);
+    //const value = form.form.data()[key];
+    //results[key as keyof T] = field.validate(value);
   }
 
   return results;
 }
 
-export function useAppForm<T extends FormData>(form: Form<T>): Form<T> {
+export function useForm<T extends _FormData>(form: Form<T>): Form<T> {
   const { onSubmit } = form;
 
   form.onSubmit = async () => {
     const validationResults = validateFields(form);
     let hasErrors = false;
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const [key, validationResult] of Object.entries(validationResults)) {
       if (validationResult.valid) {
         continue;
       }
 
       hasErrors = true;
-      form.form.errors[key as keyof T] = validationResult.message;
+      //form.form.errors[key as keyof T] = validationResult.message;
     }
 
     if (!hasErrors) {

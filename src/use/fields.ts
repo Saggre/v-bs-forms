@@ -1,14 +1,16 @@
 import {
   BaseFormField,
-  FormDataType,
+  _FormDataType,
   FormFieldType,
   GlobalFormField,
+  _FormData,
 } from '@/use/fields/base';
+import { Moment } from 'moment/moment';
 
 type StandardFormField = BaseFormField & {
   type: FormFieldType;
-  renderTransform?: (value: FormDataType) => string | number;
-  submitTransform?: (value: string | number) => FormDataType;
+  renderTransform?: (value: _FormDataType) => string | number;
+  submitTransform?: (value: string | number) => _FormDataType;
 };
 
 interface ComponentFormField extends GlobalFormField {
@@ -46,15 +48,15 @@ export type ListGroupFormField = BaseFormField & {
 type DropdownFormField = BaseFormField & {
   type: 'dropdown';
   options: Record<string, string>;
-  renderTransform?: (value: FormDataType) => string[] | number[];
-  submitTransform?: (value: string[] | number[]) => FormDataType;
+  renderTransform?: (value: _FormDataType) => string[] | number[];
+  submitTransform?: (value: string[] | number[]) => _FormDataType;
 };
 
 type TextareaFormField = BaseFormField & {
   type: 'textarea';
   rows?: number;
-  renderTransform?: (value: FormDataType) => string | number;
-  submitTransform?: (value: string | number) => FormDataType;
+  renderTransform?: (value: _FormDataType) => string | number;
+  submitTransform?: (value: string | number) => _FormDataType;
 };
 
 type MultiselectFormField = BaseFormField & {
@@ -63,8 +65,8 @@ type MultiselectFormField = BaseFormField & {
   multiple?: boolean;
   label: (key: string) => string;
   options: string[];
-  renderTransform?: (value: FormDataType) => string[];
-  submitTransform?: (value: string[]) => FormDataType;
+  renderTransform?: (value: _FormDataType) => string[];
+  submitTransform?: (value: string[]) => _FormDataType;
 };
 
 type SubmitButton = GlobalFormField & {
@@ -85,10 +87,10 @@ export type _FormField =
   | ActionFormField
   | ListGroupFormField;
 
-export type RepeaterFormField<T extends FormData> = GlobalFormField & {
+export type RepeaterFormField<T extends _FormData> = GlobalFormField & {
   type: 'repeater';
   title: (data: any) => string;
   fields: { [key in keyof T]: _FormField };
 };
 
-export type FormField = _FormField | RepeaterFormField<FormData>;
+export type FormField = _FormField | RepeaterFormField<_FormData>;

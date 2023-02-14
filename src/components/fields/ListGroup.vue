@@ -1,7 +1,7 @@
 <template>
   <div class="w-100">
-    <jet-label :for="`${field.title}-list-group`" :value="field.title" />
-    <jet-input-error :message="error" />
+    <FieldLabel :for="`${field.title}-list-group`" :value="field.title" />
+    <FieldInputError :message="error" />
     <div class="list-group">
       <a
         v-for="item in field.items"
@@ -40,15 +40,15 @@
 </template>
 
 <script lang="ts">
-import JetInputError from '@/Jetstream/InputError.vue';
-import JetLabel from '@/Jetstream/Label.vue';
 import { defineComponent, PropType } from 'vue';
-import { ListGroupAppFormField, ListItem } from '@/utils/appForm';
+import { ListGroupFormField, ListItem } from '@/use/fields';
+import FieldLabel from '@/components/fields/standard/Label.vue';
+import FieldInputError from '@/components/fields/standard/InputError.vue';
 
 export default defineComponent({
   components: {
-    JetInputError,
-    JetLabel,
+    FieldLabel,
+    FieldInputError,
   },
   props: {
     error: {
@@ -56,7 +56,7 @@ export default defineComponent({
       default: '',
     },
     field: {
-      type: Object as PropType<ListGroupAppFormField>,
+      type: Object as PropType<ListGroupFormField>,
       required: true,
     },
     modelValue: {

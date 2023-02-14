@@ -17,7 +17,7 @@
           </h6>
           <div v-if="field.isComplete()">
             <span class="text-success h4"
-              >{{ $t('Authenticated') }}<i class="bi bi-check-lg h3 ms-2"
+              >{{ 'Authenticated' }}<i class="bi bi-check-lg h3 ms-2"
             /></span>
           </div>
           <a
@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { ActionAppFormField } from '@/utils/appForm';
+import { ActionFormField } from '@/use/fields';
 
 export default defineComponent({
   components: {},
@@ -50,7 +50,7 @@ export default defineComponent({
       default: '',
     },
     field: {
-      type: Object as PropType<ActionAppFormField>,
+      type: Object as PropType<ActionFormField>,
       required: true,
     },
     modelValue: {

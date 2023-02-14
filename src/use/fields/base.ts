@@ -15,7 +15,7 @@ export type FormFieldType =
   | 'hidden'
   | 'action';
 
-export type FormDataType =
+export type _FormDataType =
   | string
   | number
   | boolean
@@ -27,7 +27,7 @@ export type FormDataType =
   | null[]
   | undefined[];
 
-export type FormData = Record<string, FormDataType>;
+export type _FormData = Record<string, _FormDataType>;
 
 interface ValidationSuccess {
   valid: true;
@@ -44,7 +44,7 @@ export interface GlobalFormField {
   type: string;
   class?: string;
   containerClass?: string;
-  validate?: (value: FormDataType) => ValidationResult;
+  validate?: (value: _FormDataType) => ValidationResult;
 }
 
 export interface StaticFormField {

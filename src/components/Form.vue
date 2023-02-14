@@ -1,7 +1,7 @@
 <template>
   <div :id="form.title" class="row pb-3 overflow-visible position-relative">
     <div class="col-md-4">
-      <jet-section-title>
+      <SectionTitle>
         <template #title>
           {{ form.title }}
         </template>
@@ -10,21 +10,21 @@
             {{ form.description }}
           </span>
         </template>
-      </jet-section-title>
+      </SectionTitle>
     </div>
 
     <div class="col-md-8">
       <div class="card shadow">
         <div class="card-body">
-          <AppForm ref="form" :form="form">
+          <BaseForm ref="form" :form="form">
             <template #head>
               <slot name="head" />
             </template>
             <slot />
-          </AppForm>
+          </BaseForm>
         </div>
         <div class="card-footer d-flex justify-content-end">
-          <InertiaLink
+          <!--<InertiaLink
             v-if="prevButton"
             class="btn btn-outline-dark text-uppercase nav-prev me-2"
             type="button"
@@ -40,7 +40,7 @@
             @click="$refs.form.submit()"
           >
             {{ nextText }}&nbsp;<i class="bi bi-arrow-right" />
-          </button>
+          </button>-->
         </div>
       </div>
     </div>
@@ -49,31 +49,27 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import JetSectionTitle from '@/Jetstream/SectionTitle.vue';
-import { trans as $t } from 'laravel-vue-i18n';
-import { AppForm } from '@/utils/appForm';
-import { CrudFormType } from '@/enum/crudForm';
+import { Form } from '@/use/form';
+import SectionTitle from '@/components/section/SectionTitle.vue';
+import BaseForm from '@/components/BaseForm.vue';
 
 export default defineComponent({
   components: {
-    JetSectionTitle,
+    SectionTitle,
+    BaseForm,
   },
   props: {
     form: {
-      type: Object as PropType<AppForm<any>>,
+      type: Object as PropType<Form<any>>,
       required: true,
-    },
-    type: {
-      type: Object as PropType<CrudFormType>,
-      default: CrudFormType.CREATE,
     },
     nextText: {
       type: String as PropType<string | undefined>,
-      default: $t('Finish'),
+      default: 'Finish',
     },
     prevText: {
       type: String as PropType<string | undefined>,
-      default: $t('Back'),
+      default: 'Back',
     },
     prevButton: {
       type: Boolean as PropType<boolean>,

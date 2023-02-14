@@ -7,7 +7,7 @@
         [field.containerClass]: !!field.containerClass,
       }"
     >
-      <jet-input
+      <FieldInput
         :id="`${field.title}-date`"
         v-model="inputDate"
         type="date"
@@ -17,7 +17,7 @@
         }"
         :placeholder="field.placeholder"
       />
-      <jet-label :for="`${field.title}-date`" :value="field.title" />
+      <FieldLabel :for="`${field.title}-date`" :value="field.title" />
     </div>
     <div
       class="mb-3"
@@ -26,7 +26,7 @@
         [field.containerClass]: !!field.containerClass,
       }"
     >
-      <jet-input
+      <FieldInput
         :id="`${field.title}-time`"
         v-model="inputTime"
         type="time"
@@ -36,25 +36,25 @@
         }"
         :placeholder="field.placeholder"
       />
-      <jet-label :for="`${field.title}-time`" :value="field.title" />
-      <jet-input-error :message="error" />
+      <FieldLabel :for="`${field.title}-time`" :value="field.title" />
+      <FieldInputError :message="error" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import JetInput from '@/Jetstream/Input.vue';
-import JetInputError from '@/Jetstream/InputError.vue';
-import JetLabel from '@/Jetstream/Label.vue';
 import { defineComponent, PropType } from 'vue';
-import { DateTimeAppFormField } from '@/utils/appForm';
-import moment, { Moment } from 'moment';
+import moment, { Moment } from 'moment/moment';
+import { DateTimeFormField } from '@/use/fields';
+import FieldLabel from '@/components/fields/standard/Label.vue';
+import FieldInput from '@/components/fields/standard/Input.vue';
+import FieldInputError from '@/components/fields/standard/InputError.vue';
 
 export default defineComponent({
   components: {
-    JetInput,
-    JetInputError,
-    JetLabel,
+    FieldLabel,
+    FieldInput,
+    FieldInputError,
   },
   props: {
     error: {
@@ -62,7 +62,7 @@ export default defineComponent({
       default: '',
     },
     field: {
-      type: Object as PropType<DateTimeAppFormField>,
+      type: Object as PropType<DateTimeFormField>,
       required: true,
     },
     modelValue: {

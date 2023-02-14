@@ -6,11 +6,11 @@
     @submit.prevent="onSubmit"
   >
     <slot name="head" />
-    <AppFormField
+    <BaseField
       v-for="(field, key) in form.fields"
       :key="key"
-      v-model="form.form[key]"
-      :error="form.form.errors[key]"
+      v-model="form.accessors.data[key]"
+      :error="form.accessors.errors[key]"
       :field="field"
     />
     <slot />
@@ -19,7 +19,7 @@
       class="position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center bg-muted-light"
     >
       <div class="spinner-border" role="status">
-        <span class="visually-hidden">{{ $t('Loading...') }}</span>
+        <span class="visually-hidden">{{ 'Loading...' }}</span>
       </div>
     </div>
   </form>
@@ -27,17 +27,16 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { AppForm, AppFormData } from '@/utils/appForm';
-import AppFormField from '@/Components/AppFormField.vue';
-import { trans } from 'laravel-vue-i18n';
+import { Form } from '@/use/form';
+import BaseField from '@/components/fields/BaseField.vue';
 
 const AppFormComponent = defineComponent({
   components: {
-    AppFormField,
+    BaseField,
   },
   props: {
     form: {
-      type: Object as PropType<AppForm<AppFormData>>,
+      type: Object as PropType<Form<_FormData, unknown>>,
       required: true,
     },
     submitInternally: {
@@ -57,7 +56,7 @@ const AppFormComponent = defineComponent({
   },
   computed: {
     htmlForm(): HTMLFormElement {
-      return this.$refs.form;
+      return this.$refs.form as HTMLFormElement;
     },
   },
   methods: {
@@ -84,7 +83,6 @@ const AppFormComponent = defineComponent({
     submit() {
       this.htmlForm.requestSubmit();
     },
-    $t: trans,
   },
 });
 

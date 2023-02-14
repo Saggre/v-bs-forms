@@ -1,57 +1,32 @@
 <template>
-  <div v-if="isRepeater()">
-    <AppFormRepeaterField
-      v-model="value"
-      :repeater="field"
-      :error="error"
-    />
-  </div>
-  <div v-else-if="isDateTime()">
-    <AppFormDateTimeField
-      v-model="value"
-      :field="field"
-      :error="error"
-    />
+  <div v-if="isDateTime()">
+    <DateTimeField v-model="value" :field="field" :error="error" />
   </div>
   <div v-else-if="isAction()">
-    <AppFormActionField
-      v-model="value"
-      :field="field"
-      :error="error"
-    />
+    <ActionField v-model="value" :field="field" :error="error" />
   </div>
   <div v-else-if="isListGroup()">
-    <AppFormListGroupField
-      v-model="value"
-      :field="field"
-      :error="error"
-    />
+    <ListGroupField v-model="value" :field="field" :error="error" />
   </div>
   <div v-else>
-    <AppFormDefaultField
-      v-model="value"
-      :field="field"
-      :error="error"
-    />
+    <StandardField v-model="value" :field="field" :error="error" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { AppFormField } from '@/utils/appForm';
-import AppFormRepeaterField from '@/Components/AppFormRepeaterField.vue';
-import AppFormDefaultField from '@/Components/AppFormDefaultField.vue';
-import AppFormDateTimeField from '@/Components/AppFormDateTimeField.vue';
-import AppFormActionField from '@/Components/AppFormActionField.vue';
-import AppFormListGroupField from '@/Components/AppFormListGroupField.vue';
+import { FormField } from '@/use/fields';
+import ActionField from '@/components/fields/Action.vue';
+import StandardField from '@/components/fields/Standard.vue';
+import DateTimeField from '@/components/fields/DateTime.vue';
+import ListGroupField from '@/components/fields/ListGroup.vue';
 
 export default defineComponent({
   components: {
-    AppFormActionField,
-    AppFormRepeaterField,
-    AppFormDefaultField,
-    AppFormDateTimeField,
-    AppFormListGroupField,
+    ActionField,
+    StandardField,
+    DateTimeField,
+    ListGroupField,
   },
   props: {
     error: {
@@ -59,7 +34,7 @@ export default defineComponent({
       default: '',
     },
     field: {
-      type: Object as PropType<AppFormField>,
+      type: Object as PropType<FormField>,
       required: true,
     },
     modelValue: {
@@ -79,9 +54,6 @@ export default defineComponent({
     },
   },
   methods: {
-    isRepeater(): boolean {
-      return this.field.type === 'repeater';
-    },
     isDateTime(): boolean {
       return this.field.type === 'datetime';
     },

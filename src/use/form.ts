@@ -1,9 +1,19 @@
-import { _FormData, ValidationResult } from '@/use/fields/base';
+import {
+  _FormData,
+  ValidationError,
+  ValidationResult,
+} from '@/use/fields/base';
 import { FormField } from '@/use/fields';
 
 export interface FormAccessors<T extends _FormData> {
-  data: () => T;
-  errors: () => Record<string, string>;
+  data: T;
+  errors: Record<keyof T, ValidationError>;
+}
+
+export interface FormCallbacks<T extends _FormData> {
+  onSubmit: (form: Form<T>) => Promise<void>;
+  onCancel?: (form: Form<T>) => void;
+  onValidationError?: (form: Form<T>) => void;
 }
 
 export type FormInputFields<T extends _FormData> = {
@@ -14,51 +24,49 @@ export type Form<T extends _FormData> = {
   title?: string;
   description?: string;
   accessors: FormAccessors<T>;
+  callbacks: FormCallbacks<T>;
   fields: FormInputFields<T>;
-  onSubmit: (data: Form<T>) => Promise<void>;
 };
 
 function validateFields<T extends _FormData>(
   form: Form<T>,
 ): Record<keyof T, ValidationResult> {
-  const results: Record<keyof T, ValidationResult> = {} as Record<
-    keyof T,
-    ValidationResult
-  >;
+  const results = {} as Record<keyof T, ValidationResult>;
 
-  if (!form.fields) {
-    return results;
-  }
+  for (const key in form.fields) {
+    const field: FormField = form.fields[key];
 
-  for (const [key, field] of Object.entries(form.fields)) {
-    if (!field.validate) {
-      continue;
+    if (field.validate) {
+      const value = form.accessors.data[key];
+      const validate = field.validate as (value: any) => ValidationResult;
+      results[key] = validate(value);
     }
-
-    //const value = form.form.data()[key];
-    //results[key as keyof T] = field.validate(value);
   }
 
   return results;
 }
 
 export function useForm<T extends _FormData>(form: Form<T>): Form<T> {
-  const { onSubmit } = form;
+  const onSubmit = form.callbacks.onSubmit;
 
-  form.onSubmit = async () => {
-    const validationResults = validateFields(form);
+  form.callbacks.onSubmit = async () => {
     let hasErrors = false;
+    const validationResults = validateFields(form);
 
-    for (const [key, validationResult] of Object.entries(validationResults)) {
+    for (const key in validationResults) {
+      const validationResult = validationResults[key];
+
       if (validationResult.valid) {
         continue;
       }
 
       hasErrors = true;
-      //form.form.errors[key as keyof T] = validationResult.message;
+      form.accessors.errors[key] = validationResult as ValidationError;
     }
 
-    if (!hasErrors) {
+    if (hasErrors) {
+      form.callbacks.onValidationError?.(form);
+    } else {
       await onSubmit(form);
     }
   };

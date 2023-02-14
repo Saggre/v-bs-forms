@@ -29,14 +29,15 @@
 import { defineComponent, PropType } from 'vue';
 import { Form } from '@/use/form';
 import BaseField from '@/components/fields/BaseField.vue';
+import { _FormData } from '@/use/fields/base';
 
-const AppFormComponent = defineComponent({
+export default defineComponent({
   components: {
     BaseField,
   },
   props: {
     form: {
-      type: Object as PropType<Form<_FormData, unknown>>,
+      type: Object as PropType<Form<_FormData>>,
       required: true,
     },
     submitInternally: {
@@ -48,7 +49,7 @@ const AppFormComponent = defineComponent({
       default: 10000,
     },
   },
-  emits: ['submit'],
+  emits: ['submit', 'cancel'],
   data() {
     return {
       loading: false,
@@ -69,7 +70,7 @@ const AppFormComponent = defineComponent({
 
       try {
         if (this.submitInternally) {
-          await this.form.onSubmit(this.form);
+          await this.form.callbacks.onSubmit(this.form);
         }
 
         this.$emit('submit', this.form, this.htmlForm);
@@ -80,11 +81,19 @@ const AppFormComponent = defineComponent({
 
       this.loading = false;
     },
+    async onCancel() {
+      if (this.form.callbacks.onCancel) {
+        this.form.callbacks.onCancel(this.form);
+      }
+      this.$emit('cancel', this.form, this.htmlForm);
+    },
     submit() {
       this.htmlForm.requestSubmit();
     },
+    cancel() {
+      this.htmlForm.reset();
+      this.onCancel();
+    },
   },
 });
-
-export default AppFormComponent;
 </script>

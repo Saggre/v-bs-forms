@@ -6,7 +6,6 @@ export type FormFieldType =
   | 'radio'
   | 'date'
   | 'time'
-  | 'number'
   | 'email'
   | 'tel'
   | 'url'
@@ -21,30 +20,28 @@ export type _FormDataType =
   | boolean
   | null
   | undefined
-  | string[]
-  | number[]
-  | boolean[]
-  | null[]
-  | undefined[];
+  | _FormDataType[];
 
 export type _FormData = Record<string, _FormDataType>;
 
-interface ValidationSuccess {
+export interface ValidationSuccess {
   valid: true;
 }
 
-interface ValidationError {
+export interface ValidationError {
   valid: false;
   message: string;
 }
 
 export type ValidationResult = ValidationSuccess | ValidationError;
 
-export interface GlobalFormField {
+export interface GlobalFormField<V, S extends _FormDataType = string> {
   type: string;
   class?: string;
   containerClass?: string;
-  validate?: (value: _FormDataType) => ValidationResult;
+  validate?: (value: V) => ValidationResult;
+  renderTransform?: (value: S) => V;
+  submitTransform?: (value: V) => S;
 }
 
 export interface StaticFormField {
@@ -55,9 +52,8 @@ export interface StaticFormField {
 
 export interface FloatingFormField {
   title: string;
-  placeholder: string;
   floating: true;
 }
 
-export type BaseFormField = (StaticFormField | FloatingFormField) &
-  GlobalFormField;
+export type BaseFormField<V> = (StaticFormField | FloatingFormField) &
+  GlobalFormField<V>;

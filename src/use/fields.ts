@@ -1,37 +1,26 @@
-import {
-  BaseFormField,
-  _FormDataType,
-  FormFieldType,
-  GlobalFormField,
-  _FormData,
-} from '@/use/fields/base';
+import { BaseFormField, FormFieldType } from '@/use/fields/base';
 import { Moment } from 'moment/moment';
 
-type StandardFormField = BaseFormField & {
+export type StandardFormField<V = string> = BaseFormField<V> & {
   type: FormFieldType;
-  renderTransform?: (value: _FormDataType) => string | number;
-  submitTransform?: (value: string | number) => _FormDataType;
 };
 
-interface ComponentFormField extends GlobalFormField {
-  type: 'component';
-  component: string;
-  props: Record<string, unknown>;
-}
+export type NumberFormField<V = number> = BaseFormField<V> & {
+  type: 'number';
+};
 
-export type ActionFormField = BaseFormField & {
+export type ActionFormField<V = boolean> = BaseFormField<V> & {
   type: 'action';
   description?: string;
   submitTitle: () => string;
+  // TODO: Use validate.
   isComplete: () => boolean;
   submit: () => void;
   required?: boolean;
 };
 
-export type DateTimeFormField = BaseFormField & {
+export type DateTimeFormField<V = Moment> = BaseFormField<V> & {
   type: 'datetime';
-  renderTransform: (value: string) => Moment;
-  submitTransform: (value: Moment) => string;
 };
 
 export interface ListItem {
@@ -40,57 +29,35 @@ export interface ListItem {
   description: string;
 }
 
-export type ListGroupFormField = BaseFormField & {
+export type ListGroupFormField<V = ListItem> = BaseFormField<V> & {
   type: 'list-group';
-  items: ListItem[];
+  options: ListItem[];
 };
 
-type DropdownFormField = BaseFormField & {
+export type DropdownFormField<V = string[]> = BaseFormField<V> & {
   type: 'dropdown';
   options: Record<string, string>;
-  renderTransform?: (value: _FormDataType) => string[] | number[];
-  submitTransform?: (value: string[] | number[]) => _FormDataType;
 };
 
-type TextareaFormField = BaseFormField & {
+export type TextareaFormField<V = string> = BaseFormField<V> & {
   type: 'textarea';
   rows?: number;
-  renderTransform?: (value: _FormDataType) => string | number;
-  submitTransform?: (value: string | number) => _FormDataType;
 };
 
-type MultiselectFormField = BaseFormField & {
+export type MultiselectFormField<V = string[]> = BaseFormField<V> & {
   type: 'multiselect';
   searchable?: boolean;
   multiple?: boolean;
   label: (key: string) => string;
   options: string[];
-  renderTransform?: (value: _FormDataType) => string[];
-  submitTransform?: (value: string[]) => _FormDataType;
 };
 
-type SubmitButton = GlobalFormField & {
-  type: 'submit';
-  icon?: string;
-  title: string;
-  loading?: boolean;
-};
-
-export type _FormField =
+export type FormField =
   | StandardFormField
+  | NumberFormField
   | DropdownFormField
   | TextareaFormField
   | MultiselectFormField
   | DateTimeFormField
-  | SubmitButton
-  | ComponentFormField
   | ActionFormField
   | ListGroupFormField;
-
-export type RepeaterFormField<T extends _FormData> = GlobalFormField & {
-  type: 'repeater';
-  title: (data: any) => string;
-  fields: { [key in keyof T]: _FormField };
-};
-
-export type FormField = _FormField | RepeaterFormField<_FormData>;

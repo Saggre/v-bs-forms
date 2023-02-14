@@ -24,14 +24,14 @@
           </BaseForm>
         </div>
         <div class="card-footer d-flex justify-content-end">
-          <!--<InertiaLink
+          <button
             v-if="prevButton"
             class="btn btn-outline-dark text-uppercase nav-prev me-2"
             type="button"
             :disabled="loading"
           >
             <i class="bi bi-arrow-left" />&nbsp;{{ prevText }}
-          </InertiaLink>
+          </button>
           <button
             class="btn btn-dark text-uppercase nav-next"
             :class="{ 'text-white-50': loading }"
@@ -40,7 +40,7 @@
             @click="$refs.form.submit()"
           >
             {{ nextText }}&nbsp;<i class="bi bi-arrow-right" />
-          </button>-->
+          </button>
         </div>
       </div>
     </div>
@@ -78,7 +78,12 @@ export default defineComponent({
   },
   computed: {
     loading(): boolean {
-      return this.$refs.form?.loading ?? false;
+      const form = this.$refs.form as
+        | undefined
+        | {
+            loading: boolean;
+          };
+      return form?.loading ?? false;
     },
   },
 });

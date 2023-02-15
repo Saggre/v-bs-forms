@@ -1,7 +1,7 @@
 <template>
   <div class="w-100">
     <FieldLabel :for="`${field.title}-list-group`" :value="field.title" />
-    <FieldInputError :message="error" />
+    <FieldInputError :validation="validation" />
     <div class="list-group">
       <a
         v-for="item in field.items"
@@ -44,6 +44,7 @@ import { defineComponent, PropType } from 'vue';
 import { ListGroupFormField, ListItem } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
+import { ValidationResult } from '@/use/fields/base';
 
 export default defineComponent({
   components: {
@@ -51,12 +52,12 @@ export default defineComponent({
     FieldInputError,
   },
   props: {
-    error: {
-      type: String as PropType<string>,
-      default: '',
+    validation: {
+      type: Object as PropType<ValidationResult>,
+      default: undefined,
     },
     field: {
-      type: Object as PropType<ListGroupFormField>,
+      type: Object as PropType<ListGroupFormField | unknown>,
       required: true,
     },
     modelValue: {

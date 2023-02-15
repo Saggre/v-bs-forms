@@ -12,7 +12,7 @@
         v-model="inputDate"
         type="date"
         :class="{
-          'is-invalid': error,
+          'is-invalid': !validation.valid,
           [field.class]: !!field.class,
         }"
         :placeholder="field.placeholder"
@@ -31,13 +31,13 @@
         v-model="inputTime"
         type="time"
         :class="{
-          'is-invalid': error,
+          'is-invalid': !validation.valid,
           [field.class]: !!field.class,
         }"
         :placeholder="field.placeholder"
       />
       <FieldLabel :for="`${field.title}-time`" :value="field.title" />
-      <FieldInputError :message="error" />
+      <FieldInputError :validation="validation" />
     </div>
   </div>
 </template>
@@ -49,6 +49,7 @@ import { DateTimeFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
+import { ValidationError, ValidationResult } from '@/use/fields/base';
 
 export default defineComponent({
   components: {
@@ -57,12 +58,12 @@ export default defineComponent({
     FieldInputError,
   },
   props: {
-    error: {
-      type: String as PropType<string>,
-      default: '',
+    validation: {
+      type: Object as PropType<ValidationResult>,
+      required: true,
     },
     field: {
-      type: Object as PropType<DateTimeFormField>,
+      type: Object as PropType<DateTimeFormField | unknown>,
       required: true,
     },
     modelValue: {
@@ -85,7 +86,7 @@ export default defineComponent({
       value.month(input.month());
       value.date(input.date());
 
-      this.$emit('update:modelValue', this.field.submitTransform(value));
+      this.$emit('update:modelValue', this.field.serialize(value));
     },
     inputTime(time) {
       const value = this.internalModelValue();
@@ -93,12 +94,12 @@ export default defineComponent({
       value.hour(input.hour());
       value.minute(input.minute());
 
-      this.$emit('update:modelValue', this.field.submitTransform(value));
+      this.$emit('update:modelValue', this.field.serialize(value));
     },
   },
   methods: {
     internalModelValue(): Moment {
-      return this.field.renderTransform(this.modelValue);
+      return this.field.deserialize(this.modelValue);
     },
   },
 });

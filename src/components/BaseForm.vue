@@ -10,13 +10,14 @@
       v-for="(field, key) in form.fields"
       :key="key"
       v-model="form.accessors.data[key]"
-      :error="form.accessors.errors[key]"
+      :validation="form.accessors.errors[key]"
       :field="field"
     />
     <slot />
     <div
       v-if="loading"
-      class="position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center bg-muted-light"
+      class="position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center"
+      style="background-color: rgba(255, 255, 255, 0.6)"
     >
       <div class="spinner-border" role="status">
         <span class="visually-hidden">{{ 'Loading...' }}</span>
@@ -29,7 +30,6 @@
 import { defineComponent, PropType } from 'vue';
 import { Form } from '@/use/form';
 import BaseField from '@/components/fields/BaseField.vue';
-import { _FormData } from '@/use/fields/base';
 
 export default defineComponent({
   components: {
@@ -37,7 +37,7 @@ export default defineComponent({
   },
   props: {
     form: {
-      type: Object as PropType<Form<_FormData>>,
+      type: Object as PropType<Form<any> | unknown>,
       required: true,
     },
     submitInternally: {
@@ -59,6 +59,9 @@ export default defineComponent({
     htmlForm(): HTMLFormElement {
       return this.$refs.form as HTMLFormElement;
     },
+    _form(): Form<any> {
+      return this.form as Form<any>;
+    },
   },
   methods: {
     async onSubmit() {
@@ -70,7 +73,7 @@ export default defineComponent({
 
       try {
         if (this.submitInternally) {
-          await this.form.callbacks.onSubmit(this.form);
+          await this._form.callbacks.onSubmit(this._form);
         }
 
         this.$emit('submit', this.form, this.htmlForm);
@@ -82,10 +85,10 @@ export default defineComponent({
       this.loading = false;
     },
     async onCancel() {
-      if (this.form.callbacks.onCancel) {
-        this.form.callbacks.onCancel(this.form);
+      if (this._form.callbacks.onCancel) {
+        this._form.callbacks.onCancel(this._form);
       }
-      this.$emit('cancel', this.form, this.htmlForm);
+      this.$emit('cancel', this._form, this.htmlForm);
     },
     submit() {
       this.htmlForm.requestSubmit();

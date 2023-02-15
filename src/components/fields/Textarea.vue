@@ -7,15 +7,15 @@
         [field.containerClass]: !!field.containerClass,
       }"
     >
-      <FieldInput
+      <textarea
         :id="field.title"
         v-model="value"
-        :type="field.type"
+        class="form-control"
         :class="{
           'is-invalid': !validation.valid,
           [field.class]: !!field.class,
         }"
-        :placeholder="field.placeholder"
+        :rows="field.rows ?? 3"
       />
       <FieldLabel :for="field.title" :value="field.title" />
       <FieldInputError :validation="validation" />
@@ -25,16 +25,14 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { FormField } from '@/use/fields';
+import { TextareaFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
-import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import { ValidationResult } from '@/use/fields/base';
 
 export default defineComponent({
   components: {
     FieldLabel,
-    FieldInput,
     FieldInputError,
   },
   props: {
@@ -43,11 +41,11 @@ export default defineComponent({
       required: true,
     },
     field: {
-      type: Object as PropType<FormField | unknown>,
+      type: Object as PropType<TextareaFormField | unknown>,
       required: true,
     },
     modelValue: {
-      type: [String, Number] as PropType<string | number | []>,
+      type: String as PropType<string>,
       required: true,
     },
   },
@@ -56,11 +54,6 @@ export default defineComponent({
     return {
       value: props.modelValue,
     };
-  },
-  watch: {
-    value(val) {
-      this.$emit('update:modelValue', val);
-    },
   },
 });
 </script>

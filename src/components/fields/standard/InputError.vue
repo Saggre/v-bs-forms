@@ -1,13 +1,19 @@
 <template>
-  <div v-show="message" class="invalid-feedback" role="alert">
-    <strong>{{ message }}</strong>
+  <div v-show="!validation.valid" class="invalid-feedback" role="alert">
+    <strong>{{ validation.message ?? '' }}</strong>
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
+<script lang="ts">
+import { defineComponent, PropType } from 'vue';
+import { ValidationResult } from '@/use/fields/base.js';
 
 export default defineComponent({
-  props: ['message'],
+  props: {
+    validation: {
+      type: Object as PropType<ValidationResult>,
+      required: true,
+    },
+  },
 });
 </script>

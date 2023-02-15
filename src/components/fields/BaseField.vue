@@ -1,15 +1,41 @@
 <template>
-  <div v-if="isDateTime()">
-    <DateTimeField v-model="value" :field="field" :error="error" />
-  </div>
-  <div v-else-if="isAction()">
-    <ActionField v-model="value" :field="field" :error="error" />
-  </div>
-  <div v-else-if="isListGroup()">
-    <ListGroupField v-model="value" :field="field" :error="error" />
-  </div>
-  <div v-else>
-    <StandardField v-model="value" :field="field" :error="error" />
+  <div>
+    <DateTimeField
+      v-if="type === BaseFieldTypes.DateTime"
+      v-model="value"
+      :field="field"
+      :validation="_validation"
+    />
+    <ActionField
+      v-else-if="type === BaseFieldTypes.Action"
+      v-model="value"
+      :field="field"
+      :validation="_validation"
+    />
+    <ListGroupField
+      v-else-if="type === BaseFieldTypes.ListGroup"
+      v-model="value"
+      :field="field"
+      :validation="_validation"
+    />
+    <DropdownField
+      v-else-if="type === BaseFieldTypes.Dropdown"
+      v-model="value"
+      :field="field"
+      :validation="_validation"
+    />
+    <TextareaField
+      v-else-if="type === BaseFieldTypes.Textarea"
+      v-model="value"
+      :field="field"
+      :validation="_validation"
+    />
+    <StandardField
+      v-else
+      v-model="value"
+      :field="field"
+      :validation="_validation"
+    />
   </div>
 </template>
 
@@ -20,6 +46,17 @@ import ActionField from '@/components/fields/Action.vue';
 import StandardField from '@/components/fields/Standard.vue';
 import DateTimeField from '@/components/fields/DateTime.vue';
 import ListGroupField from '@/components/fields/ListGroup.vue';
+import DropdownField from '@/components/fields/Dropdown.vue';
+import TextareaField from '@/components/fields/Textarea.vue';
+import { ValidationResult } from '@/use/fields/base';
+
+enum BaseFieldTypes {
+  DateTime = 'datetime',
+  Action = 'action',
+  ListGroup = 'list-group',
+  Dropdown = 'dropdown',
+  Textarea = 'textarea',
+}
 
 export default defineComponent({
   components: {
@@ -27,11 +64,13 @@ export default defineComponent({
     StandardField,
     DateTimeField,
     ListGroupField,
+    DropdownField,
+    TextareaField,
   },
   props: {
-    error: {
-      type: String as PropType<string>,
-      default: '',
+    validation: {
+      type: Object as PropType<ValidationResult | undefined>,
+      default: undefined,
     },
     field: {
       type: Object as PropType<FormField>,
@@ -46,6 +85,7 @@ export default defineComponent({
   data(props) {
     return {
       value: props.modelValue,
+      BaseFieldTypes,
     };
   },
   watch: {
@@ -53,15 +93,16 @@ export default defineComponent({
       this.$emit('update:modelValue', val);
     },
   },
-  methods: {
-    isDateTime(): boolean {
-      return this.field.type === 'datetime';
+  computed: {
+    type() {
+      return this.field.type;
     },
-    isAction(): boolean {
-      return this.field.type === 'action';
-    },
-    isListGroup(): boolean {
-      return this.field.type === 'list-group';
+    _validation(): ValidationResult {
+      return (
+        this.validation ?? {
+          valid: true,
+        }
+      );
     },
   },
 });

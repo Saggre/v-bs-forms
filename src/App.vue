@@ -70,7 +70,7 @@ const callbacks: FormCallbacks<LoginFormData> = {
     });
   },
   onCancel: (form: LoginForm) => {
-    console.log('Cancel');
+    console.log('Cancel', form.accessors.data);
   },
   onValidationError: (form: LoginForm) => {
     console.log('Validation error', form.accessors.errors);

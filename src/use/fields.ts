@@ -1,8 +1,12 @@
-import { BaseFormField, FormFieldType } from '@/use/fields/base';
+import {
+  BaseFormField,
+  HtmlFormFieldType,
+  ValidationResult,
+} from '@/use/fields/base';
 import { Moment } from 'moment/moment';
 
 export type StandardFormField<V = string> = BaseFormField<V> & {
-  type: FormFieldType;
+  type: HtmlFormFieldType[keyof HtmlFormFieldType];
 };
 
 export type NumberFormField<V = number> = BaseFormField<V> & {
@@ -13,14 +17,15 @@ export type ActionFormField<V = boolean> = BaseFormField<V> & {
   type: 'action';
   description?: string;
   submitTitle: () => string;
-  // TODO: Use validate.
-  isComplete: () => boolean;
   submit: () => void;
+  validate: () => ValidationResult;
   required?: boolean;
 };
 
 export type DateTimeFormField<V = Moment> = BaseFormField<V> & {
   type: 'datetime';
+  deserialize: (value: string) => V;
+  serialize: (value: V) => string;
 };
 
 export interface ListItem {
@@ -44,20 +49,11 @@ export type TextareaFormField<V = string> = BaseFormField<V> & {
   rows?: number;
 };
 
-export type MultiselectFormField<V = string[]> = BaseFormField<V> & {
-  type: 'multiselect';
-  searchable?: boolean;
-  multiple?: boolean;
-  label: (key: string) => string;
-  options: string[];
-};
-
 export type FormField =
   | StandardFormField
   | NumberFormField
   | DropdownFormField
   | TextareaFormField
-  | MultiselectFormField
   | DateTimeFormField
   | ActionFormField
   | ListGroupFormField;

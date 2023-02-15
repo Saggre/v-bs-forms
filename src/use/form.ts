@@ -16,6 +16,10 @@ export interface FormCallbacks<T extends _FormData> {
   onValidationError?: (form: Form<T>) => void;
 }
 
+export type FormInputFieldOptions<T extends _FormData> = {
+  [key in keyof T]: FormField;
+};
+
 export type FormInputFields<T extends _FormData> = {
   [key in keyof T]: FormField;
 };
@@ -25,7 +29,7 @@ export type Form<T extends _FormData> = {
   description?: string;
   accessors: FormAccessors<T>;
   callbacks: FormCallbacks<T>;
-  fields: FormInputFields<T>;
+  fields: FormInputFieldOptions<T>;
 };
 
 function validateFields<T extends _FormData>(
@@ -52,6 +56,8 @@ export function useForm<T extends _FormData>(form: Form<T>): Form<T> {
   form.callbacks.onSubmit = async () => {
     let hasErrors = false;
     const validationResults = validateFields(form);
+
+    form.accessors.errors = {} as Record<keyof T, ValidationError>;
 
     for (const key in validationResults) {
       const validationResult = validationResults[key];

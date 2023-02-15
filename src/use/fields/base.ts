@@ -1,18 +1,19 @@
-export type FormFieldType =
-  | 'text'
-  | 'textarea'
-  | 'select'
-  | 'checkbox'
-  | 'radio'
-  | 'date'
-  | 'time'
-  | 'email'
-  | 'tel'
-  | 'url'
-  | 'password'
-  | 'file'
-  | 'hidden'
-  | 'action';
+export const enum HtmlFormFieldType {
+  Text = 'text',
+  Textarea = 'textarea',
+  Select = 'select',
+  Checkbox = 'checkbox',
+  Radio = 'radio',
+  Date = 'date',
+  Time = 'time',
+  Datetime = 'datetime',
+  Email = 'email',
+  Tel = 'tel',
+  Url = 'url',
+  Password = 'password',
+  File = 'file',
+  Hidden = 'hidden',
+}
 
 export type _FormDataType =
   | string
@@ -40,8 +41,8 @@ export interface GlobalFormField<V, S extends _FormDataType = string> {
   class?: string;
   containerClass?: string;
   validate?: (value: V) => ValidationResult;
-  renderTransform?: (value: S) => V;
-  submitTransform?: (value: V) => S;
+  deserialize?: (value: S) => V;
+  serialize?: (value: V) => S;
 }
 
 export interface StaticFormField {

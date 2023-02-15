@@ -15,7 +15,7 @@
           <h6 v-if="!!field.description" class="card-subtitle mb-2 text-muted">
             {{ field.description }}
           </h6>
-          <div v-if="field.isComplete()">
+          <div v-if="_field.validate()">
             <span class="text-success h4"
               >{{ 'Authenticated' }}<i class="bi bi-check-lg h3 ms-2"
             /></span>
@@ -24,13 +24,13 @@
             v-else
             class="btn btn-primary"
             :class="{
-              'is-invalid': !!error,
+              'is-invalid': !validation.valid,
             }"
             @click="field.submit()"
-            >{{ field.submitTitle ? field.submitTitle() : $t('Submit') }}</a
+            >{{ field.submitTitle ? field.submitTitle() : 'Submit' }}</a
           >
           <div class="invalid-feedback mt-3">
-            {{ error }}
+            {{ validation.message }}
           </div>
         </div>
       </div>
@@ -41,16 +41,17 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { ActionFormField } from '@/use/fields';
+import { ValidationResult } from '@/use/fields/base';
 
 export default defineComponent({
   components: {},
   props: {
-    error: {
-      type: String as PropType<string>,
-      default: '',
+    validation: {
+      type: Object as PropType<ValidationResult>,
+      required: true,
     },
     field: {
-      type: Object as PropType<ActionFormField>,
+      type: Object as PropType<ActionFormField | unknown>,
       required: true,
     },
     modelValue: {
@@ -59,5 +60,10 @@ export default defineComponent({
     },
   },
   emits: ['update:modelValue'],
+  computed: {
+    _field(): ActionFormField {
+      return this.field as ActionFormField;
+    },
+  },
 });
 </script>

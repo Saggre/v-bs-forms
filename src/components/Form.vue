@@ -29,6 +29,7 @@
             class="btn btn-outline-dark text-uppercase nav-prev me-2"
             type="button"
             :disabled="loading"
+            @click="$refs.form.onCancel()"
           >
             <i class="bi bi-arrow-left" />&nbsp;{{ prevText }}
           </button>
@@ -60,7 +61,7 @@ export default defineComponent({
   },
   props: {
     form: {
-      type: Object as PropType<Form<any>>,
+      type: Object as PropType<Form<any> | unknown>,
       required: true,
     },
     nextText: {

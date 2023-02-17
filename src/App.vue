@@ -14,14 +14,23 @@ import {
   FormInputFields,
   useForm,
 } from '@/use/form';
-import { _FormData } from '@/use/fields/base';
+import { _FormData, ValidationSuccess } from '@/use/fields/base';
+import moment, { Moment } from 'moment/moment';
 
 interface LoginFormData extends _FormData {
   email: string;
   password: string;
+  action: boolean;
 }
 
 type LoginForm = Form<LoginFormData>;
+
+const data = {
+  email: '',
+  password: '',
+  action: false,
+};
+const errors = {};
 
 const fields: FormInputFields<LoginFormData> = {
   email: {
@@ -46,13 +55,80 @@ const fields: FormInputFields<LoginFormData> = {
       };
     },
   },
-};
+  role: {
+    type: 'dropdown',
+    title: 'Role',
+    floating: true,
+    options: {
+      foo: 'foo',
+      bar: 'bar',
+      baz: 'baz',
+    },
+  },
+  number: {
+    type: 'number',
+    title: 'Number',
+    floating: true,
+  },
+  datetime: {
+    type: 'datetime',
+    title: 'Datetime',
+    floating: true,
+    deserialize: (value: string) => moment(value),
+    serialize: (value: Moment) => value.toISOString(),
+  },
+  textarea: {
+    type: 'textarea',
+    title: 'Textarea',
+    floating: true,
+    rows: 5,
+  },
+  'list-group': {
+    type: 'list-group',
+    title: 'List group',
+    floating: true,
+    options: {
+      foo: {
+        name: 'Foo',
+        description: 'Foo description',
+      },
+      bar: {
+        name: 'Bar',
+        description: 'Bar description',
+      },
+      baz: {
+        name: 'Baz',
+        description: 'Baz description',
+      },
+    },
+  },
+  action: {
+    type: 'action',
+    title: 'Action',
+    floating: true,
+    onSubmit: () => {
+      console.log('Action submitted');
+      data.action = true;
+    },
+    validate: () => {
+      if (data.action) {
+        return {
+          valid: true,
+        } as ValidationSuccess;
+      }
 
-const data = {
-  email: '',
-  password: '',
+      return {
+        message: 'Action must be completed',
+        valid: false,
+      };
+    },
+    texts: {
+      submit: 'Submit',
+      success: 'Success',
+      description: 'Description',
+    },
+  },
 };
-const errors = {};
 
 const accessors: FormAccessors<LoginFormData> = {
   data,

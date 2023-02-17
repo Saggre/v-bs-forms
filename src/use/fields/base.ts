@@ -45,6 +45,14 @@ export interface GlobalFormField<V, S extends _FormDataType = string> {
   serialize?: (value: V) => S;
 }
 
+export interface CardFormField {
+  title: string;
+  subtitle?: string;
+  description?: string;
+  header?: string;
+  footer?: string;
+}
+
 export interface StaticFormField {
   title: string;
   placeholder?: string;

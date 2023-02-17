@@ -7,17 +7,21 @@
         [field.containerClass]: !!field.containerClass,
       }"
     >
-      <div class="card">
+      <div class="card" :key="key">
+        <div class="card-header" v-if="_field.header">
+          {{ _field.header }}
+        </div>
         <div class="card-body">
-          <h5 class="card-title mb-3">
-            {{ field.title }}
-          </h5>
-          <h6 v-if="!!field.description" class="card-subtitle mb-2 text-muted">
-            {{ field.description }}
+          <h5 class="card-title">{{ _field.title }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted" v-if="!!_field.subtitle">
+            {{ _field.subtitle }}
           </h6>
-          <div v-if="_field.validate()">
+          <p v-if="!!_field.texts.description" class="card-text">
+            {{ _field.texts.description }}
+          </p>
+          <div v-if="valid">
             <span class="text-success h4"
-              >{{ 'Authenticated' }}<i class="bi bi-check-lg h3 ms-2"
+              >{{ _field.texts.success }}<i class="bi bi-check-lg h3 ms-2"
             /></span>
           </div>
           <a
@@ -26,12 +30,15 @@
             :class="{
               'is-invalid': !validation.valid,
             }"
-            @click="field.submit()"
-            >{{ field.submitTitle ? field.submitTitle() : 'Submit' }}</a
+            @click="onSubmit"
+            >{{ _field.texts.submit }}</a
           >
           <div class="invalid-feedback mt-3">
             {{ validation.message }}
           </div>
+        </div>
+        <div class="card-footer" v-if="_field.footer">
+          {{ _field.footer }}
         </div>
       </div>
     </div>
@@ -39,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, getCurrentInstance, PropType } from "vue";
 import { ActionFormField } from '@/use/fields';
 import { ValidationResult } from '@/use/fields/base';
 
@@ -59,10 +66,24 @@ export default defineComponent({
       required: true,
     },
   },
+  data() {
+    return {
+      key: 0,
+    };
+  },
   emits: ['update:modelValue'],
   computed: {
     _field(): ActionFormField {
       return this.field as ActionFormField;
+    },
+    valid(): boolean {
+      return this._field.validate().valid;
+    },
+  },
+  methods: {
+    onSubmit() {
+      this._field.onSubmit();
+      this.key++;
     },
   },
 });

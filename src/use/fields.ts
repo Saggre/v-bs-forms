@@ -1,5 +1,6 @@
 import {
   BaseFormField,
+  CardFormField,
   HtmlFormFieldType,
   ValidationResult,
 } from '@/use/fields/base';
@@ -13,14 +14,19 @@ export type NumberFormField<V = number> = BaseFormField<V> & {
   type: 'number';
 };
 
-export type ActionFormField<V = boolean> = BaseFormField<V> & {
-  type: 'action';
+export interface ActionFormFieldTexts {
+  submit: string;
+  success: string;
   description?: string;
-  submitTitle: () => string;
-  submit: () => void;
-  validate: () => ValidationResult;
-  required?: boolean;
-};
+}
+
+export type ActionFormField<V = boolean> = BaseFormField<V> &
+  CardFormField & {
+    type: 'action';
+    onSubmit: () => void;
+    validate: () => ValidationResult;
+    texts: ActionFormFieldTexts;
+  };
 
 export type DateTimeFormField<V = Moment> = BaseFormField<V> & {
   type: 'datetime';
@@ -29,14 +35,13 @@ export type DateTimeFormField<V = Moment> = BaseFormField<V> & {
 };
 
 export interface ListItem {
-  key: string;
   name: string;
   description: string;
 }
 
 export type ListGroupFormField<V = ListItem> = BaseFormField<V> & {
   type: 'list-group';
-  options: ListItem[];
+  options: Record<string, ListItem>;
 };
 
 export type DropdownFormField<V = string[]> = BaseFormField<V> & {

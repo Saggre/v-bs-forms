@@ -1,46 +1,16 @@
 <template>
   <div>
-    <DateTimeField
-      v-if="type === BaseFieldTypes.DateTime"
-      v-model="value"
+    <component
+      :is="component"
       :field="field"
       :validation="_validation"
-    />
-    <ActionField
-      v-else-if="type === BaseFieldTypes.Action"
       v-model="value"
-      :field="field"
-      :validation="_validation"
-    />
-    <ListGroupField
-      v-else-if="type === BaseFieldTypes.ListGroup"
-      v-model="value"
-      :field="field"
-      :validation="_validation"
-    />
-    <DropdownField
-      v-else-if="type === BaseFieldTypes.Dropdown"
-      v-model="value"
-      :field="field"
-      :validation="_validation"
-    />
-    <TextareaField
-      v-else-if="type === BaseFieldTypes.Textarea"
-      v-model="value"
-      :field="field"
-      :validation="_validation"
-    />
-    <StandardField
-      v-else
-      v-model="value"
-      :field="field"
-      :validation="_validation"
-    />
+    ></component>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { Component, defineComponent, PropType } from 'vue';
 import { FormField } from '@/use/fields';
 import ActionField from '@/components/fields/Action.vue';
 import StandardField from '@/components/fields/Standard.vue';
@@ -94,6 +64,22 @@ export default defineComponent({
     },
   },
   computed: {
+    component(): Component {
+      switch (this.type) {
+        case BaseFieldTypes.DateTime:
+          return DateTimeField;
+        case BaseFieldTypes.Action:
+          return ActionField;
+        case BaseFieldTypes.ListGroup:
+          return ListGroupField;
+        case BaseFieldTypes.Dropdown:
+          return DropdownField;
+        case BaseFieldTypes.Textarea:
+          return TextareaField;
+        default:
+          return StandardField;
+      }
+    },
     type() {
       return this.field.type;
     },

@@ -7,7 +7,7 @@
         [field.containerClass]: !!field.containerClass,
       }"
     >
-      <div class="card" :key="key">
+      <div class="card">
         <div class="card-header" v-if="_field.header">
           {{ _field.header }}
         </div>
@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, PropType } from "vue";
+import { defineComponent, PropType } from 'vue';
 import { ActionFormField } from '@/use/fields';
 import { ValidationResult } from '@/use/fields/base';
 
@@ -66,9 +66,9 @@ export default defineComponent({
       required: true,
     },
   },
-  data() {
+  data(props) {
     return {
-      key: 0,
+      valid: (props.field as ActionFormField).validate().valid,
     };
   },
   emits: ['update:modelValue'],
@@ -76,14 +76,14 @@ export default defineComponent({
     _field(): ActionFormField {
       return this.field as ActionFormField;
     },
-    valid(): boolean {
-      return this._field.validate().valid;
-    },
   },
   methods: {
     onSubmit() {
       this._field.onSubmit();
-      this.key++;
+      this.checkValid();
+    },
+    checkValid() {
+      this.valid = this._field.validate().valid;
     },
   },
 });

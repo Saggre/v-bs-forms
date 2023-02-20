@@ -14,9 +14,6 @@ describe('Text field', () => {
           title: 'Field title',
           floating: true,
         },
-        validation: {
-          valid: true,
-        },
         modelValue: 'initialText',
       },
     });

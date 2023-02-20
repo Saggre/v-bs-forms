@@ -12,10 +12,6 @@ describe('Standard field wrapper', () => {
           title: 'Field title',
           floating: true,
         },
-        validation: {
-          valid: true,
-        },
-        modelValue: '',
       },
     });
   });

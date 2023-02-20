@@ -16,21 +16,10 @@ describe('Plugin field tests', () => {
     wrapper = mount(BaseForm, {
       props: {
         form: useForm({
-          title: 'Plugin field form',
-          description: '',
           fields: {
             plugin: {
               type: 'plugin-field',
               title: 'Plugin field',
-            },
-          },
-          accessors: {
-            data: {},
-            errors: {},
-          },
-          callbacks: {
-            onSubmit: async () => {
-              return;
             },
           },
         }),

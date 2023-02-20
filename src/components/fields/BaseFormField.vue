@@ -7,7 +7,9 @@ export default defineComponent({
   props: {
     validation: {
       type: Object as PropType<ValidationResult>,
-      required: true,
+      default: {
+        valid: true,
+      } as ValidationResult,
     },
     field: {
       type: Object as PropType<any>,
@@ -15,7 +17,7 @@ export default defineComponent({
     },
     modelValue: {
       type: String as PropType<string>,
-      required: true,
+      required: false,
     },
   },
   emits: ['update:modelValue'],

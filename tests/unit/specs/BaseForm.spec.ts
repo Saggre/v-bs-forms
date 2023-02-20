@@ -4,16 +4,10 @@ import { Form, useForm } from '@/use/form';
 import { MockedFunction } from 'vitest';
 
 describe('Form', () => {
-  let data;
-  let errors;
   let wrapper: VueWrapper;
   let callbacks: Record<string, MockedFunction<any>>;
 
   beforeAll(() => {
-    data = {
-      foo: 'bar',
-    };
-    errors = {};
     callbacks = {
       onSubmit: vi.fn(),
       onCancel: vi.fn(),
@@ -22,18 +16,12 @@ describe('Form', () => {
     wrapper = mount(BaseForm, {
       props: {
         form: useForm({
-          title: 'Test form',
-          description: 'Test description',
           fields: {
             foo: {
               type: 'text',
               title: 'Foo',
               floating: true,
             },
-          },
-          accessors: {
-            data,
-            errors,
           },
           callbacks: {
             ...callbacks,

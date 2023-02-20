@@ -16,10 +16,6 @@ export interface FormCallbacks<T extends _FormData> {
   onValidationError?: (form: Form<T>) => void;
 }
 
-export type FormInputFieldOptions<T extends _FormData> = {
-  [key in keyof T]: FormField;
-};
-
 export type FormInputFields<T extends _FormData> = {
   [key in keyof T]: FormField;
 };
@@ -27,9 +23,9 @@ export type FormInputFields<T extends _FormData> = {
 export type Form<T extends _FormData> = {
   title?: string;
   description?: string;
+  fields: FormInputFields<T>;
   accessors: FormAccessors<T>;
   callbacks: FormCallbacks<T>;
-  fields: FormInputFieldOptions<T>;
 };
 
 function validateFields<T extends _FormData>(
@@ -50,7 +46,37 @@ function validateFields<T extends _FormData>(
   return results;
 }
 
-export function useForm<T extends _FormData>(form: Form<T>): Form<T> {
+/**
+ * Returns default accessors for a form.
+ */
+const getDefaultAccessors = <T extends _FormData>(): FormAccessors<T> => ({
+  data: {} as T,
+  errors: {} as Record<keyof T, ValidationError>,
+});
+
+/**
+ * Creates a form object with default values.
+ *
+ * @param formDefinition
+ */
+const createForm = <T extends _FormData>(formDefinition: Partial<Form<T>>) => {
+  return {
+    title: formDefinition.title ?? undefined,
+    description: formDefinition.description ?? undefined,
+    fields: formDefinition.fields ?? ({} as FormInputFields<T>),
+    accessors: formDefinition.accessors ?? getDefaultAccessors<T>(),
+    callbacks: formDefinition.callbacks ?? {
+      onSubmit: async () => {
+        return;
+      },
+    },
+  };
+};
+
+export function useForm<T extends _FormData>(
+  formDefinition: Partial<Form<T>>,
+): Form<T> {
+  const form = createForm<T>(formDefinition);
   const onSubmit = form.callbacks.onSubmit;
 
   form.callbacks.onSubmit = async () => {

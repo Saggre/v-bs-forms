@@ -86,7 +86,7 @@ export function useForm<T extends _FormData>(
   const form = createForm<T>(formDefinition);
   const onSubmit = form.callbacks.onSubmit;
 
-  form.callbacks.onSubmit = async () => {
+  form.callbacks.onSubmit = async form => {
     let hasErrors = false;
     const validationResults = validateFields(form);
 

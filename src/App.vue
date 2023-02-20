@@ -34,7 +34,6 @@ const data = {
   textarea: 'Text',
   'list-group': 'bar',
 };
-const errors = {};
 
 const fields: FormInputFields<LoginFormData> = {
   email: {
@@ -90,7 +89,10 @@ const fields: FormInputFields<LoginFormData> = {
   'list-group': {
     type: 'list-group',
     title: 'List group',
-    floating: true,
+    subtitle: 'Subtitle',
+    description: 'Description',
+    header: 'Header',
+    footer: 'Footer',
     options: {
       foo: {
         name: 'Foo',
@@ -109,7 +111,10 @@ const fields: FormInputFields<LoginFormData> = {
   action: {
     type: 'action',
     title: 'Action',
-    floating: true,
+    subtitle: 'Subtitle',
+    description: 'Description',
+    header: 'Header',
+    footer: 'Footer',
     onSubmit: () => {
       console.log('Action submitted');
       data.action = true;
@@ -134,11 +139,6 @@ const fields: FormInputFields<LoginFormData> = {
   },
 };
 
-const accessors: FormAccessors<LoginFormData> = {
-  data,
-  errors,
-};
-
 const callbacks: FormCallbacks<LoginFormData> = {
   onSubmit: async (form: LoginForm) => {
     console.log('Submit', form.accessors.data);
@@ -152,8 +152,8 @@ const callbacks: FormCallbacks<LoginFormData> = {
   onCancel: (form: LoginForm) => {
     console.log('Cancel', form.accessors.data);
   },
-  onError: (form: LoginForm) => {
-    console.log('Validation error', form.accessors.errors);
+  onError: errors => {
+    console.log('Validation error', errors);
   },
 };
 
@@ -162,17 +162,16 @@ export const useLoginForm = () =>
     title: 'Login',
     description: 'Login to your account',
     fields,
-    accessors,
+    accessors: {
+      data,
+      errors: {},
+    },
     callbacks,
   });
 
 export default defineComponent({
   components: {
     FormComponent,
-  },
-  props: {
-    canResetPassword: Boolean,
-    status: String,
   },
   setup() {
     return {

@@ -51,6 +51,7 @@ export interface CardFormField {
   description?: string;
   header?: string;
   footer?: string;
+  floating: never;
 }
 
 export interface StaticFormField {

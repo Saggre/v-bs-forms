@@ -39,10 +39,11 @@ export interface ListItem {
   description: string;
 }
 
-export type ListGroupFormField<V = ListItem> = BaseFormField<V> & {
-  type: 'list-group';
-  options: Record<string, ListItem>;
-};
+export type ListGroupFormField<V = ListItem> = BaseFormField<V> &
+  CardFormField & {
+    type: 'list-group';
+    options: Record<string, ListItem>;
+  };
 
 export type DropdownFormField<V = string[]> = BaseFormField<V> & {
   type: 'dropdown';

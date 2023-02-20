@@ -67,6 +67,7 @@ export function useForm<T extends _FormData>(form: Form<T>): Form<T> {
       }
 
       hasErrors = true;
+      // @ts-ignore
       form.accessors.errors[key] = validationResult as ValidationError;
     }
 

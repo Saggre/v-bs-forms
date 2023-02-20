@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
+    "@vitest/coverage-c8": "^0.28.5",
     "bootstrap": "^5.2.3",
     "moment": "^2.29.4"
   },

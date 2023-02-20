@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { Component, defineComponent, PropType } from 'vue';
-import { FormField } from '@/use/fields';
 import ActionField from '@/components/fields/Action.vue';
 import StandardField from '@/components/fields/Standard.vue';
 import DateTimeField from '@/components/fields/DateTime.vue';

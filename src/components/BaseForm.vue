@@ -44,10 +44,6 @@ export default defineComponent({
       type: Boolean as PropType<boolean>,
       default: true,
     },
-    timeout: {
-      type: Number as PropType<number>,
-      default: 10000,
-    },
   },
   emits: ['submit', 'cancel'],
   data() {

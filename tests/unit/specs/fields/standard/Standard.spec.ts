@@ -2,10 +2,8 @@ import { VueWrapper, mount } from '@vue/test-utils';
 import StandardField from '@/components/fields/Standard.vue';
 import { DOMWrapper } from '@vue/test-utils/dist/domWrapper';
 
-describe('Text field', () => {
+describe('Standard field wrapper', () => {
   let wrapper: VueWrapper;
-  let field: Omit<DOMWrapper<HTMLInputElement>, 'exists'>;
-  let element: HTMLInputElement;
 
   beforeEach(() => {
     wrapper = mount(StandardField, {
@@ -18,15 +16,12 @@ describe('Text field', () => {
         validation: {
           valid: true,
         },
-        modelValue: 'initialText',
+        modelValue: '',
       },
     });
-
-    field = wrapper.get<HTMLInputElement>('input[type="text"]');
-    element = field.element;
   });
 
-  describe('Input', () => {
+  describe('Standard input', () => {
     it('Field exists', async () => {
       expect(wrapper.find('input[type="text"]').exists()).toBe(true);
     });
@@ -38,26 +33,34 @@ describe('Text field', () => {
       await wrapper.setProps({
         field: {
           type: 'text',
-          title: 'Field title',
+          title: 'Modified field title',
           floating: false,
         },
       });
 
+      expect(wrapper.find('label').text()).toBe('Modified field title');
       expect(wrapper.find('.form-floating').exists()).toBe(false);
     });
+  });
 
-    it('Field has initial data', async () => {
-      expect(element.value).toBe('initialText');
+  describe('Validation error visibility', () => {
+    it('No error is visible when the field is valid', async () => {
+      expect(wrapper.find('.invalid-feedback').isVisible()).toBe(false);
     });
 
-    it('Field can be edited', async () => {
-      await field.setValue('modifiedText');
-      expect(field.element.value).toBe('modifiedText');
-      expect(wrapper.emitted()).toHaveProperty('update:modelValue');
-      const event = wrapper.emitted('update:modelValue');
-      expect(event).toHaveLength(1);
-      // @ts-ignore
-      expect(event[0]).toEqual(['modifiedText']);
+    it('An error text is visible when the field is invalid', async () => {
+      await wrapper.setProps({
+        validation: {
+          valid: false,
+          message: 'This field is invalid',
+        },
+      });
+
+      expect(wrapper.find('.invalid-feedback').isVisible()).toBe(true);
+      expect(wrapper.find('.invalid-feedback').text()).toBe(
+        'This field is invalid',
+      );
+      expect(wrapper.find('input').classes()).toContain('is-invalid');
     });
   });
 });

@@ -1,12 +1,6 @@
 <template>
   <div class="w-100">
-    <div
-      class="mb-3"
-      :class="{
-        'form-floating': field.floating,
-        [field.containerClass]: !!field.containerClass,
-      }"
-    >
+    <div :class="containerClass">
       <select
         :id="field.title"
         v-model="value"
@@ -36,32 +30,19 @@ import { defineComponent, PropType } from 'vue';
 import { DropdownFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
-import { ValidationResult } from '@/use/fields/base';
+import BaseFormField from '@/components/fields/BaseFormField.vue';
 
 export default defineComponent({
+  extends: BaseFormField,
   components: {
     FieldLabel,
     FieldInputError,
   },
   props: {
-    validation: {
-      type: Object as PropType<ValidationResult>,
-      required: true,
-    },
     field: {
-      type: Object as PropType<DropdownFormField | unknown>,
+      type: Object as PropType<DropdownFormField>,
       required: true,
     },
-    modelValue: {
-      type: String as PropType<string>,
-      required: true,
-    },
-  },
-  emits: ['update:modelValue'],
-  data(props) {
-    return {
-      value: props.modelValue,
-    };
   },
 });
 </script>

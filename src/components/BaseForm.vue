@@ -6,7 +6,7 @@
     @submit.prevent="onSubmit"
   >
     <slot name="head" />
-    <BaseField
+    <FormField
       v-for="(field, key) in form.fields"
       :key="key"
       v-model="form.accessors.data[key]"
@@ -29,11 +29,11 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { Form } from '@/use/form';
-import BaseField from '@/components/fields/BaseField.vue';
+import FormField from '@/components/fields/FormField.vue';
 
 export default defineComponent({
   components: {
-    BaseField,
+    FormField,
   },
   props: {
     form: {

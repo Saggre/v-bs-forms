@@ -29,6 +29,10 @@ const data = {
   email: '',
   password: '',
   action: false,
+  number: 1337,
+  role: 'foo',
+  textarea: 'Text',
+  'list-group': 'bar',
 };
 const errors = {};
 

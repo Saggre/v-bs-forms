@@ -43,12 +43,14 @@ export default defineComponent({
       default: undefined,
     },
     field: {
-      type: Object as PropType<FormField>,
+      type: Object as PropType<any>,
       required: true,
     },
     modelValue: {
-      type: [String, Number, Array] as PropType<string | number | []>,
-      required: true,
+      type: [String, Number, Array, Boolean] as PropType<
+        string | number | [] | boolean
+      >,
+      required: false,
     },
   },
   emits: ['update:modelValue'],

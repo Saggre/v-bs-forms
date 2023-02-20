@@ -1,12 +1,6 @@
 <template>
   <div class="w-100">
-    <div
-      class="mb-3"
-      :class="{
-        'form-floating': field.floating,
-        [field.containerClass]: !!field.containerClass,
-      }"
-    >
+    <div :class="containerClass">
       <FieldInput
         :id="field.title"
         v-model="value"
@@ -29,37 +23,19 @@ import { FormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
-import { ValidationResult } from '@/use/fields/base';
+import BaseFormField from '@/components/fields/BaseFormField.vue';
 
 export default defineComponent({
+  extends: BaseFormField,
   components: {
     FieldLabel,
     FieldInput,
     FieldInputError,
   },
   props: {
-    validation: {
-      type: Object as PropType<ValidationResult>,
-      required: true,
-    },
     field: {
-      type: Object as PropType<FormField | unknown>,
+      type: Object as PropType<FormField>,
       required: true,
-    },
-    modelValue: {
-      type: [String, Number] as PropType<string | number | []>,
-      required: true,
-    },
-  },
-  emits: ['update:modelValue'],
-  data(props) {
-    return {
-      value: props.modelValue,
-    };
-  },
-  watch: {
-    value(val) {
-      this.$emit('update:modelValue', val);
     },
   },
 });

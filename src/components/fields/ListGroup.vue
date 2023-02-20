@@ -8,16 +8,16 @@
         :key="key"
         href="#"
         class="list-group-item list-group-item-action"
-        :class="{ 'text-black-50': isSelected(key) }"
-        @click.prevent="onSelect(key, option)"
+        :class="{ 'text-black-50': value === key }"
+        @click.prevent="value = key"
       >
         <div>
-          <span :class="{ 'font-weight-bold': isSelected(key) }">
+          <span :class="{ 'font-weight-bold': value === key }">
             {{ option.name }}
           </span>
 
           <svg
-            v-if="isSelected(key)"
+            v-if="value === key"
             class="ms-1 text-success font-weight-light"
             width="20"
             fill="none"
@@ -45,45 +45,18 @@ import { defineComponent, PropType } from 'vue';
 import { ListGroupFormField, ListItem } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
-import { ValidationResult } from '@/use/fields/base';
+import BaseFormField from '@/components/fields/BaseFormField.vue';
 
 export default defineComponent({
+  extends: BaseFormField,
   components: {
     FieldLabel,
     FieldInputError,
   },
   props: {
-    validation: {
-      type: Object as PropType<ValidationResult>,
-      default: undefined,
-    },
     field: {
       type: Object as PropType<ListGroupFormField | unknown>,
       required: true,
-    },
-    modelValue: {
-      type: String as PropType<string>,
-      required: true,
-    },
-  },
-  emits: ['update:modelValue'],
-  data() {
-    return {
-      selected: null as string | null,
-    };
-  },
-  methods: {
-    onSelect(key: string, item: ListItem) {
-      this.selected = key;
-      this.$emit('update:modelValue', key);
-    },
-    isSelected(key: string): boolean {
-      return this.selected === key;
-    },
-  },
-  computed: {
-    _field(): ListGroupFormField {
-      return this.field as ListGroupFormField;
     },
   },
 });

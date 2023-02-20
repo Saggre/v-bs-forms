@@ -1,27 +1,21 @@
 <template>
   <div class="w-100">
-    <div
-      class="mb-3"
-      :class="{
-        'form-floating': field.floating,
-        [field.containerClass]: !!field.containerClass,
-      }"
-    >
+    <div :class="containerClass">
       <div class="card">
-        <div class="card-header" v-if="_field.header">
-          {{ _field.header }}
+        <div class="card-header" v-if="field.header">
+          {{ field.header }}
         </div>
         <div class="card-body">
-          <h5 class="card-title">{{ _field.title }}</h5>
-          <h6 class="card-subtitle mb-2 text-muted" v-if="!!_field.subtitle">
-            {{ _field.subtitle }}
+          <h5 class="card-title">{{ field.title }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted" v-if="!!field.subtitle">
+            {{ field.subtitle }}
           </h6>
-          <p v-if="!!_field.texts.description" class="card-text">
-            {{ _field.texts.description }}
+          <p v-if="!!field.texts.description" class="card-text">
+            {{ field.texts.description }}
           </p>
-          <div v-if="valid">
+          <div v-if="value">
             <span class="text-success h4"
-              >{{ _field.texts.success }}<i class="bi bi-check-lg h3 ms-2"
+              >{{ field.texts.success }}<i class="bi bi-check-lg h3 ms-2"
             /></span>
           </div>
           <a
@@ -31,14 +25,14 @@
               'is-invalid': !validation.valid,
             }"
             @click="onSubmit"
-            >{{ _field.texts.submit }}</a
+            >{{ field.texts.submit }}</a
           >
           <div class="invalid-feedback mt-3">
             {{ validation.message }}
           </div>
         </div>
-        <div class="card-footer" v-if="_field.footer">
-          {{ _field.footer }}
+        <div class="card-footer" v-if="field.footer">
+          {{ field.footer }}
         </div>
       </div>
     </div>
@@ -46,44 +40,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
 import { ActionFormField } from '@/use/fields';
-import { ValidationResult } from '@/use/fields/base';
+import { defineComponent, PropType } from 'vue';
+import BaseFormField from '@/components/fields/BaseFormField.vue';
 
 export default defineComponent({
-  components: {},
+  extends: BaseFormField,
   props: {
-    validation: {
-      type: Object as PropType<ValidationResult>,
-      required: true,
-    },
     field: {
-      type: Object as PropType<ActionFormField | unknown>,
+      type: Object as PropType<ActionFormField>,
       required: true,
-    },
-    modelValue: {
-      type: String as PropType<string>,
-      required: true,
-    },
-  },
-  data(props) {
-    return {
-      valid: (props.field as ActionFormField).validate().valid,
-    };
-  },
-  emits: ['update:modelValue'],
-  computed: {
-    _field(): ActionFormField {
-      return this.field as ActionFormField;
     },
   },
   methods: {
     onSubmit() {
-      this._field.onSubmit();
+      this.field.onSubmit();
       this.checkValid();
     },
     checkValid() {
-      this.valid = this._field.validate().valid;
+      this.value = this.field.validate().valid;
     },
   },
 });

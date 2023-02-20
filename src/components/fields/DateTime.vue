@@ -1,12 +1,6 @@
 <template>
   <div class="w-100">
-    <div
-      class="mb-3"
-      :class="{
-        'form-floating': field.floating,
-        [field.containerClass]: !!field.containerClass,
-      }"
-    >
+    <div :class="containerClass">
       <FieldInput
         :id="`${field.title}-date`"
         v-model="inputDate"
@@ -19,13 +13,7 @@
       />
       <FieldLabel :for="`${field.title}-date`" :value="field.title" />
     </div>
-    <div
-      class="mb-3"
-      :class="{
-        'form-floating': field.floating,
-        [field.containerClass]: !!field.containerClass,
-      }"
-    >
+    <div :class="containerClass">
       <FieldInput
         :id="`${field.title}-time`"
         v-model="inputTime"
@@ -49,29 +37,21 @@ import { DateTimeFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
-import { ValidationError, ValidationResult } from '@/use/fields/base';
+import BaseFormField from '@/components/fields/BaseFormField.vue';
 
 export default defineComponent({
+  extends: BaseFormField,
   components: {
     FieldLabel,
     FieldInput,
     FieldInputError,
   },
   props: {
-    validation: {
-      type: Object as PropType<ValidationResult>,
-      required: true,
-    },
     field: {
-      type: Object as PropType<DateTimeFormField | unknown>,
-      required: true,
-    },
-    modelValue: {
-      type: String as PropType<string>,
+      type: Object as PropType<DateTimeFormField>,
       required: true,
     },
   },
-  emits: ['update:modelValue'],
   data() {
     return {
       inputDate: this.internalModelValue().format('YYYY-MM-DD'),
@@ -86,7 +66,7 @@ export default defineComponent({
       value.month(input.month());
       value.date(input.date());
 
-      this.$emit('update:modelValue', this.field.serialize(value));
+      this.value = this.field.serialize(value);
     },
     inputTime(time) {
       const value = this.internalModelValue();
@@ -94,7 +74,7 @@ export default defineComponent({
       value.hour(input.hour());
       value.minute(input.minute());
 
-      this.$emit('update:modelValue', this.field.serialize(value));
+      this.value = this.field.serialize(value);
     },
   },
   methods: {

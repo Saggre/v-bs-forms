@@ -11,7 +11,7 @@ describe('Form', () => {
     callbacks = {
       onSubmit: vi.fn(),
       onCancel: vi.fn(),
-      onValidationError: vi.fn(),
+      onError: vi.fn(),
     };
     wrapper = mount(BaseForm, {
       props: {
@@ -58,7 +58,7 @@ describe('Form', () => {
 
     it('Form callbacks are called correctly on submit', async () => {
       expect(callbacks.onCancel.called).toBe(false);
-      expect(callbacks.onValidationError.called).toBe(false);
+      expect(callbacks.onError.called).toBe(false);
       expect(callbacks.onSubmit.called).toBe(true);
       expect(callbacks.onSubmit.calls[0][0]).toEqual(propForm);
     });
@@ -70,7 +70,7 @@ describe('Form', () => {
     beforeAll(async () => {
       callbacks.onSubmit.mockReset();
       callbacks.onCancel.mockReset();
-      callbacks.onValidationError.mockReset();
+      callbacks.onError.mockReset();
       propForm = wrapper.props().form;
       propForm.fields.foo.validate = () => ({
         valid: false,
@@ -83,7 +83,7 @@ describe('Form', () => {
 
       expect(callbacks.onCancel.called).toBe(false);
       expect(callbacks.onSubmit.called).toBe(false);
-      expect(callbacks.onValidationError.called).toBe(true);
+      expect(callbacks.onError.called).toBe(true);
     });
   });
 });

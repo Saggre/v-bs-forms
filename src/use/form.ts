@@ -4,6 +4,10 @@ import {
   ValidationResult,
 } from '@/use/fields/base';
 import { FormField } from '@/use/fields';
+import {
+  InertiaForm,
+  useForm as _useInertiaForm,
+} from '@inertiajs/inertia-vue3';
 
 export interface FormAccessors<T extends _FormData> {
   data: T;
@@ -13,7 +17,10 @@ export interface FormAccessors<T extends _FormData> {
 export interface FormCallbacks<T extends _FormData> {
   onSubmit: (form: Form<T>) => Promise<void>;
   onCancel?: (form: Form<T>) => void;
-  onValidationError?: (form: Form<T>) => void;
+  onError?: (
+    errors: Record<keyof T, ValidationError> | {},
+    form: Form<T>,
+  ) => void;
 }
 
 export type FormInputFields<T extends _FormData> = {
@@ -98,11 +105,36 @@ export function useForm<T extends _FormData>(
     }
 
     if (hasErrors) {
-      form.callbacks.onValidationError?.(form);
+      form.callbacks.onError?.(form.accessors.errors, form);
     } else {
       await onSubmit(form);
     }
   };
 
   return form;
+}
+
+const globals = [];
+
+export function useInertiaForm<T extends _FormData>(
+  data: T,
+  formDefinition: Partial<Form<T>>,
+): [Form<T>, InertiaForm<T>] {
+  globals.push(data);
+  const form = useForm<T>(formDefinition);
+  const inertiaForm = _useInertiaForm(data);
+
+  form.accessors.data = inertiaForm;
+  form.accessors.errors = inertiaForm.errors;
+
+  const onError = form.callbacks.onError;
+
+  form.callbacks.onError = errors => {
+    inertiaForm.errors = Object.fromEntries(
+      Object.entries(errors).map(([key, value]) => [key, value.message]),
+    ) as Record<keyof T, string>;
+    onError?.(errors, form);
+  };
+
+  return [form, inertiaForm];
 }

@@ -1,49 +1,39 @@
 import { VueWrapper, mount } from '@vue/test-utils';
 import BaseForm from '@/components/BaseForm.vue';
-import { useForm } from '@/use/form';
-import {
-  InertiaForm,
-  useForm as useInertiaForm,
-} from '@inertiajs/inertia-vue3';
+import { useInertiaForm } from '@/use/form';
+import { InertiaForm } from '@inertiajs/inertia-vue3';
 
 describe('InertiaJS form', () => {
   let wrapper: VueWrapper;
+  let form;
   let inertiaForm: InertiaForm<{
     email: string;
     password: string;
   }>;
-  const data = {
-    email: '',
-    password: '',
-  };
 
   beforeAll(() => {
-    inertiaForm = useInertiaForm(data);
+    [form, inertiaForm] = useInertiaForm(
+      {
+        email: '',
+        password: '',
+      },
+      {
+        fields: {
+          email: {
+            type: 'email',
+            title: 'Email',
+          },
+          password: {
+            type: 'password',
+            title: 'Password',
+          },
+        },
+      },
+    );
+
     wrapper = mount(BaseForm, {
       props: {
-        form: useForm({
-          title: 'Inertia form',
-          description: 'Inertia form description',
-          fields: {
-            email: {
-              type: 'email',
-              title: 'Email',
-            },
-            password: {
-              type: 'password',
-              title: 'Password',
-            },
-          },
-          accessors: {
-            data,
-            errors: inertiaForm.errors,
-          },
-          callbacks: {
-            onSubmit: async () => {
-              return;
-            },
-          },
-        }),
+        form,
       },
     });
   });
@@ -60,8 +50,8 @@ describe('InertiaJS form', () => {
     });
 
     it('Field values are relayed on submit', async () => {
-      expect(data.email).toEqual('foo@bar.com');
-      expect(data.password).toEqual('secret');
+      expect(inertiaForm.email).toEqual('foo@bar.com');
+      expect(inertiaForm.password).toEqual('secret');
     });
   });
 
@@ -73,10 +63,11 @@ describe('InertiaJS form', () => {
 
     beforeAll(async () => {
       wrapper.props().form.fields.password.validate = () => error;
+      await wrapper.find('form').trigger('submit');
     });
 
     it('Field errors are relayed on submit', async () => {
-      expect(inertiaForm.errors.password).toEqual(error);
+      expect(inertiaForm.errors.password).toEqual(error.message);
     });
   });
 });

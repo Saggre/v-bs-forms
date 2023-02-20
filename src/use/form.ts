@@ -7,7 +7,7 @@ import { FormField } from '@/use/fields';
 
 export interface FormAccessors<T extends _FormData> {
   data: T;
-  errors: Record<keyof T, ValidationError>;
+  errors: Record<keyof T, ValidationError> | {};
 }
 
 export interface FormCallbacks<T extends _FormData> {

@@ -1,6 +1,5 @@
 import { VueWrapper, mount } from '@vue/test-utils';
 import StandardField from '@/components/fields/Standard.vue';
-import { DOMWrapper } from '@vue/test-utils/dist/domWrapper';
 
 describe('Standard field wrapper', () => {
   let wrapper: VueWrapper;

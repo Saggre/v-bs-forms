@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { ListGroupFormField, ListItem } from '@/use/fields';
+import { ListGroupFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
@@ -55,7 +55,7 @@ export default defineComponent({
   },
   props: {
     field: {
-      type: Object as PropType<ListGroupFormField | unknown>,
+      type: Object as PropType<ListGroupFormField>,
       required: true,
     },
   },

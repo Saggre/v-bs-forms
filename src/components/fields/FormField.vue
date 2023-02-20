@@ -18,6 +18,7 @@ import ListGroupField from '@/components/fields/ListGroup.vue';
 import DropdownField from '@/components/fields/Dropdown.vue';
 import TextareaField from '@/components/fields/Textarea.vue';
 import { ValidationResult } from '@/use/fields/base';
+import { formFieldPlugin } from '@/use/plugins';
 
 enum BaseFieldTypes {
   DateTime = 'datetime',
@@ -66,6 +67,14 @@ export default defineComponent({
   },
   computed: {
     component(): Component {
+      const plugin = formFieldPlugin
+        .all()
+        .find(plugin => plugin.type === this.type);
+
+      if (plugin) {
+        return plugin.component;
+      }
+
       switch (this.type) {
         case BaseFieldTypes.DateTime:
           return DateTimeField;

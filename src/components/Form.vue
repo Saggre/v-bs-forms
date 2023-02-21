@@ -1,6 +1,9 @@
 <template>
   <div :id="form.title" class="row pb-3 overflow-visible position-relative">
-    <div class="col-md-4">
+    <div
+      :class="visibility.sidebar ? 'col-md-4' : 'col-12'"
+      v-if="!!form.title || !!form.description"
+    >
       <SectionTitle>
         <template #title>
           {{ form.title }}
@@ -13,7 +16,7 @@
       </SectionTitle>
     </div>
 
-    <div class="col-md-8">
+    <div :class="visibility.sidebar ? 'col-md-8' : 'col-12'">
       <div class="card shadow">
         <div class="card-body">
           <BaseForm ref="form" :form="form">
@@ -25,22 +28,25 @@
         </div>
         <div class="card-footer d-flex justify-content-end">
           <button
-            v-if="prevButton"
+            v-if="visibility.buttons.previous"
             class="btn btn-outline-dark text-uppercase nav-prev me-2"
             type="button"
             :disabled="loading"
             @click="cancel()"
           >
-            <i class="bi bi-arrow-left" />&nbsp;{{ prevText }}
+            <i class="bi bi-arrow-left" />&nbsp;{{
+              translations.buttons.previous
+            }}
           </button>
           <button
+            v-if="visibility.buttons.next"
             class="btn btn-dark text-uppercase nav-next"
             :class="{ 'text-white-50': loading }"
             :disabled="loading"
             type="submit"
             @click="submit()"
           >
-            {{ nextText }}&nbsp;<i class="bi bi-arrow-right" />
+            {{ translations.buttons.next }}&nbsp;<i class="bi bi-arrow-right" />
           </button>
         </div>
       </div>
@@ -62,6 +68,20 @@ type _Form =
       cancel: () => void;
     };
 
+interface FormButtons<T> {
+  next: T;
+  previous: T;
+}
+
+export interface FormTranslations {
+  buttons: FormButtons<string>;
+}
+
+export interface FormVisibility {
+  buttons: FormButtons<boolean>;
+  sidebar: boolean;
+}
+
 export default defineComponent({
   components: {
     SectionTitle,
@@ -72,17 +92,24 @@ export default defineComponent({
       type: Object as PropType<Form<any>>,
       required: true,
     },
-    nextText: {
-      type: String as PropType<string>,
-      default: 'Finish',
+    translations: {
+      type: Object as PropType<FormTranslations>,
+      default: () => ({
+        buttons: {
+          next: 'Finish',
+          previous: 'Back',
+        },
+      }),
     },
-    prevText: {
-      type: String as PropType<string>,
-      default: 'Back',
-    },
-    prevButton: {
-      type: Boolean as PropType<boolean>,
-      default: true,
+    visibility: {
+      type: Object as PropType<FormVisibility>,
+      default: () => ({
+        buttons: {
+          next: true,
+          previous: true,
+        },
+        sidebar: true,
+      }),
     },
   },
   computed: {

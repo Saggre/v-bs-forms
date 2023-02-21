@@ -17,7 +17,7 @@
     </div>
 
     <div :class="visibility.sidebar ? 'col-md-8' : 'col-12'">
-      <div class="card shadow">
+      <div :class="`card ${classes.card}`">
         <div class="card-body">
           <BaseForm ref="form" :form="form">
             <template #head>
@@ -82,6 +82,10 @@ export interface FormVisibility {
   sidebar: boolean;
 }
 
+export interface FormClasses {
+  card: string;
+}
+
 export default defineComponent({
   components: {
     SectionTitle,
@@ -109,6 +113,12 @@ export default defineComponent({
           previous: true,
         },
         sidebar: true,
+      }),
+    },
+    classes: {
+      type: Object as PropType<FormClasses>,
+      default: () => ({
+        card: 'shadow-sm',
       }),
     },
   },

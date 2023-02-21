@@ -9,7 +9,7 @@
           'is-invalid': !validation.valid,
           [field.class]: !!field.class,
         }"
-        :placeholder="field.placeholder"
+        :placeholder="placeholder"
       />
       <FieldLabel :for="field.title" :value="field.title" />
       <FieldInputError :validation="validation" />
@@ -36,6 +36,19 @@ export default defineComponent({
     field: {
       type: Object as PropType<FormField>,
       required: true,
+    },
+  },
+  computed: {
+    placeholder(): string {
+      if (this.field.placeholder) {
+        return this.field.placeholder;
+      }
+
+      if (this.field.floating) {
+        return this.field.title;
+      }
+
+      return '';
     },
   },
 });

@@ -1,23 +1,20 @@
 {
   "compilerOptions": {
+    "outDir": "types",
+    "baseUrl": "./",
     "target": "esnext",
+    "useDefineForClassFields": true,
     "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "allowJs": true,
     "strict": true,
     "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "allowJs": true,
-    "resolveJsonModule": true,
     "sourceMap": true,
-    "baseUrl": ".",
-    "declaration": true,
-    "outDir": "./types",
-    "types": [
-      "vitest/globals"
-    ],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "skipLibCheck": true,
     "paths": {
       "@/*": [
         "src/*",

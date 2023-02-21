@@ -9,11 +9,6 @@
     "url": "git+https://github.com/Saggre/v-bs-forms.git"
   },
   "homepage": "https://saggre.com",
-  "main": "dist/cjs/index.js",
-  "module": "dist/es/index.js",
-  "jsdelivr": "dist/iife/index.js",
-  "unpkg": "dist/iife/index.js",
-  "types": "dist/types/src/index.d.ts",
   "keywords": [
     "vue",
     "vue3",
@@ -30,18 +25,7 @@
     "package.json",
     "README.md"
   ],
-  "exports": {
-    ".": {
-      "import": {
-        "node": "./dist/mjs/index.mjs",
-        "default": "./dist/es/index.js"
-      },
-      "require": "./dist/cjs/index.js"
-    },
-    "./dist/*": "./dist/*"
-  },
   "scripts": {
-    "build": "tsx build/build.ts",
     "dev": "vite",
     "test": "vitest",
     "lint": "eslint . --ext .js,.vue"

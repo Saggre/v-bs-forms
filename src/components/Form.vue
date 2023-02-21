@@ -86,19 +86,19 @@ export default defineComponent({
     },
   },
   computed: {
-    _form(): _Form {
-      return this.form as unknown as _Form;
-    },
     loading(): boolean {
-      return this._form?.loading ?? false;
+      return this.getForm()?.loading ?? false;
     },
   },
   methods: {
+    getForm(): _Form {
+      return this.$refs.form as unknown as _Form;
+    },
     submit() {
-      this._form?.submit();
+      this.getForm()?.submit();
     },
     cancel() {
-      this._form?.cancel();
+      this.getForm()?.cancel();
     },
   },
 });

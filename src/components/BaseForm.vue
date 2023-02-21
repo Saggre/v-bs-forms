@@ -10,7 +10,14 @@
       v-for="(field, key) in form.fields"
       :key="key"
       v-model="form.accessors.data[key]"
-      :validation="form.accessors.errors[key]"
+      :validation="
+        form.accessors.errors[key]
+          ? {
+              valid: false,
+              message: form.accessors.errors[key] ?? '',
+            }
+          : undefined
+      "
       :field="field"
     />
     <slot />

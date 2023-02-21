@@ -8,14 +8,14 @@ import { Inertia } from '@inertiajs/inertia';
 
 export interface FormAccessors<T extends FormDataDefinition> {
   data: T;
-  errors: Partial<Record<keyof T, ValidationError>>;
+  errors: Partial<Record<keyof T, string>>;
 }
 
 export interface FormCallbacks<T extends FormDataDefinition> {
   onSubmit: (form: FormDefinition<T>) => Promise<void>;
   onCancel?: (form: FormDefinition<T>) => void;
   onError?: (
-    errors: Partial<Record<keyof T, ValidationError>>,
+    errors: Partial<Record<keyof T, string>>,
     form: FormDefinition<T>,
   ) => void;
 }
@@ -57,7 +57,7 @@ const getDefaultAccessors = <
   T extends FormDataDefinition,
 >(): FormAccessors<T> => ({
   data: {} as T,
-  errors: {} as Record<keyof T, ValidationError>,
+  errors: {} as Record<keyof T, string>,
 });
 
 /**
@@ -101,7 +101,7 @@ export const useForm = <T extends FormDataDefinition>(
       }
 
       hasErrors = true;
-      form.accessors.errors[key] = validationResult as ValidationError;
+      form.accessors.errors[key] = validationResult.message;
     }
 
     if (hasErrors) {
@@ -114,6 +114,8 @@ export const useForm = <T extends FormDataDefinition>(
   return form;
 };
 
+type VisitOptions = Parameters<typeof Inertia.visit>;
+
 /**
  * Submit an Inertia form and mirror response data to the actual form.
  *
@@ -123,7 +125,7 @@ export const useForm = <T extends FormDataDefinition>(
  */
 const submitInertiaForm = async <T extends FormDataDefinition>(
   form: FormDefinition<T>,
-  [url, inertiaOptions]: Parameters<typeof Inertia.visit>,
+  [url, inertiaOptions]: VisitOptions,
 ) => {
   const onInertiaError = inertiaOptions?.onError;
   const onInertiaSuccess = inertiaOptions?.onSuccess;
@@ -133,7 +135,7 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
     inertiaOptions = {
       ...inertiaOptions,
       onError: errors => {
-        form.accessors.errors = errors;
+        form.accessors.errors = errors as Partial<Record<keyof T, string>>;
         onInertiaError?.(errors);
         reject(errors);
       },
@@ -142,8 +144,8 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
         onInertiaSuccess?.(page);
         resolve();
       },
-      onFinish: () => {
-        onInertiaFinish?.();
+      onFinish: visit => {
+        onInertiaFinish?.(visit);
         resolve();
       },
     };
@@ -151,8 +153,6 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
     Inertia.visit(url, inertiaOptions);
   });
 };
-
-type VisitOptions = Parameters<typeof Inertia.visit>;
 
 export const useInertiaForm = <T extends FormDataDefinition>(
   url: VisitOptions[0],

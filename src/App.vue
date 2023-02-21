@@ -8,7 +8,11 @@
 import { defineComponent } from 'vue';
 import FormComponent from '@/components/Form.vue';
 import { Form, FormCallbacks, FormInputFields, useForm } from '@/use/form';
-import { _FormData, ValidationSuccess } from '@/use/fields/base';
+import {
+  _FormData,
+  ValidationResult,
+  ValidationSuccess,
+} from '@/use/fields/base';
 import moment, { Moment } from 'moment/moment';
 
 interface LoginFormData extends _FormData {
@@ -79,6 +83,22 @@ const fields: FormInputFields<LoginFormData> = {
     title: 'Textarea',
     floating: true,
     rows: 5,
+  },
+  checkbox: {
+    type: 'checkbox',
+    title: 'Checkbox',
+    validate: (value: boolean): ValidationResult => {
+      if (!value) {
+        return {
+          message: 'Checkbox must be checked',
+          valid: false,
+        };
+      }
+
+      return {
+        valid: true,
+      };
+    },
   },
   'list-group': {
     type: 'list-group',

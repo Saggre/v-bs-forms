@@ -45,6 +45,11 @@ export type ListGroupFormField<V = ListItem> = BaseFormField<V> &
     options: Record<string, ListItem>;
   };
 
+export type CheckboxFormField<V = boolean> = BaseFormField<V> & {
+  type: 'checkbox';
+  indeterminate?: boolean;
+};
+
 export type DropdownFormField<V = string[]> = BaseFormField<V> & {
   type: 'dropdown';
   options: Record<string, string>;
@@ -62,4 +67,5 @@ export type FormField =
   | TextareaFormField
   | DateTimeFormField
   | ActionFormField
-  | ListGroupFormField;
+  | ListGroupFormField
+  | CheckboxFormField;

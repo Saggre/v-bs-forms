@@ -17,6 +17,7 @@ import DateTimeField from '@/components/fields/DateTime.vue';
 import ListGroupField from '@/components/fields/ListGroup.vue';
 import DropdownField from '@/components/fields/Dropdown.vue';
 import TextareaField from '@/components/fields/Textarea.vue';
+import CheckboxField from '@/components/fields/Checkbox.vue';
 import { ValidationResult } from '@/use/fields/base';
 import { formFieldPlugin } from '@/use/plugins';
 
@@ -26,6 +27,7 @@ enum BaseFieldTypes {
   ListGroup = 'list-group',
   Dropdown = 'dropdown',
   Textarea = 'textarea',
+  Checkbox = 'checkbox',
 }
 
 export default defineComponent({
@@ -36,6 +38,7 @@ export default defineComponent({
     ListGroupField,
     DropdownField,
     TextareaField,
+    CheckboxField,
   },
   props: {
     validation: {
@@ -86,6 +89,8 @@ export default defineComponent({
           return DropdownField;
         case BaseFieldTypes.Textarea:
           return TextareaField;
+        case BaseFieldTypes.Checkbox:
+          return CheckboxField;
         default:
           return StandardField;
       }

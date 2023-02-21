@@ -2,7 +2,6 @@ export const enum HtmlFormFieldType {
   Text = 'text',
   Textarea = 'textarea',
   Select = 'select',
-  Checkbox = 'checkbox',
   Radio = 'radio',
   Date = 'date',
   Time = 'time',
@@ -43,6 +42,7 @@ export interface GlobalFormField<V, S extends _FormDataType = string> {
   validate?: (value: V) => ValidationResult;
   deserialize?: (value: S) => V;
   serialize?: (value: V) => S;
+  disabled?: boolean;
 }
 
 export interface CardFormField {

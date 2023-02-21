@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Form } from '@/use/form';
+import { FormDefinition } from '@/use/form';
 import SectionTitle from '@/components/section/SectionTitle.vue';
 import BaseForm from '@/components/BaseForm.vue';
 
@@ -89,7 +89,7 @@ export default defineComponent({
   },
   props: {
     form: {
-      type: Object as PropType<Form<any>>,
+      type: Object as PropType<FormDefinition<any>>,
       required: true,
     },
     translations: {

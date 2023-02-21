@@ -1,5 +1,5 @@
 import {
-  _FormData,
+  FormDataDefinition,
   ValidationError,
   ValidationResult,
 } from '@/use/fields/base';
@@ -9,25 +9,25 @@ import {
   useForm as _useInertiaForm,
 } from '@inertiajs/inertia-vue3';
 
-export interface FormAccessors<T extends _FormData> {
+export interface FormAccessors<T extends FormDataDefinition> {
   data: T;
   errors: Partial<Record<keyof T, ValidationError>>;
 }
 
-export interface FormCallbacks<T extends _FormData> {
-  onSubmit: (form: Form<T>) => Promise<void>;
-  onCancel?: (form: Form<T>) => void;
+export interface FormCallbacks<T extends FormDataDefinition> {
+  onSubmit: (form: FormDefinition<T>) => Promise<void>;
+  onCancel?: (form: FormDefinition<T>) => void;
   onError?: (
     errors: Partial<Record<keyof T, ValidationError>>,
-    form: Form<T>,
+    form: FormDefinition<T>,
   ) => void;
 }
 
-export type FormInputFields<T extends _FormData> = {
+export type FormInputFields<T extends FormDataDefinition> = {
   [key in keyof T]: FormField;
 };
 
-export type Form<T extends _FormData> = {
+export type FormDefinition<T extends FormDataDefinition> = {
   title?: string;
   description?: string;
   fields: FormInputFields<T>;
@@ -35,8 +35,8 @@ export type Form<T extends _FormData> = {
   callbacks: FormCallbacks<T>;
 };
 
-function validateFields<T extends _FormData>(
-  form: Form<T>,
+function validateFields<T extends FormDataDefinition>(
+  form: FormDefinition<T>,
 ): Record<keyof T, ValidationResult> {
   const results = {} as Record<keyof T, ValidationResult>;
 
@@ -56,7 +56,7 @@ function validateFields<T extends _FormData>(
 /**
  * Returns default accessors for a form.
  */
-const getDefaultAccessors = <T extends _FormData>(): FormAccessors<T> => ({
+const getDefaultAccessors = <T extends FormDataDefinition>(): FormAccessors<T> => ({
   data: {} as T,
   errors: {} as Record<keyof T, ValidationError>,
 });
@@ -66,7 +66,7 @@ const getDefaultAccessors = <T extends _FormData>(): FormAccessors<T> => ({
  *
  * @param formDefinition
  */
-const createForm = <T extends _FormData>(formDefinition: Partial<Form<T>>) => {
+const createForm = <T extends FormDataDefinition>(formDefinition: Partial<FormDefinition<T>>) => {
   return {
     title: formDefinition.title ?? undefined,
     description: formDefinition.description ?? undefined,
@@ -80,9 +80,9 @@ const createForm = <T extends _FormData>(formDefinition: Partial<Form<T>>) => {
   };
 };
 
-export function useForm<T extends _FormData>(
-  formDefinition: Partial<Form<T>>,
-): Form<T> {
+export function useForm<T extends FormDataDefinition>(
+  formDefinition: Partial<FormDefinition<T>>,
+): FormDefinition<T> {
   const form = createForm<T>(formDefinition);
   const onSubmit = form.callbacks.onSubmit;
 
@@ -134,10 +134,10 @@ const mapValidationErrorsToMessages = <T>(
   return messages;
 };
 
-export function useInertiaForm<T extends _FormData>(
+export function useInertiaForm<T extends FormDataDefinition>(
   data: T,
-  formDefinition: Partial<Form<T>>,
-): [Form<T>, InertiaForm<T>] {
+  formDefinition: Partial<FormDefinition<T>>,
+): [FormDefinition<T>, InertiaForm<T>] {
   const form = useForm<T>(formDefinition);
   const inertiaForm = _useInertiaForm(data);
 

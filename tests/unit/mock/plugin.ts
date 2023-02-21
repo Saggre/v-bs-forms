@@ -1,5 +1,5 @@
-import { BaseFormField } from '@/use/fields/base';
+import { BaseFormFieldDefinition } from '@/use/fields/base';
 
-export type PluginField<V = string> = BaseFormField<V> & {
+export type PluginField<V = string> = BaseFormFieldDefinition<V> & {
   type: 'plugin-field';
 };

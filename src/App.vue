@@ -7,21 +7,21 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import FormComponent from '@/components/Form.vue';
-import { Form, FormCallbacks, FormInputFields, useForm } from '@/use/form';
+import { FormDefinition, FormCallbacks, FormInputFields, useForm } from '@/use/form';
 import {
-  _FormData,
+  FormDataDefinition,
   ValidationResult,
   ValidationSuccess,
 } from '@/use/fields/base';
 import moment, { Moment } from 'moment/moment';
 
-interface LoginFormData extends _FormData {
+interface LoginFormData extends FormDataDefinition {
   email: string;
   password: string;
   action: boolean;
 }
 
-type LoginForm = Form<LoginFormData>;
+type LoginForm = FormDefinition<LoginFormData>;
 
 const data = {
   email: '',

@@ -14,15 +14,15 @@ export const enum HtmlFormFieldType {
   Hidden = 'hidden',
 }
 
-export type _FormDataType =
+export type FormDataTypeDefinition =
   | string
   | number
   | boolean
   | null
   | undefined
-  | _FormDataType[];
+  | FormDataTypeDefinition[];
 
-export type _FormData = Record<string, _FormDataType>;
+export type FormDataDefinition = Record<string, FormDataTypeDefinition>;
 
 export interface ValidationSuccess {
   valid: true;
@@ -35,7 +35,7 @@ export interface ValidationError {
 
 export type ValidationResult = ValidationSuccess | ValidationError;
 
-export interface GlobalFormField<V, S extends _FormDataType = string> {
+export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
   type: string;
   class?: string;
   containerClass?: string;
@@ -45,7 +45,7 @@ export interface GlobalFormField<V, S extends _FormDataType = string> {
   disabled?: boolean;
 }
 
-export interface CardFormField {
+export interface CardFormFieldDefinition {
   title: string;
   subtitle?: string;
   description?: string;
@@ -65,5 +65,5 @@ export interface FloatingFormField {
   floating: true;
 }
 
-export type BaseFormField<V> = (StaticFormField | FloatingFormField) &
+export type BaseFormFieldDefinition<V> = (StaticFormField | FloatingFormField) &
   GlobalFormField<V>;

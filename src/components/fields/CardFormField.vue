@@ -22,13 +22,13 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
-import { CardFormField } from '@/use/fields/base';
+import { CardFormFieldDefinition } from '@/use/fields/base';
 
 export default defineComponent({
   extends: BaseFormField,
   props: {
     field: {
-      type: Object as PropType<CardFormField>,
+      type: Object as PropType<CardFormFieldDefinition>,
       required: true,
     },
   },

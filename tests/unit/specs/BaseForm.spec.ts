@@ -1,6 +1,6 @@
 import { VueWrapper, mount } from '@vue/test-utils';
 import BaseForm from '@/components/BaseForm.vue';
-import { Form, useForm } from '@/use/form';
+import { FormDefinition, useForm } from '@/use/form';
 import { MockedFunction } from 'vitest';
 
 describe('Form', () => {
@@ -33,7 +33,7 @@ describe('Form', () => {
   });
 
   describe('Submit', async () => {
-    let propForm: Form<any>;
+    let propForm: FormDefinition<any>;
 
     beforeAll(async () => {
       propForm = wrapper.props().form;
@@ -65,7 +65,7 @@ describe('Form', () => {
   });
 
   describe('Submit with errors', async () => {
-    let propForm: Form<any>;
+    let propForm: FormDefinition<any>;
 
     beforeAll(async () => {
       callbacks.onSubmit.mockReset();

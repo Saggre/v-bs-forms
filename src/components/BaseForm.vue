@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Form } from '@/use/form';
+import { FormDefinition } from '@/use/form';
 import FormField from '@/components/fields/FormField.vue';
 
 export default defineComponent({
@@ -37,7 +37,7 @@ export default defineComponent({
   },
   props: {
     form: {
-      type: Object as PropType<Form<any>>,
+      type: Object as PropType<FormDefinition<any>>,
       required: true,
     },
     submitInternally: {
@@ -55,8 +55,8 @@ export default defineComponent({
     htmlForm(): HTMLFormElement {
       return this.$refs.form as HTMLFormElement;
     },
-    _form(): Form<any> {
-      return this.form as Form<any>;
+    _form(): FormDefinition<any> {
+      return this.form as FormDefinition<any>;
     },
   },
   methods: {

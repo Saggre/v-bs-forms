@@ -16,8 +16,7 @@ export default defineComponent({
       required: true,
     },
     modelValue: {
-      type: String as PropType<string>,
-      default: '',
+      default: undefined,
     },
   },
   emits: ['update:modelValue'],

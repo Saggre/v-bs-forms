@@ -1,7 +1,7 @@
 {
   "name": "@saggre/v-bs-forms",
   "type": "module",
-  "version": "5.2.0-RC4",
+  "version": "5.2.0-RC5",
   "description": "Typed Bootstrap form builder for Vue3",
   "author": "Sakri Koskimies <sakri.koskimies@hotmail.com>",
   "repository": {
@@ -25,7 +25,18 @@
     "package.json",
     "README.md"
   ],
+  "exports": {
+    ".": {
+      "import": {
+        "node": "./dist/mjs/index.mjs",
+        "default": "./dist/es/index.js"
+      },
+      "require": "./dist/cjs/index.js"
+    },
+    "./dist/*": "./dist/*"
+  },
   "scripts": {
+    "build": "tsx build/build.ts",
     "dev": "vite",
     "test": "vitest",
     "lint": "eslint . --ext .js,.vue"

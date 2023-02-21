@@ -13,6 +13,8 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "declaration": true,
+    "outDir": "./lib",
     "types": [
       "vitest/globals"
     ],
@@ -21,22 +23,13 @@
         "src/*",
         "tests/*"
       ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost",
-      "esnext.intl"
-    ],
+    }
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.spec.ts"
+    "src",
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "tests"
   ],
 }

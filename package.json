@@ -1,18 +1,15 @@
 {
   "name": "@saggre/v-bs-forms",
   "type": "module",
-  "version": "5.2.0-RC7",
+  "version": "5.2.0-RC8",
   "description": "Typed Bootstrap form builder for Vue3",
   "author": "Sakri Koskimies <sakri.koskimies@hotmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Saggre/v-bs-forms.git"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/es/index.js",
-  "jsdelivr": "dist/iife/index.js",
-  "unpkg": "dist/iife/index.js",
-  "types": "dist/types/src/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "homepage": "https://saggre.com",
   "keywords": [
     "vue",
@@ -25,23 +22,10 @@
     "field"
   ],
   "files": [
-    "src",
-    "dist",
-    "package.json",
-    "README.md"
+    "lib/**/*"
   ],
-  "exports": {
-    ".": {
-      "import": {
-        "node": "./dist/mjs/index.mjs",
-        "default": "./dist/es/index.js"
-      },
-      "require": "./dist/cjs/index.js"
-    },
-    "./dist/*": "./dist/*"
-  },
   "scripts": {
-    "build": "tsx build/build.ts",
+    "build": "tsc",
     "dev": "vite",
     "test": "vitest",
     "lint": "eslint . --ext .js,.vue"
@@ -84,9 +68,6 @@
   },
   "bugs": {
     "url": "https://github.com/Saggre/v-bs-forms/issues"
-  },
-  "directories": {
-    "test": "tests"
   },
   "license": "ISC"
 }

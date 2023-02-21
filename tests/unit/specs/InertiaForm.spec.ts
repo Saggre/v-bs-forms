@@ -1,21 +1,19 @@
 import { VueWrapper, mount } from '@vue/test-utils';
 import BaseForm from '@/components/BaseForm.vue';
 import { useInertiaForm } from '@/use/form';
-import { InertiaForm } from '@inertiajs/inertia-vue3';
+import { Inertia } from '@inertiajs/inertia';
 
 describe('InertiaJS form', () => {
   let wrapper: VueWrapper;
   let form;
-  let inertiaForm: InertiaForm<{
-    email: string;
-    password: string;
-  }>;
 
   beforeAll(() => {
-    [form, inertiaForm] = useInertiaForm(
+    Inertia.visit = vi.fn();
+
+    form = useInertiaForm(
+      'http://localhost',
       {
-        email: '',
-        password: '',
+        method: 'post',
       },
       {
         fields: {
@@ -49,25 +47,14 @@ describe('InertiaJS form', () => {
       await wrapper.find('form').trigger('submit');
     });
 
-    it('Field values are relayed on submit', async () => {
-      expect(inertiaForm.email).toEqual('foo@bar.com');
-      expect(inertiaForm.password).toEqual('secret');
-    });
-  });
+    it('Inertia visit was called', async () => {
+      expect(Inertia.visit.called).toEqual(true);
 
-  describe('Submit InertiaJS form with errors', async () => {
-    const error = {
-      valid: false,
-      message: 'Error message',
-    };
-
-    beforeAll(async () => {
-      wrapper.props().form.fields.password.validate = () => error;
-      await wrapper.find('form').trigger('submit');
-    });
-
-    it('Field errors are relayed on submit', async () => {
-      expect(inertiaForm.errors.password).toEqual(error.message);
+      const [url, options] = Inertia.visit.calls[0];
+      expect(url).toEqual('http://localhost');
+      expect(options).toContain({
+        method: 'post',
+      });
     });
   });
 });

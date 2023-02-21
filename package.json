@@ -19,6 +19,9 @@
     "input",
     "field"
   ],
+  "exports": {
+    "v-bs-forms": ["./src/use", "./src/components"]
+  },
   "files": [
     "src",
     "dist",

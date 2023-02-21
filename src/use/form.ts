@@ -103,7 +103,11 @@ export const useForm = <T extends FormDataDefinition>(
     if (hasErrors) {
       form.callbacks.onError?.(form.accessors.errors, form);
     } else {
-      await onSubmit(form);
+      try {
+        await onSubmit(form);
+      } catch (e) {
+        form.callbacks.onError?.({}, form);
+      }
     }
   };
 

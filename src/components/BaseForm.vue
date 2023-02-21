@@ -37,7 +37,7 @@ export default defineComponent({
   },
   props: {
     form: {
-      type: Object as PropType<Form<any> | unknown>,
+      type: Object as PropType<Form<any>>,
       required: true,
     },
     submitInternally: {

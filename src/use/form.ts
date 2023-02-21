@@ -11,14 +11,14 @@ import {
 
 export interface FormAccessors<T extends _FormData> {
   data: T;
-  errors: Record<keyof T, ValidationError> | {};
+  errors: Partial<Record<keyof T, ValidationError>>;
 }
 
 export interface FormCallbacks<T extends _FormData> {
   onSubmit: (form: Form<T>) => Promise<void>;
   onCancel?: (form: Form<T>) => void;
   onError?: (
-    errors: Record<keyof T, ValidationError> | {},
+    errors: Partial<Record<keyof T, ValidationError>>,
     form: Form<T>,
   ) => void;
 }
@@ -90,7 +90,7 @@ export function useForm<T extends _FormData>(
     let hasErrors = false;
     const validationResults = validateFields(form);
 
-    form.accessors.errors = {} as Record<keyof T, ValidationError>;
+    form.accessors.errors = {};
 
     for (const key in validationResults) {
       const validationResult = validationResults[key];
@@ -100,7 +100,6 @@ export function useForm<T extends _FormData>(
       }
 
       hasErrors = true;
-      // @ts-ignore
       form.accessors.errors[key] = validationResult as ValidationError;
     }
 
@@ -114,25 +113,41 @@ export function useForm<T extends _FormData>(
   return form;
 }
 
-const globals = [];
+type ErrorMessages<T> = Record<keyof T, string>;
+
+const mapValidationErrorsToMessages = <T>(
+  errors: Partial<Record<keyof T, ValidationError>>,
+): ErrorMessages<T> => {
+  const messages: ErrorMessages<T> = {} as ErrorMessages<T>;
+
+  for (const key in errors) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (errors.hasOwnProperty(key)) {
+      const error = errors[key];
+
+      if (error) {
+        messages[key] = error.message;
+      }
+    }
+  }
+
+  return messages;
+};
 
 export function useInertiaForm<T extends _FormData>(
   data: T,
   formDefinition: Partial<Form<T>>,
 ): [Form<T>, InertiaForm<T>] {
-  globals.push(data);
   const form = useForm<T>(formDefinition);
   const inertiaForm = _useInertiaForm(data);
 
   form.accessors.data = inertiaForm;
-  form.accessors.errors = inertiaForm.errors;
+  form.accessors.errors = {};
 
   const onError = form.callbacks.onError;
 
   form.callbacks.onError = errors => {
-    inertiaForm.errors = Object.fromEntries(
-      Object.entries(errors).map(([key, value]) => [key, value.message]),
-    ) as Record<keyof T, string>;
+    inertiaForm.errors = mapValidationErrorsToMessages(errors);
     onError?.(errors, form);
   };
 

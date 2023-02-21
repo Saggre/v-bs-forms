@@ -29,7 +29,7 @@
             class="btn btn-outline-dark text-uppercase nav-prev me-2"
             type="button"
             :disabled="loading"
-            @click="$refs.form.onCancel()"
+            @click="cancel()"
           >
             <i class="bi bi-arrow-left" />&nbsp;{{ prevText }}
           </button>
@@ -38,7 +38,7 @@
             :class="{ 'text-white-50': loading }"
             :disabled="loading"
             type="submit"
-            @click="$refs.form.submit()"
+            @click="submit()"
           >
             {{ nextText }}&nbsp;<i class="bi bi-arrow-right" />
           </button>
@@ -54,6 +54,14 @@ import { Form } from '@/use/form';
 import SectionTitle from '@/components/section/SectionTitle.vue';
 import BaseForm from '@/components/BaseForm.vue';
 
+type _Form =
+  | undefined
+  | {
+      loading: boolean;
+      submit: () => void;
+      cancel: () => void;
+    };
+
 export default defineComponent({
   components: {
     SectionTitle,
@@ -61,15 +69,15 @@ export default defineComponent({
   },
   props: {
     form: {
-      type: Object as PropType<Form<any> | unknown>,
+      type: Object as PropType<Form<any>>,
       required: true,
     },
     nextText: {
-      type: String as PropType<string | undefined>,
+      type: String as PropType<string>,
       default: 'Finish',
     },
     prevText: {
-      type: String as PropType<string | undefined>,
+      type: String as PropType<string>,
       default: 'Back',
     },
     prevButton: {
@@ -78,13 +86,19 @@ export default defineComponent({
     },
   },
   computed: {
+    _form(): _Form {
+      return this.form as unknown as _Form;
+    },
     loading(): boolean {
-      const form = this.$refs.form as
-        | undefined
-        | {
-            loading: boolean;
-          };
-      return form?.loading ?? false;
+      return this._form?.loading ?? false;
+    },
+  },
+  methods: {
+    submit() {
+      this._form?.submit();
+    },
+    cancel() {
+      this._form?.cancel();
     },
   },
 });

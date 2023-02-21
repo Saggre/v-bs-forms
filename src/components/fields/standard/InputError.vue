@@ -1,6 +1,6 @@
 <template>
-  <div v-show="!validation.valid" class="invalid-feedback" role="alert">
-    <strong>{{ validation.message ?? '' }}</strong>
+  <div v-show="!valid" class="invalid-feedback" role="alert">
+    <strong>{{ message }}</strong>
   </div>
 </template>
 
@@ -13,6 +13,14 @@ export default defineComponent({
     validation: {
       type: Object as PropType<ValidationResult>,
       required: true,
+    },
+  },
+  computed: {
+    valid(): boolean {
+      return this.validation.valid;
+    },
+    message(): string {
+      return 'message' in this.validation ? this.validation.message : '';
     },
   },
 });

@@ -13,16 +13,16 @@
           :key="key"
           href="#"
           class="list-group-item list-group-item-action pe-auto"
-          :class="{ 'text-black-50': value === key }"
-          @click.prevent="value = key"
+          :class="{ 'text-black-50': isSelected(key) }"
+          @click.prevent="select(key)"
         >
           <div>
-            <span :class="{ 'font-weight-bold': value === key }">
+            <span :class="{ 'font-weight-bold': isSelected(key) }">
               {{ option.name }}
             </span>
 
             <svg
-              v-if="value === key"
+              v-if="isSelected(key)"
               class="ms-1 text-success font-weight-light"
               width="20"
               fill="none"
@@ -66,6 +66,14 @@ export default defineComponent({
     field: {
       type: Object as PropType<ListGroupFormField>,
       required: true,
+    },
+  },
+  methods: {
+    isSelected(value: any) {
+      return this.value === value;
+    },
+    select(value: any) {
+      return (this.value = value);
     },
   },
 });

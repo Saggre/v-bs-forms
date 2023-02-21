@@ -7,13 +7,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import FormComponent from '@/components/Form.vue';
-import {
-  Form,
-  FormAccessors,
-  FormCallbacks,
-  FormInputFields,
-  useForm,
-} from '@/use/form';
+import { Form, FormCallbacks, FormInputFields, useForm } from '@/use/form';
 import { _FormData, ValidationSuccess } from '@/use/fields/base';
 import moment, { Moment } from 'moment/moment';
 

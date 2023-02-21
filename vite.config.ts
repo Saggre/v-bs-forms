@@ -17,6 +17,7 @@ export default defineConfig({
     setupFiles: ['tests/unit/setup.ts'],
   },
   build: {
+    sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'v-bs-forms',

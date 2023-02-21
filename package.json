@@ -1,7 +1,7 @@
 {
   "name": "@saggre/v-bs-forms",
   "type": "module",
-  "version": "5.2.0-RC13",
+  "version": "5.2.0-RC14",
   "description": "Typed Bootstrap form builder for Vue3",
   "author": "Sakri Koskimies <sakri.koskimies@hotmail.com>",
   "repository": {
@@ -24,7 +24,8 @@
   ],
   "files": [
     "dist/**/*",
-    "types/**/*"
+    "types/**/*",
+    "src/**/*"
   ],
   "scripts": {
     "build": "vue-tsc --declaration --emitDeclarationOnly && vite build",

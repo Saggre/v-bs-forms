@@ -1,6 +1,6 @@
 import { FormDataDefinition, ValidationResult } from '@/use/fields/base';
 import { FormField } from '@/use/fields';
-import { Inertia } from '@inertiajs/inertia';
+import { Inertia, RequestPayload } from '@inertiajs/inertia';
 
 export interface FormAccessors<T extends FormDataDefinition> {
   data: T;
@@ -134,8 +134,9 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
   await new Promise<void>((resolve, reject) => {
     inertiaOptions = {
       ...inertiaOptions,
+      data: form.accessors.data as RequestPayload,
+      preserveState: true,
       onError: errors => {
-        form.accessors.errors = errors as Partial<Record<keyof T, string>>;
         onInertiaError?.(errors);
         reject(errors);
       },
@@ -162,9 +163,19 @@ export const useInertiaForm = <T extends FormDataDefinition>(
   const form = useForm<T>(formDefinition);
   const onSubmit = form.callbacks.onSubmit;
 
-  form.callbacks.onSubmit = async form => {
-    await submitInertiaForm(form, [url, inertiaOptions]);
-    await onSubmit(form);
+  form.callbacks.onSubmit = async () => {
+    try {
+      await onSubmit(form);
+    } catch (e) {
+      return;
+    }
+
+    try {
+      await submitInertiaForm(form, [url, inertiaOptions]);
+    } catch (errors) {
+      form.accessors.errors = errors as Partial<Record<keyof T, string>>;
+      form.callbacks.onError?.(form.accessors.errors, form);
+    }
   };
 
   return form;

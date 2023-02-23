@@ -1,7 +1,7 @@
 import { VueWrapper, mount } from '@vue/test-utils';
 import PluginFieldComponent from '../../../mock/PluginFieldComponent.vue';
 import { formFieldPlugin } from '@/use/plugins';
-import BaseForm from '@/components/BaseForm.vue';
+import Form from '@/components/Form.vue';
 import { useForm } from '@/use/form';
 
 describe('Plugin field tests', () => {
@@ -13,7 +13,7 @@ describe('Plugin field tests', () => {
       component: PluginFieldComponent,
     });
 
-    wrapper = mount(BaseForm, {
+    wrapper = mount(Form, {
       props: {
         form: useForm({
           fields: {

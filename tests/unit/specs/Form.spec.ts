@@ -1,5 +1,5 @@
 import { VueWrapper, mount } from '@vue/test-utils';
-import BaseForm from '@/components/BaseForm.vue';
+import Form from '@/components/Form.vue';
 import { FormDefinition, useForm } from '@/use/form';
 import { MockedFunction } from 'vitest';
 
@@ -13,7 +13,7 @@ describe('Form', () => {
       onCancel: vi.fn(),
       onError: vi.fn(),
     };
-    wrapper = mount(BaseForm, {
+    wrapper = mount(Form, {
       props: {
         form: useForm({
           fields: {

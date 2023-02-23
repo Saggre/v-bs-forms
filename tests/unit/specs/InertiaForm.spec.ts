@@ -1,5 +1,5 @@
 import { VueWrapper, mount } from '@vue/test-utils';
-import BaseForm from '@/components/BaseForm.vue';
+import Form from '@/components/Form.vue';
 import { useInertiaForm } from '@/use/form';
 import { Inertia } from '@inertiajs/inertia';
 
@@ -29,7 +29,7 @@ describe('InertiaJS form', () => {
       },
     );
 
-    wrapper = mount(BaseForm, {
+    wrapper = mount(Form, {
       props: {
         form,
       },

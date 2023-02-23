@@ -160,9 +160,9 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
 ) => {
   await new Promise<void>((resolve, reject) => {
     Inertia.visit(url, {
-      ...inertiaOptions,
       data: form.accessors.data as RequestPayload,
       preserveState: true,
+      ...inertiaOptions,
       onError: errors => {
         inertiaOptions?.onError?.(errors);
         reject(errors);

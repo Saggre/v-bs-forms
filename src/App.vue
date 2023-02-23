@@ -1,12 +1,16 @@
 <template>
   <div class="container py-5">
-    <FormComponent :form="loginForm"></FormComponent>
+    <Form :form="loginForm">
+      <template #title>
+        <h1>Title override</h1>
+      </template>
+    </Form>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import FormComponent from '@/components/Form.vue';
+import Form from '@/components/Form.vue';
 import {
   FormDefinition,
   FormCallbacks,
@@ -198,7 +202,7 @@ export const useLoginForm = () =>
 
 export default defineComponent({
   components: {
-    FormComponent,
+    Form,
   },
   setup() {
     return {

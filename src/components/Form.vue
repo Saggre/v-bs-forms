@@ -38,7 +38,7 @@
             :disabled="loading"
             @click="cancel()"
           >
-            <i class="bi bi-arrow-left" />&nbsp;{{
+            <i class="bi bi-arrow-left me-2" />{{
               translations.buttons?.previous
             }}
           </button>
@@ -50,9 +50,7 @@
             type="submit"
             @click="submit()"
           >
-            {{ translations.buttons?.next }}&nbsp;<i
-              class="bi bi-arrow-right"
-            />
+            {{ translations.buttons?.next }}<i class="bi bi-arrow-right ms-2" />
           </button>
         </div>
       </div>
@@ -131,6 +129,7 @@ export default defineComponent({
       }),
     },
   },
+  emits: ['submit', 'cancel'],
   computed: {
     loading(): boolean {
       return this.getForm()?.loading ?? false;
@@ -142,9 +141,11 @@ export default defineComponent({
     },
     submit() {
       this.getForm()?.submit();
+      this.$emit('submit', this.form);
     },
     cancel() {
       this.getForm()?.cancel();
+      this.$emit('cancel', this.form);
     },
   },
 });

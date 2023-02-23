@@ -158,31 +158,25 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
   form: FormDefinition<T>,
   [url, inertiaOptions]: VisitOptions,
 ) => {
-  const onInertiaError = inertiaOptions?.onError;
-  const onInertiaSuccess = inertiaOptions?.onSuccess;
-  const onInertiaFinish = inertiaOptions?.onFinish;
-
   await new Promise<void>((resolve, reject) => {
-    inertiaOptions = {
+    Inertia.visit(url, {
       ...inertiaOptions,
       data: form.accessors.data as RequestPayload,
       preserveState: true,
       onError: errors => {
-        onInertiaError?.(errors);
+        inertiaOptions?.onError?.(errors);
         reject(errors);
       },
       onSuccess: page => {
         form.accessors.errors = {};
-        onInertiaSuccess?.(page);
+        inertiaOptions?.onSuccess?.(page);
         resolve();
       },
       onFinish: visit => {
-        onInertiaFinish?.(visit);
+        inertiaOptions?.onFinish?.(visit);
         resolve();
       },
-    };
-
-    Inertia.visit(url, inertiaOptions);
+    });
   });
 };
 

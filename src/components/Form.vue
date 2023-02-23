@@ -6,12 +6,16 @@
     >
       <SectionTitle>
         <template #title>
-          {{ form.title }}
+          <slot name="title">
+            {{ form.title }}
+          </slot>
         </template>
         <template #description>
-          <span class="small">
-            {{ form.description }}
-          </span>
+          <slot name="description">
+            <span class="small">
+              {{ form.description }}
+            </span>
+          </slot>
         </template>
       </SectionTitle>
     </div>

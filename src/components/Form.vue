@@ -79,39 +79,24 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { FormDefinition, FormErrorType } from '@/use/form';
+import {
+  FormClasses,
+  FormDefinition,
+  FormErrorType,
+  FormTranslations,
+  FormVisibility,
+} from '@/use/form';
 import SectionTitle from '@/components/section/SectionTitle.vue';
 import { ValidationError } from '@/use/fields/base';
 import FormField from '@/components/fields/FormField.vue';
 
-type _Form =
+type form =
   | undefined
   | {
       loading: boolean;
       submit: () => void;
       cancel: () => void;
     };
-
-interface FormButtons<T> {
-  next: T;
-  previous: T;
-}
-
-export interface FormTranslations {
-  buttons?: FormButtons<string>;
-  errors?: {
-    [key in FormErrorType]: string;
-  };
-}
-
-export interface FormVisibility {
-  buttons: FormButtons<boolean>;
-  sidebar: boolean;
-}
-
-export interface FormClasses {
-  card: string;
-}
 
 export default defineComponent({
   components: {
@@ -158,9 +143,6 @@ export default defineComponent({
     htmlForm(): HTMLFormElement {
       return this.$refs.form as HTMLFormElement;
     },
-    _form(): FormDefinition<any> {
-      return this.form as FormDefinition<any>;
-    },
   },
   data() {
     return {
@@ -169,7 +151,7 @@ export default defineComponent({
   },
   methods: {
     getFieldValidation(key: string | number): ValidationError | undefined {
-      const error = this._form.accessors.errors[key] ?? null;
+      const error = this.form?.accessors?.errors?.[key] ?? null;
 
       if (!error) {
         return undefined;
@@ -187,7 +169,7 @@ export default defineComponent({
 
       return {
         valid: false,
-        message: this._form.accessors.errors[key] ?? '',
+        message: this.form?.accessors?.errors?.[key] ?? '',
       };
     },
     async onSubmit() {
@@ -195,7 +177,7 @@ export default defineComponent({
 
       try {
         if (this.submitInternally) {
-          await this._form.callbacks.onSubmit(this._form);
+          await this.form?.callbacks?.onSubmit?.(this.form);
         }
 
         this.$emit('submit', this.form, this.htmlForm);
@@ -207,10 +189,10 @@ export default defineComponent({
       this.loading = false;
     },
     async onCancel() {
-      if (this._form.callbacks.onCancel) {
-        this._form.callbacks.onCancel(this._form);
+      if (this.form.callbacks.onCancel) {
+        this.form.callbacks.onCancel(this.form);
       }
-      this.$emit('cancel', this._form, this.htmlForm);
+      this.$emit('cancel', this.form, this.htmlForm);
     },
     submit() {
       this.htmlForm.requestSubmit();

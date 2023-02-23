@@ -12,7 +12,7 @@
       <slot name="body" />
     </div>
     <slot />
-    <div class="card-footer text-muted" v-if="!!field.footer">
+    <div class="card-footer text-muted" v-if="!!field.footer || !!$slots.footer">
       {{ field.footer }}
       <slot name="footer" />
     </div>

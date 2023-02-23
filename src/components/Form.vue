@@ -19,7 +19,7 @@
     <div :class="visibility.sidebar ? 'col-md-8' : 'col-12'">
       <div :class="`card ${classes.card}`">
         <div class="card-body">
-          <BaseForm ref="form" :form="form">
+          <BaseForm ref="form" :form="form" :translations="translations">
             <template #head>
               <slot name="head" />
             </template>
@@ -28,25 +28,27 @@
         </div>
         <div class="card-footer d-flex justify-content-end">
           <button
-            v-if="visibility.buttons.previous"
+            v-if="visibility.buttons?.previous"
             class="btn btn-outline-dark text-uppercase nav-prev me-2"
             type="button"
             :disabled="loading"
             @click="cancel()"
           >
             <i class="bi bi-arrow-left" />&nbsp;{{
-              translations.buttons.previous
+              translations.buttons?.previous
             }}
           </button>
           <button
-            v-if="visibility.buttons.next"
+            v-if="visibility.buttons?.next"
             class="btn btn-dark text-uppercase nav-next"
             :class="{ 'text-white-50': loading }"
             :disabled="loading"
             type="submit"
             @click="submit()"
           >
-            {{ translations.buttons.next }}&nbsp;<i class="bi bi-arrow-right" />
+            {{ translations.buttons?.next }}&nbsp;<i
+              class="bi bi-arrow-right"
+            />
           </button>
         </div>
       </div>
@@ -56,7 +58,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { FormDefinition } from '@/use/form';
+import { FormDefinition, FormErrorType } from '@/use/form';
 import SectionTitle from '@/components/section/SectionTitle.vue';
 import BaseForm from '@/components/BaseForm.vue';
 
@@ -74,7 +76,10 @@ interface FormButtons<T> {
 }
 
 export interface FormTranslations {
-  buttons: FormButtons<string>;
+  buttons?: FormButtons<string>;
+  errors?: {
+    [key in FormErrorType]: string;
+  };
 }
 
 export interface FormVisibility {

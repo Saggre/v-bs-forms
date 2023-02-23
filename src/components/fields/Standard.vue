@@ -2,7 +2,12 @@
   <div class="w-100">
     <div :class="containerClass">
       <FieldInput
-        :id="field.title"
+        :id="field.id ?? field.title"
+        :autocomplete="field.autocomplete || 'off'"
+        :autofocus="field.autofocus || false"
+        :disabled="field.disabled || false"
+        :name="field.name ?? field.title"
+        :required="field.required || false"
         v-model="value"
         :type="field.type"
         :class="{
@@ -11,7 +16,7 @@
         }"
         :placeholder="placeholder"
       />
-      <FieldLabel :for="field.title" :value="field.title" />
+      <FieldLabel :for="field.id ?? field.title" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>

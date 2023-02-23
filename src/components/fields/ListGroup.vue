@@ -5,6 +5,7 @@
       'mb-3': true,
       'border-danger': !validation.valid,
     }"
+    :id="field.id ?? field.title"
   >
     <template #default>
       <ul class="list-group list-group-flush">

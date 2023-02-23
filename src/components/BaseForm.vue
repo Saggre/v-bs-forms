@@ -10,14 +10,7 @@
       v-for="(field, key) in form.fields"
       :key="key"
       v-model="form.accessors.data[key]"
-      :validation="
-        form.accessors.errors[key]
-          ? {
-              valid: false,
-              message: form.accessors.errors[key] ?? '',
-            }
-          : undefined
-      "
+      :validation="getFieldValidation(key)"
       :field="field"
     />
     <slot />
@@ -35,8 +28,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { FormDefinition } from '@/use/form';
+import { FormDefinition, FormErrorType } from '@/use/form';
 import FormField from '@/components/fields/FormField.vue';
+import { ValidationError } from '@/use/fields/base';
+import { FormTranslations } from '@/components/Form.vue';
 
 export default defineComponent({
   components: {
@@ -50,6 +45,15 @@ export default defineComponent({
     submitInternally: {
       type: Boolean as PropType<boolean>,
       default: true,
+    },
+    translations: {
+      type: Object as PropType<FormTranslations>,
+      default: () => ({
+        buttons: {
+          next: 'Finish',
+          previous: 'Back',
+        },
+      }),
     },
   },
   emits: ['submit', 'cancel'],
@@ -67,11 +71,29 @@ export default defineComponent({
     },
   },
   methods: {
-    async onSubmit() {
-      if (!this.htmlForm.checkValidity()) {
-        return;
+    getFieldValidation(key: string | number): ValidationError | undefined {
+      const error = this._form.accessors.errors[key] ?? null;
+
+      if (!error) {
+        return undefined;
       }
 
+      switch (error) {
+        case FormErrorType.Required:
+          return {
+            valid: false,
+            message:
+              this.translations?.errors?.[FormErrorType.Required] ??
+              'This field is required',
+          };
+      }
+
+      return {
+        valid: false,
+        message: this._form.accessors.errors[key] ?? '',
+      };
+    },
+    async onSubmit() {
       this.loading = true;
 
       try {

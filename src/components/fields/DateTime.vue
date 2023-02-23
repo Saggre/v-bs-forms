@@ -2,7 +2,12 @@
   <div class="w-100">
     <div :class="containerClass">
       <FieldInput
-        :id="`${field.title}-date`"
+        :id="`${field.id ?? field.title}-date`"
+        :autocomplete="field.autocomplete || 'off'"
+        :autofocus="field.autofocus || false"
+        :disabled="field.disabled || false"
+        :name="field.name ?? field.title"
+        :required="field.required || false"
         v-model="inputDate"
         type="date"
         :class="{
@@ -11,11 +16,19 @@
         }"
         :placeholder="field.placeholder"
       />
-      <FieldLabel :for="`${field.title}-date`" :value="field.title" />
+      <FieldLabel
+        :for="`${field.id ?? field.title}-date`"
+        :value="field.title"
+      />
     </div>
     <div :class="containerClass">
       <FieldInput
-        :id="`${field.title}-time`"
+        :id="`${field.id ?? field.title}-time`"
+        :autocomplete="field.autocomplete || 'off'"
+        :autofocus="field.autofocus || false"
+        :disabled="field.disabled || false"
+        :name="field.name ?? field.title"
+        :required="field.required || false"
         v-model="inputTime"
         type="time"
         :class="{
@@ -24,7 +37,10 @@
         }"
         :placeholder="field.placeholder"
       />
-      <FieldLabel :for="`${field.title}-time`" :value="field.title" />
+      <FieldLabel
+        :for="`${field.id ?? field.title}-time`"
+        :value="field.title"
+      />
       <FieldInputError :validation="validation" />
     </div>
   </div>

@@ -3,16 +3,21 @@
     <div :class="containerClass">
       <div class="form-check">
         <input
+          :id="field.id ?? field.title"
+          :autocomplete="field.autocomplete || 'off'"
+          :autofocus="field.autofocus || false"
+          :disabled="field.disabled || false"
+          :name="field.name ?? field.title"
+          :required="field.required || false"
           :class="{
             'form-check-input': true,
             'is-invalid': !validation.valid,
             [field.class]: !!field.class,
           }"
           type="checkbox"
-          :id="field.title"
           v-model="value"
         />
-        <FieldLabel :for="field.title" :value="field.title" />
+        <FieldLabel :for="field.id ?? field.title" :value="field.title" />
         <FieldInputError :validation="validation" />
       </div>
     </div>

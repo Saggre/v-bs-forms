@@ -2,7 +2,12 @@
   <div class="w-100">
     <div :class="containerClass">
       <textarea
-        :id="field.title"
+        :id="field.id ?? field.title"
+        :autocomplete="field.autocomplete || 'off'"
+        :autofocus="field.autofocus || false"
+        :disabled="field.disabled || false"
+        :name="field.name ?? field.title"
+        :required="field.required || false"
         v-model="value"
         class="form-control"
         :class="{
@@ -11,7 +16,7 @@
         }"
         :rows="field.rows ?? 3"
       />
-      <FieldLabel :for="field.title" :value="field.title" />
+      <FieldLabel :for="field.id ?? field.title" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>

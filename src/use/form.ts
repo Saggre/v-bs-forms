@@ -2,16 +2,20 @@ import { FormDataDefinition, ValidationResult } from '@/use/fields/base';
 import { FormField } from '@/use/fields';
 import { Inertia, RequestPayload } from '@inertiajs/inertia';
 
+export const enum FormErrorType {
+  Required = 1,
+}
+
 export interface FormAccessors<T extends FormDataDefinition> {
   data: T;
-  errors: Partial<Record<keyof T, string>>;
+  errors: Partial<Record<keyof T, string | FormErrorType>>;
 }
 
 export interface FormCallbacks<T extends FormDataDefinition> {
   onSubmit: (form: FormDefinition<T>) => Promise<void>;
   onCancel?: (form: FormDefinition<T>) => void;
   onError?: (
-    errors: Partial<Record<keyof T, string>>,
+    errors: Partial<Record<keyof T, string | FormErrorType>>,
     form: FormDefinition<T>,
   ) => void;
 }
@@ -77,6 +81,24 @@ const createForm = <T extends FormDataDefinition>(
   };
 };
 
+const checkLocalErrors = <T extends FormDataDefinition>(
+  form: FormDefinition<T>,
+): void => {
+  const errors = {} as Partial<Record<keyof T, FormErrorType>>;
+
+  for (const key in form.fields) {
+    const field = form.fields[key];
+
+    if ('required' in field && field.required && !form.accessors.data[key]) {
+      errors[key] = FormErrorType.Required;
+    }
+  }
+
+  if (Object.keys(errors).length > 0) {
+    throw errors;
+  }
+};
+
 export const useForm = <T extends FormDataDefinition>(
   formDefinition: Partial<FormDefinition<T>>,
 ): FormDefinition<T> => {
@@ -88,6 +110,15 @@ export const useForm = <T extends FormDataDefinition>(
     const validationResults = validateFields(form);
 
     form.accessors.errors = {};
+
+    try {
+      checkLocalErrors(form);
+    } catch (errors) {
+      form.accessors.errors = errors as Partial<Record<keyof T, FormErrorType>>;
+      form.callbacks.onError?.(form.accessors.errors, form);
+
+      return;
+    }
 
     for (const key in validationResults) {
       const validationResult = validationResults[key];

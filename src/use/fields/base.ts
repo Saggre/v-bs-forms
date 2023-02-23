@@ -1,3 +1,5 @@
+import { FormErrorType } from '@/use/form';
+
 export const enum HtmlFormFieldType {
   Text = 'text',
   Textarea = 'textarea',
@@ -30,7 +32,7 @@ export interface ValidationSuccess {
 
 export interface ValidationError {
   valid: false;
-  message: string;
+  message: string | FormErrorType;
 }
 
 export type ValidationResult = ValidationSuccess | ValidationError;
@@ -43,6 +45,14 @@ export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
   deserialize?: (value: S) => V;
   serialize?: (value: V) => S;
   disabled?: boolean;
+  autocomplete?: string;
+  autofocus?: boolean;
+  id?: string;
+}
+
+export interface InputFormField {
+  name?: string;
+  required?: boolean;
 }
 
 export interface CardFormFieldDefinition {

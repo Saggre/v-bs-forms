@@ -34,7 +34,6 @@ const data = {
   action: false,
   number: 1337,
   role: 'foo',
-  textarea: 'Text',
   'list-group': 'bar',
 };
 
@@ -48,6 +47,10 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'password',
     title: 'Password',
     floating: true,
+    id: 'password-id',
+    autocomplete: 'password',
+    autofocus: true,
+    disabled: false,
     validate: (value: string) => {
       if (value.length < 8) {
         return {
@@ -88,6 +91,7 @@ const fields: FormInputFields<LoginFormData> = {
     title: 'Textarea',
     floating: true,
     rows: 5,
+    required: true,
   },
   checkbox: {
     type: 'checkbox',

@@ -1,4 +1,8 @@
-import { FormDataDefinition, ValidationResult } from '@/use/fields/base';
+import {
+  FormDataDefinition,
+  ValidationError,
+  ValidationResult,
+} from '@/use/fields/base';
 import { FormField } from '@/use/fields';
 import { Errors, VisitOptions } from '@inertiajs/core/types/types';
 import { Router, router } from '@inertiajs/core';
@@ -14,6 +18,7 @@ export interface FormAccessors<T extends FormDataDefinition> {
 
 export interface FormCallbacks<T extends FormDataDefinition> {
   onSubmit: (form: FormDefinition<T>) => Promise<void>;
+  onRender?: (form: FormDefinition<T>) => void;
   onCancel?: (form: FormDefinition<T>) => void;
   onError?: (
     errors: Partial<Record<keyof T, string | FormErrorType>>,
@@ -37,6 +42,7 @@ export type PartialFormDefinition<T extends FormDataDefinition> = Partial<
   FormDefinition<T>
 > & {
   accessors: Partial<FormAccessors<T>>;
+  callbacks: Partial<FormCallbacks<T>>;
 };
 
 export interface FormButtons<T> {
@@ -68,6 +74,35 @@ export const setInertiaRouter = (router: Router) => {
 
 export const getInertiaRouter = (): Router => inertiaRouter ?? router;
 
+/**
+ * Validates fields marked as required.
+ *
+ * @param form
+ */
+const getRequiredFieldErrors = <T extends FormDataDefinition>(
+  form: FormDefinition<T>,
+): Partial<Record<keyof T, ValidationError>> => {
+  const errors = {} as Partial<Record<keyof T, ValidationError>>;
+
+  for (const key in form.fields) {
+    const field = form.fields[key];
+
+    if ('required' in field && field.required && !form?.accessors?.data[key]) {
+      errors[key] = {
+        valid: false,
+        message: FormErrorType.Required,
+      };
+    }
+  }
+
+  return errors;
+};
+
+/**
+ * Validates all fields in a form with a provided validation function.
+ *
+ * @param form
+ */
 function validateFields<T extends FormDataDefinition>(
   form: FormDefinition<T>,
 ): Record<keyof T, ValidationResult> {
@@ -83,7 +118,10 @@ function validateFields<T extends FormDataDefinition>(
     }
   }
 
-  return results;
+  return {
+    ...results,
+    ...getRequiredFieldErrors(form),
+  };
 }
 
 /**
@@ -94,6 +132,20 @@ const getDefaultAccessors = <
 >(): FormAccessors<T> => ({
   data: {} as T,
   errors: {} as Record<keyof T, string>,
+});
+
+/**
+ * Returns default callbacks for a form.
+ */
+const getDefaultCallbacks = <
+  T extends FormDataDefinition,
+>(): FormCallbacks<T> => ({
+  onSubmit: async () => {
+    return;
+  },
+  onRender: async () => {
+    return;
+  },
 });
 
 /**
@@ -112,32 +164,64 @@ const createForm = <T extends FormDataDefinition>(
       ...getDefaultAccessors<T>(),
       ...(formDefinition.accessors ?? {}),
     },
-    callbacks: formDefinition.callbacks ?? {
-      onSubmit: async () => {
-        return;
-      },
+    callbacks: {
+      ...getDefaultCallbacks<T>(),
+      ...(formDefinition.callbacks ?? {}),
     },
   };
 };
 
-const checkLocalErrors = <T extends FormDataDefinition>(
+export const resetFormErrors = <T extends FormDataDefinition>(
   form: FormDefinition<T>,
-): void => {
-  const errors = {} as Partial<Record<keyof T, FormErrorType>>;
+) => {
+  form.accessors.errors = {} as Partial<Record<keyof T, string>>;
+};
 
-  for (const key in form.fields) {
-    const field = form.fields[key];
+const getValidationErrors = (
+  validationResults: Partial<Record<string, ValidationResult>>,
+): Partial<Record<string, ValidationError>> => {
+  return Object.fromEntries(
+    Object.entries(validationResults).filter(
+      ([, validationResult]) => !validationResult?.valid,
+    ),
+  ) as Partial<Record<string, ValidationError>>;
+};
 
-    if ('required' in field && field.required && !form?.accessors?.data[key]) {
-      errors[key] = FormErrorType.Required;
-    }
+const getErrorMessages = (
+  validationErrors: Partial<Record<string, ValidationError>>,
+): Partial<Record<string, string | FormErrorType>> => {
+  const errors: Partial<Record<string, string | FormErrorType>> = {};
+
+  for (const key in validationErrors) {
+    const validationError = validationErrors[key];
+    errors[key] = validationError?.message ?? '';
   }
 
-  if (Object.keys(errors).length > 0) {
-    throw errors;
+  return errors;
+};
+
+/**
+ * Validates a form and throws an error if there are any validation errors.
+ *
+ * @param form
+ */
+export const onSubmitValidation = async <T extends FormDataDefinition>(
+  form: FormDefinition<T>,
+) => {
+  const validationResults = validateFields(form);
+  const validationErrors = getValidationErrors(validationResults);
+  const errorMessages = getErrorMessages(validationErrors);
+
+  if (Object.keys(validationErrors).length > 0) {
+    throw errorMessages;
   }
 };
 
+/**
+ * Helper function for adding validation and error handling to a form.
+ *
+ * @param formDefinition
+ */
 export const useForm = <T extends FormDataDefinition>(
   formDefinition: PartialFormDefinition<T>,
 ): FormDefinition<T> => {
@@ -145,39 +229,14 @@ export const useForm = <T extends FormDataDefinition>(
   const onSubmit = form.callbacks.onSubmit;
 
   form.callbacks.onSubmit = async form => {
-    let hasErrors = false;
-    const validationResults = validateFields(form);
-
-    form.accessors.errors = {};
+    resetFormErrors(form);
 
     try {
-      checkLocalErrors(form);
+      await onSubmitValidation(form);
+      await onSubmit(form);
     } catch (errors) {
-      form.accessors.errors = errors as Partial<Record<keyof T, FormErrorType>>;
+      form.accessors.errors = errors as Partial<Record<keyof T, string>>;
       form.callbacks.onError?.(form.accessors.errors, form);
-
-      return;
-    }
-
-    for (const key in validationResults) {
-      const validationResult = validationResults[key];
-
-      if (validationResult.valid) {
-        continue;
-      }
-
-      hasErrors = true;
-      form.accessors.errors[key] = validationResult.message;
-    }
-
-    if (hasErrors) {
-      form.callbacks.onError?.(form.accessors.errors, form);
-    } else {
-      try {
-        await onSubmit(form);
-      } catch (e) {
-        form.callbacks.onError?.({}, form);
-      }
     }
   };
 
@@ -219,6 +278,13 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
   });
 };
 
+/**
+ * Helper function for creating a form that submits with Inertia.
+ *
+ * @param url
+ * @param visitOptions
+ * @param formDefinition
+ */
 export const useInertiaForm = <T extends FormDataDefinition>(
   url: string | URL,
   visitOptions: VisitOptions,
@@ -228,7 +294,6 @@ export const useInertiaForm = <T extends FormDataDefinition>(
   const onSubmit = form.callbacks.onSubmit;
 
   form.callbacks.onSubmit = async () => {
-    debugger;
     try {
       await onSubmit(form);
     } catch (e) {

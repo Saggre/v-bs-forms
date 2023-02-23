@@ -1,16 +1,16 @@
 <template>
   <div class="container py-5">
-    <Form :form="loginForm">
+    <AppForm :form="loginForm">
       <template #title>
         <h1>Title override</h1>
       </template>
-    </Form>
+    </AppForm>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Form from '@/components/Form.vue';
+import AppForm from '@/components/Form.vue';
 import {
   FormDefinition,
   FormCallbacks,
@@ -168,6 +168,25 @@ const fields: FormInputFields<LoginFormData> = {
       description: 'Description',
     },
   },
+  'valid-action': {
+    type: 'action',
+    title: 'Valid action',
+    subtitle: 'An action that is always valid',
+    header: 'Valid action',
+    onSubmit: () => {
+      return;
+    },
+    texts: {
+      submit: 'Submit',
+      success: 'Success',
+      description: 'Description',
+    },
+    validate: () => {
+      return {
+        valid: true,
+      };
+    },
+  },
 };
 
 const callbacks: FormCallbacks<LoginFormData> = {
@@ -179,6 +198,9 @@ const callbacks: FormCallbacks<LoginFormData> = {
         resolve();
       }, 1000);
     });
+  },
+  onRender: (form: LoginForm) => {
+    console.log('Render', form.accessors.data);
   },
   onCancel: (form: LoginForm) => {
     console.log('Cancel', form.accessors.data);
@@ -202,7 +224,7 @@ export const useLoginForm = () =>
 
 export default defineComponent({
   components: {
-    Form,
+    AppForm,
   },
   setup() {
     return {

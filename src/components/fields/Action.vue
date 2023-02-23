@@ -22,7 +22,7 @@
         >{{ field.texts.submit }}</a
       >
     </template>
-    <template #footer>
+    <template #footer v-if="!validation.valid">
       <FieldInputError :validation="validation" class="d-block" />
     </template>
   </CardFormField>
@@ -46,6 +46,11 @@ export default defineComponent({
       type: Object as PropType<ActionFormField>,
       required: true,
     },
+  },
+  data() {
+    return {
+      value: this.field.validate().valid,
+    };
   },
   methods: {
     onSubmit() {

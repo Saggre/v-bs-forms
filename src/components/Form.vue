@@ -149,6 +149,9 @@ export default defineComponent({
       loading: false,
     };
   },
+  mounted() {
+    this.form.callbacks?.onRender?.(this.form);
+  },
   methods: {
     getFieldValidation(key: string | number): ValidationError | undefined {
       const error = this.form?.accessors?.errors?.[key] ?? null;

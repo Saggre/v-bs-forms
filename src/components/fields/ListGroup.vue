@@ -44,7 +44,7 @@
         </li>
       </ul>
     </template>
-    <template #footer>
+    <template #footer v-if="!validation.valid">
       <FieldInputError :validation="validation" class="d-block" />
     </template>
   </CardFormField>

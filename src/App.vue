@@ -79,6 +79,10 @@ const fields: FormInputFields<LoginFormData> = {
     title: 'Number',
     floating: true,
   },
+  image: {
+    type: 'file',
+    title: 'Profile image',
+  },
   datetime: {
     type: 'datetime',
     title: 'Datetime',

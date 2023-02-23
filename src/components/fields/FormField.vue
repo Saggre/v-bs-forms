@@ -18,6 +18,7 @@ import ListGroupField from '@/components/fields/ListGroup.vue';
 import DropdownField from '@/components/fields/Dropdown.vue';
 import TextareaField from '@/components/fields/Textarea.vue';
 import CheckboxField from '@/components/fields/Checkbox.vue';
+import FileField from '@/components/fields/File.vue';
 import { ValidationResult } from '@/use/fields/base';
 import { formFieldPlugin } from '@/use/plugins';
 
@@ -28,6 +29,7 @@ enum BaseFieldTypes {
   Dropdown = 'dropdown',
   Textarea = 'textarea',
   Checkbox = 'checkbox',
+  File = 'file',
 }
 
 export default defineComponent({
@@ -39,6 +41,7 @@ export default defineComponent({
     DropdownField,
     TextareaField,
     CheckboxField,
+    FileField,
   },
   props: {
     validation: {
@@ -91,6 +94,8 @@ export default defineComponent({
           return TextareaField;
         case BaseFieldTypes.Checkbox:
           return CheckboxField;
+        case BaseFieldTypes.File:
+          return FileField;
         default:
           return StandardField;
       }

@@ -68,6 +68,13 @@ export type TextareaFormField<V = string> = BaseFormFieldDefinition<V> &
     rows?: number;
   };
 
+export type FileFormField<V = string> = BaseFormFieldDefinition<V> &
+  InputFormField & {
+    type: 'file';
+    accept?: string;
+    floating?: never;
+  };
+
 export type FormField =
   | StandardFormField
   | NumberFormField
@@ -76,4 +83,5 @@ export type FormField =
   | DateTimeFormField
   | ActionFormField
   | ListGroupFormField
-  | CheckboxFormField;
+  | CheckboxFormField
+  | FileFormField;

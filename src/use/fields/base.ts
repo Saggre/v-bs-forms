@@ -12,7 +12,6 @@ export const enum HtmlFormFieldType {
   Tel = 'tel',
   Url = 'url',
   Password = 'password',
-  File = 'file',
   Hidden = 'hidden',
 }
 

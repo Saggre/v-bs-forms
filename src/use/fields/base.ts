@@ -47,10 +47,10 @@ export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
   autocomplete?: string;
   autofocus?: boolean;
   id?: string;
+  name?: string;
 }
 
 export interface InputFormField {
-  name?: string;
   required?: boolean;
 }
 

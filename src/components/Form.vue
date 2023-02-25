@@ -35,7 +35,10 @@
               :key="key"
               v-model="form.accessors.data[key]"
               :validation="getFieldValidation(key)"
-              :field="field"
+              :field="{
+                ...field,
+                name: field.name ?? key,
+              }"
             />
             <slot />
             <div

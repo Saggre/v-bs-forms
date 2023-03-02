@@ -38,12 +38,13 @@ export type FormDefinition<T extends FormDataDefinition> = {
   callbacks: FormCallbacks<T>;
 };
 
-export type PartialFormDefinition<T extends FormDataDefinition> = Partial<
-  FormDefinition<T>
-> & {
+export type PartialFormDefinition<T extends FormDataDefinition> = Partial<{
+  title?: string;
+  description?: string;
+  fields: FormInputFields<T>;
   accessors: Partial<FormAccessors<T>>;
   callbacks: Partial<FormCallbacks<T>>;
-};
+}>;
 
 export interface FormButtons<T> {
   next: T;

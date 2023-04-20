@@ -44,6 +44,8 @@ export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
   deserialize?: (value: S) => V;
   serialize?: (value: V) => S;
   disabled?: boolean;
+  inputmode?: string;
+  pattern?: string;
   autocomplete?: string;
   autofocus?: boolean;
   id?: string;

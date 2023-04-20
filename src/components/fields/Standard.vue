@@ -5,6 +5,8 @@
         :id="field.id ?? field.title"
         :autocomplete="field.autocomplete || 'off'"
         :autofocus="field.autofocus || false"
+        :inputmode="field.inputmode || null"
+        :pattern="field.pattern || null"
         :disabled="field.disabled || false"
         :name="field.name ?? field.title"
         :required="field.required || false"

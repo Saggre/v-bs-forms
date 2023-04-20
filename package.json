@@ -1,7 +1,7 @@
 {
   "name": "@saggre/v-bs-forms",
   "type": "module",
-  "version": "5.2.0",
+  "version": "5.2.1-RC1",
   "description": "Typed Bootstrap form builder for Vue3",
   "author": "Sakri Koskimies <sakri.koskimies@hotmail.com>",
   "repository": {
@@ -71,9 +71,5 @@
   "bugs": {
     "url": "https://github.com/Saggre/v-bs-forms/issues"
   },
-  "license": "ISC",
-  "engines" : {
-    "npm" : ">=9.0.0 <10.0.0",
-    "node" : ">=18.0.0"
-  }
+  "license": "ISC"
 }

@@ -205,11 +205,14 @@ export default defineComponent({
       }
       this.$emit('cancel', this.form, this.htmlForm);
     },
+    reset() {
+      this.htmlForm.reset();
+    },
     submit() {
       this.htmlForm.requestSubmit();
     },
     cancel() {
-      this.htmlForm.reset();
+      this.reset();
       this.onCancel();
     },
   },

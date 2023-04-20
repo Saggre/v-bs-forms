@@ -53,27 +53,32 @@
           </form>
         </div>
         <div class="card-footer d-flex justify-content-end">
-          <button
-            v-if="visibility.buttons?.previous"
-            class="btn btn-outline-dark text-uppercase nav-prev me-2"
-            type="button"
-            :disabled="loading"
-            @click="cancel()"
-          >
-            <i class="bi bi-arrow-left me-2" />{{
-              translations.buttons?.previous
-            }}
-          </button>
-          <button
-            v-if="visibility.buttons?.next"
-            class="btn btn-dark text-uppercase nav-next"
-            :class="{ 'text-white-50': loading }"
-            :disabled="loading"
-            type="submit"
-            @click="submit()"
-          >
-            {{ translations.buttons?.next }}<i class="bi bi-arrow-right ms-2" />
-          </button>
+          <slot name="buttons-before" />
+          <slot name="buttons">
+            <button
+              v-if="visibility.buttons?.previous"
+              class="btn btn-outline-dark text-uppercase nav-prev me-2"
+              type="button"
+              :disabled="loading"
+              @click="cancel()"
+            >
+              <i class="bi bi-arrow-left me-2" />{{
+                translations.buttons?.previous
+              }}
+            </button>
+            <button
+              v-if="visibility.buttons?.next"
+              class="btn btn-dark text-uppercase nav-next"
+              :class="{ 'text-white-50': loading }"
+              :disabled="loading"
+              type="submit"
+              @click="submit()"
+            >
+              {{ translations.buttons?.next
+              }}<i class="bi bi-arrow-right ms-2" />
+            </button>
+          </slot>
+          <slot name="buttons-after" />
         </div>
       </div>
     </div>

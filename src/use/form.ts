@@ -287,7 +287,7 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
  * @param formDefinition
  */
 export const useInertiaForm = <T extends FormDataDefinition>(
-  url: string | URL,
+  url: (string | URL) | ((form: FormDefinition<T>) => string | URL),
   visitOptions: VisitOptions,
   formDefinition: PartialFormDefinition<T>,
 ): FormDefinition<T> => {
@@ -302,7 +302,11 @@ export const useInertiaForm = <T extends FormDataDefinition>(
     }
 
     try {
-      await submitInertiaForm(form, url, visitOptions);
+      await submitInertiaForm(
+        form,
+        url instanceof Function ? url(form) : url,
+        visitOptions,
+      );
     } catch (errors) {
       form.accessors.errors = errors as Partial<Record<keyof T, string>>;
       form.callbacks.onError?.(form.accessors.errors, form);

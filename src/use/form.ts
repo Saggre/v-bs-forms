@@ -244,6 +244,10 @@ export const useForm = <T extends FormDataDefinition>(
   return form;
 };
 
+type _VisitOptions<T extends FormDataDefinition> = VisitOptions & {
+  submitTransform?: (data: T) => T;
+};
+
 /**
  * Submit an Inertia form and mirror response data to the actual form.
  *
@@ -254,11 +258,13 @@ export const useForm = <T extends FormDataDefinition>(
 const submitInertiaForm = async <T extends FormDataDefinition>(
   form: FormDefinition<T>,
   url: string | URL,
-  visitOptions: VisitOptions,
+  visitOptions: _VisitOptions<T>,
 ) => {
   await new Promise<void>((resolve, reject) => {
     getInertiaRouter().visit(url, {
-      data: form.accessors.data,
+      data:
+        visitOptions.submitTransform?.(form.accessors.data) ??
+        form.accessors.data,
       preserveState: true,
       ...visitOptions,
       onError: (errors: Errors) => {
@@ -288,7 +294,7 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
  */
 export const useInertiaForm = <T extends FormDataDefinition>(
   url: (string | URL) | ((form: FormDefinition<T>) => string | URL),
-  visitOptions: VisitOptions,
+  visitOptions: _VisitOptions<T>,
   formDefinition: PartialFormDefinition<T>,
 ): FormDefinition<T> => {
   const form = useForm<T>(formDefinition);

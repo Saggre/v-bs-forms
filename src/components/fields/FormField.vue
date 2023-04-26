@@ -17,6 +17,7 @@ import DateTimeField from '@/components/fields/DateTime.vue';
 import ListGroupField from '@/components/fields/ListGroup.vue';
 import DropdownField from '@/components/fields/Dropdown.vue';
 import TextareaField from '@/components/fields/Textarea.vue';
+import NumberField from '@/components/fields/Number.vue';
 import CheckboxField from '@/components/fields/Checkbox.vue';
 import FileField from '@/components/fields/File.vue';
 import { ValidationResult } from '@/use/fields/base';
@@ -30,6 +31,7 @@ enum BaseFieldTypes {
   Textarea = 'textarea',
   Checkbox = 'checkbox',
   File = 'file',
+  Number = 'number',
 }
 
 export default defineComponent({
@@ -39,6 +41,7 @@ export default defineComponent({
     DateTimeField,
     ListGroupField,
     DropdownField,
+    NumberField,
     TextareaField,
     CheckboxField,
     FileField,
@@ -92,6 +95,8 @@ export default defineComponent({
           return DropdownField;
         case BaseFieldTypes.Textarea:
           return TextareaField;
+        case BaseFieldTypes.Number:
+          return NumberField;
         case BaseFieldTypes.Checkbox:
           return CheckboxField;
         case BaseFieldTypes.File:

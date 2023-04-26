@@ -187,6 +187,19 @@ const fields: FormInputFields<LoginFormData> = {
       };
     },
   },
+  number1: {
+    type: 'number',
+    title: 'Number 1',
+    floating: true,
+  },
+  numberStep: {
+    type: 'number',
+    title: 'Number stepped',
+    floating: true,
+    step: 0.1,
+    min: 10,
+    max: 20,
+  },
 };
 
 const callbacks: FormCallbacks<LoginFormData> = {

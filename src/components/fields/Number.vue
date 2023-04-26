@@ -1,12 +1,15 @@
 <template>
   <div class="w-100">
     <div :class="containerClass">
-      <textarea
+      <input
         :id="field.id ?? field.title"
         :autocomplete="field.autocomplete || 'off'"
         :autofocus="field.autofocus || false"
         :disabled="field.disabled || false"
         :inputmode="field.inputmode || null"
+        :min="field.min || null"
+        :max="field.max || null"
+        :step="field.step || null"
         :name="field.name ?? field.title"
         :required="field.required || false"
         v-model="value"
@@ -15,7 +18,8 @@
           'is-invalid': !validation.valid,
           [field.class]: !!field.class,
         }"
-        :rows="field.rows ?? 3"
+        :placeholder="placeholder"
+        type="number"
       />
       <FieldLabel :for="field.id ?? field.title" :value="field.title" />
       <FieldInputError :validation="validation" />
@@ -25,7 +29,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { TextareaFormField } from '@/use/fields';
+import { NumberFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
@@ -38,8 +42,21 @@ export default defineComponent({
   },
   props: {
     field: {
-      type: Object as PropType<TextareaFormField>,
+      type: Object as PropType<NumberFormField>,
       required: true,
+    },
+  },
+  computed: {
+    placeholder(): string {
+      if (this.field.placeholder) {
+        return this.field.placeholder;
+      }
+
+      if (this.field.floating) {
+        return this.field.title;
+      }
+
+      return '';
     },
   },
 });

@@ -15,6 +15,9 @@ export type StandardFormField<V = string> = BaseFormFieldDefinition<V> &
 export type NumberFormField<V = number> = BaseFormFieldDefinition<V> &
   InputFormField & {
     type: 'number';
+    min?: number;
+    max?: number;
+    step?: number;
   };
 
 export interface ActionFormFieldTexts {

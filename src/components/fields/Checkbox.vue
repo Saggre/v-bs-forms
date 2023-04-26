@@ -7,6 +7,8 @@
           :autocomplete="field.autocomplete || 'off'"
           :autofocus="field.autofocus || false"
           :disabled="field.disabled || false"
+          :inputmode="field.inputmode || null"
+          :pattern="field.pattern || null"
           :name="field.name ?? field.title"
           :required="field.required || false"
           :class="{

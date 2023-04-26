@@ -21,14 +21,14 @@
     </div>
 
     <div :class="visibility.sidebar ? 'col-md-8' : 'col-12'">
-      <div :class="`card ${classes.card}`">
-        <div class="card-body">
-          <form
-            ref="form"
-            class="needs-validation position-relative"
-            novalidate
-            @submit.prevent="onSubmit"
-          >
+      <form
+        ref="form"
+        class="needs-validation position-relative"
+        novalidate
+        @submit.prevent="onSubmit"
+      >
+        <div :class="`card ${classes.card}`">
+          <div class="card-body">
             <slot name="head" />
             <FormField
               v-for="(field, key) in form.fields"
@@ -50,37 +50,37 @@
                 <span class="visually-hidden">{{ 'Loading...' }}</span>
               </div>
             </div>
-          </form>
+          </div>
+          <div class="card-footer d-flex justify-content-end">
+            <slot name="buttons-before" />
+            <slot name="buttons">
+              <button
+                v-if="visibility.buttons?.previous"
+                class="btn btn-outline-dark text-uppercase nav-prev me-2"
+                type="button"
+                :disabled="loading"
+                @click="cancel()"
+              >
+                <i class="bi bi-arrow-left me-2" />{{
+                  translations.buttons?.previous
+                }}
+              </button>
+              <button
+                v-if="visibility.buttons?.next"
+                class="btn btn-dark text-uppercase nav-next"
+                :class="{ 'text-white-50': loading }"
+                :disabled="loading"
+                type="submit"
+                @click="submit()"
+              >
+                {{ translations.buttons?.next
+                }}<i class="bi bi-arrow-right ms-2" />
+              </button>
+            </slot>
+            <slot name="buttons-after" />
+          </div>
         </div>
-        <div class="card-footer d-flex justify-content-end">
-          <slot name="buttons-before" />
-          <slot name="buttons">
-            <button
-              v-if="visibility.buttons?.previous"
-              class="btn btn-outline-dark text-uppercase nav-prev me-2"
-              type="button"
-              :disabled="loading"
-              @click="cancel()"
-            >
-              <i class="bi bi-arrow-left me-2" />{{
-                translations.buttons?.previous
-              }}
-            </button>
-            <button
-              v-if="visibility.buttons?.next"
-              class="btn btn-dark text-uppercase nav-next"
-              :class="{ 'text-white-50': loading }"
-              :disabled="loading"
-              type="submit"
-              @click="submit()"
-            >
-              {{ translations.buttons?.next
-              }}<i class="bi bi-arrow-right ms-2" />
-            </button>
-          </slot>
-          <slot name="buttons-after" />
-        </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>

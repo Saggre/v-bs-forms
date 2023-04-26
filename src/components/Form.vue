@@ -129,6 +129,10 @@ export default defineComponent({
       type: Boolean as PropType<boolean>,
       default: true,
     },
+    resetOnCancel: {
+      type: Boolean as PropType<boolean>,
+      default: false,
+    },
     visibility: {
       type: Object as PropType<FormVisibility>,
       default: () => ({
@@ -212,7 +216,10 @@ export default defineComponent({
       this.htmlForm.requestSubmit();
     },
     cancel() {
-      this.reset();
+      if (this.resetOnCancel) {
+        this.reset();
+      }
+
       this.onCancel();
     },
   },

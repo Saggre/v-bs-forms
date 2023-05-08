@@ -11,9 +11,17 @@ export const enum FormErrorType {
   Required = 1,
 }
 
+export type FormAccessorData<T extends FormDataDefinition> = Partial<
+  Record<keyof T, T[keyof T] | undefined>
+>;
+
+export type FormAccessorErrors<T extends FormDataDefinition> = Partial<
+  Record<keyof T, string | FormErrorType>
+>;
+
 export interface FormAccessors<T extends FormDataDefinition> {
-  data: Partial<T>;
-  errors: Partial<Record<keyof T, string | FormErrorType>>;
+  data: FormAccessorData<T>;
+  errors: FormAccessorErrors<T>;
 }
 
 export interface FormCallbacks<T extends FormDataDefinition> {
@@ -131,7 +139,7 @@ function validateFields<T extends FormDataDefinition>(
 const getDefaultAccessors = <
   T extends FormDataDefinition,
 >(): FormAccessors<T> => ({
-  data: {} as Partial<T>,
+  data: {} as FormAccessorData<T>,
   errors: {} as Record<keyof T, string>,
 });
 
@@ -245,7 +253,7 @@ export const useForm = <T extends FormDataDefinition>(
 };
 
 type _VisitOptions<T extends FormDataDefinition> = VisitOptions & {
-  submitTransform?: (data: Partial<T>) => Partial<T>;
+  submitTransform?: (data: FormAccessorData<T>) => FormAccessorData<T>;
 };
 
 /**

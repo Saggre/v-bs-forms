@@ -15,6 +15,7 @@ import ActionField from '@/components/fields/Action.vue';
 import StandardField from '@/components/fields/Standard.vue';
 import DateTimeField from '@/components/fields/DateTime.vue';
 import ListGroupField from '@/components/fields/ListGroup.vue';
+import PasswordField from '@/components/fields/Password.vue';
 import DropdownField from '@/components/fields/Dropdown.vue';
 import TextareaField from '@/components/fields/Textarea.vue';
 import NumberField from '@/components/fields/Number.vue';
@@ -28,6 +29,7 @@ enum BaseFieldTypes {
   Action = 'action',
   ListGroup = 'list-group',
   Dropdown = 'dropdown',
+  Password = 'password',
   Textarea = 'textarea',
   Checkbox = 'checkbox',
   File = 'file',
@@ -95,6 +97,8 @@ export default defineComponent({
           return DropdownField;
         case BaseFieldTypes.Textarea:
           return TextareaField;
+        case BaseFieldTypes.Password:
+          return PasswordField;
         case BaseFieldTypes.Number:
           return NumberField;
         case BaseFieldTypes.Checkbox:

@@ -85,6 +85,10 @@ export default defineComponent({
       value.date(input.date());
 
       this.value = this.field.serialize(value);
+
+      if (this.field.onChange) {
+        this.field.onChange(value);
+      }
     },
     inputTime(time) {
       const value = this.internalModelValue();
@@ -93,6 +97,10 @@ export default defineComponent({
       value.minute(input.minute());
 
       this.value = this.field.serialize(value);
+
+      if (this.field.onChange) {
+        this.field.onChange(value);
+      }
     },
   },
   methods: {

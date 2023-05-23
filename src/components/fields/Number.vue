@@ -13,6 +13,14 @@
         :name="field.name ?? field.title"
         :required="field.required || false"
         v-model="value"
+        @change="
+          event =>
+            field.onChange ? field.onChange(event.target.value) : () => {}
+        "
+        @input="
+          event =>
+            field.onInput ? field.onInput(event.target.value) : () => {}
+        "
         class="form-control"
         :class="{
           'is-invalid': !validation.valid,

@@ -37,6 +37,7 @@ const data = {
   password: '',
   action: false,
   number: 1337,
+  number2: 0,
   role: 'foo',
   'list-group': 'bar',
 };
@@ -55,7 +56,8 @@ const fields: FormInputFields<LoginFormData> = {
     autocomplete: 'password',
     autofocus: true,
     disabled: false,
-    validate: (value: string) => {
+    toggleable: true,
+    validate: (value: string): ValidationResult => {
       if (value.length < 8) {
         return {
           message: 'Password must be at least 8 characters',
@@ -93,6 +95,8 @@ const fields: FormInputFields<LoginFormData> = {
     floating: true,
     deserialize: (value: string) => moment(value),
     serialize: (value: Moment) => value.toISOString(),
+    onChange: (value: Moment) =>
+      console.log(`Selected: ${value.toISOString()}`),
   },
   textarea: {
     type: 'textarea',
@@ -191,6 +195,16 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'number',
     title: 'Number 1',
     floating: true,
+    onInput: (value: number) => {
+      console.log(`Selected: ${value}`);
+      data.number2 = value * 2;
+    },
+  },
+  number2: {
+    type: 'number',
+    title: 'Number 2',
+    floating: true,
+    onInput: (value: number) => console.log(`Selected: ${value}`),
   },
   numberStep: {
     type: 'number',
@@ -199,6 +213,7 @@ const fields: FormInputFields<LoginFormData> = {
     step: 0.1,
     min: 10,
     max: 20,
+    onInput: (value: number) => console.log(`Selected: ${value}`),
   },
 };
 

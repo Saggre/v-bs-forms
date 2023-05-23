@@ -33,6 +33,8 @@ export type ActionFormField<V = boolean> = BaseFormFieldDefinition<V> &
     validate: () => ValidationResult;
     texts: ActionFormFieldTexts;
     autocomplete?: never;
+    onChange?: never;
+    onInput?: never;
   };
 
 export type DateTimeFormField<V = Moment> = BaseFormFieldDefinition<V> &
@@ -40,6 +42,7 @@ export type DateTimeFormField<V = Moment> = BaseFormFieldDefinition<V> &
     type: 'datetime';
     deserialize: (value: string) => V;
     serialize: (value: V) => string;
+    onInput?: never;
   };
 
 export interface ListItem {
@@ -51,18 +54,24 @@ export type ListGroupFormField<V = ListItem> = BaseFormFieldDefinition<V> &
   CardFormFieldDefinition & {
     type: 'list-group';
     options: Record<string, ListItem>;
+    onChange?: never;
+    onInput?: never;
   };
 
 export type CheckboxFormField<V = boolean> = BaseFormFieldDefinition<V> &
   InputFormField & {
     type: 'checkbox';
     indeterminate?: boolean;
+    onChange?: never;
+    onInput?: never;
   };
 
 export type DropdownFormField<V = string[]> = BaseFormFieldDefinition<V> &
   InputFormField & {
     type: 'dropdown';
     options: Record<string, string>;
+    onChange?: never;
+    onInput?: never;
   };
 
 export type TextareaFormField<V = string> = BaseFormFieldDefinition<V> &
@@ -71,11 +80,19 @@ export type TextareaFormField<V = string> = BaseFormFieldDefinition<V> &
     rows?: number;
   };
 
+export type PasswordFormField<V = string> = BaseFormFieldDefinition<V> &
+  InputFormField & {
+    type: 'password';
+    toggleable?: boolean;
+  };
+
 export type FileFormField<V = string> = BaseFormFieldDefinition<V> &
   InputFormField & {
     type: 'file';
     accept?: string;
     floating?: never;
+    onChange?: never;
+    onInput?: never;
   };
 
 export type FormField =
@@ -87,4 +104,5 @@ export type FormField =
   | ActionFormField
   | ListGroupFormField
   | CheckboxFormField
-  | FileFormField;
+  | FileFormField
+  | PasswordFormField;

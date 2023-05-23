@@ -11,6 +11,14 @@
         :name="field.name ?? field.title"
         :required="field.required || false"
         v-model="value"
+        @change="
+          event =>
+            field.onChange ? field.onChange(event.target.value) : () => {}
+        "
+        @input="
+          event =>
+            field.onInput ? field.onInput(event.target.value) : () => {}
+        "
         :type="showPassword ? 'text' : 'password'"
         :class="{
           'is-invalid': !validation.valid,
@@ -22,6 +30,7 @@
       <FieldInputError :validation="validation" />
     </div>
     <button
+      v-if="field.toggleable"
       class="btn btn-outline-dark position-relative btn--password-toggle"
       type="button"
       style="width: 58px"
@@ -44,7 +53,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { FormField } from '@/use/fields';
+import { PasswordFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
@@ -59,7 +68,7 @@ export default defineComponent({
   },
   props: {
     field: {
-      type: Object as PropType<FormField>,
+      type: Object as PropType<PasswordFormField>,
       required: true,
     },
   },

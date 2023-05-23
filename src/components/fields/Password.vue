@@ -11,14 +11,8 @@
         :name="field.name ?? field.title"
         :required="field.required || false"
         v-model="value"
-        @change="
-          event =>
-            field.onChange ? field.onChange(event.target.value) : () => {}
-        "
-        @input="
-          event =>
-            field.onInput ? field.onInput(event.target.value) : () => {}
-        "
+        @change="onChange"
+        @input="onInput"
         :type="showPassword ? 'text' : 'password'"
         :class="{
           'is-invalid': !validation.valid,
@@ -75,6 +69,20 @@ export default defineComponent({
   methods: {
     togglePassword() {
       this.showPassword = !this.showPassword;
+    },
+    onChange(event: Event) {
+      const element = event.target as HTMLInputElement;
+
+      if (this.field.onChange) {
+        this.field.onChange(element.value);
+      }
+    },
+    onInput(event: Event) {
+      const element = event.target as HTMLInputElement;
+
+      if (this.field.onInput) {
+        this.field.onInput(element.value);
+      }
     },
   },
   data() {

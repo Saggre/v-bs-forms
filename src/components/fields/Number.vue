@@ -13,14 +13,8 @@
         :name="field.name ?? field.title"
         :required="field.required || false"
         v-model="value"
-        @change="
-          event =>
-            field.onChange ? field.onChange(event.target.value) : () => {}
-        "
-        @input="
-          event =>
-            field.onInput ? field.onInput(event.target.value) : () => {}
-        "
+        @change="onChange"
+        @input="onInput"
         class="form-control"
         :class="{
           'is-invalid': !validation.valid,
@@ -65,6 +59,22 @@ export default defineComponent({
       }
 
       return '';
+    },
+  },
+  methods: {
+    onChange(event: Event) {
+      const element = event.target as HTMLInputElement;
+
+      if (this.field.onChange) {
+        this.field.onChange(element.value as unknown as number);
+      }
+    },
+    onInput(event: Event) {
+      const element = event.target as HTMLInputElement;
+
+      if (this.field.onInput) {
+        this.field.onInput(element.value as unknown as number);
+      }
     },
   },
 });

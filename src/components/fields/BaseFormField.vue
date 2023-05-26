@@ -2,6 +2,7 @@
 import { defineComponent, PropType } from 'vue';
 import { ValidationResult } from '@/use/fields/base';
 import { getContainerClass } from '@/use/fields/util';
+import { FormDefinition } from '@/use/form';
 
 export default defineComponent({
   props: {
@@ -15,6 +16,14 @@ export default defineComponent({
       type: Object as PropType<any>,
       required: true,
     },
+    form: {
+      type: Object as PropType<FormDefinition<any>>,
+      required: true,
+    },
+    formKey: {
+      type: String as PropType<string>,
+      required: true,
+    },
     modelValue: {
       default: undefined,
     },
@@ -23,6 +32,12 @@ export default defineComponent({
   watch: {
     value(val) {
       this.$emit('update:modelValue', val);
+    },
+    'form.accessors.data': {
+      handler(newData) {
+        this.value = newData[this.formKey];
+      },
+      deep: true,
     },
   },
   computed: {

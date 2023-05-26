@@ -33,12 +33,13 @@
             <FormField
               v-for="(field, key) in form.fields"
               :key="key"
-              v-model="form.accessors.data[key]"
+              :form-key="`${key}`"
               :validation="getFieldValidation(key)"
               :field="{
                 ...field,
                 name: field.name ?? key,
               }"
+              :form="form"
             />
             <slot />
             <div

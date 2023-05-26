@@ -87,7 +87,7 @@ export default defineComponent({
       this.value = this.field.serialize(value);
 
       if (this.field.onChange) {
-        this.field.onChange(value);
+        this.field.onChange(value, this.form);
       }
     },
     inputTime(time) {
@@ -99,7 +99,7 @@ export default defineComponent({
       this.value = this.field.serialize(value);
 
       if (this.field.onChange) {
-        this.field.onChange(value);
+        this.field.onChange(value, this.form);
       }
     },
   },

@@ -65,14 +65,14 @@ export default defineComponent({
       const element = event.target as HTMLInputElement;
 
       if (this.field.onChange) {
-        this.field.onChange(element.value);
+        this.field.onChange(element.value, this.form);
       }
     },
     onInput(event: Event) {
       const element = event.target as HTMLInputElement;
 
       if (this.field.onInput) {
-        this.field.onInput(element.value);
+        this.field.onInput(element.value, this.form);
       }
     },
   },

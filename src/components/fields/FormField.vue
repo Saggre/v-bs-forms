@@ -3,8 +3,10 @@
     <component
       :is="component"
       :field="field"
+      :form-key="formKey"
       :validation="_validation"
-      v-model="value"
+      :form="form"
+      v-model="form.accessors.data[formKey]"
     ></component>
   </div>
 </template>
@@ -23,6 +25,7 @@ import CheckboxField from '@/components/fields/Checkbox.vue';
 import FileField from '@/components/fields/File.vue';
 import { ValidationResult } from '@/use/fields/base';
 import { formFieldPlugin } from '@/use/plugins';
+import { FormDefinition } from '@/use/form';
 
 enum BaseFieldTypes {
   DateTime = 'datetime',
@@ -57,24 +60,19 @@ export default defineComponent({
       type: Object as PropType<any>,
       required: true,
     },
-    modelValue: {
-      type: [String, Number, Array, Boolean] as PropType<
-        string | number | [] | boolean
-      >,
-      required: false,
+    form: {
+      type: Object as PropType<FormDefinition<any>>,
+      required: true,
+    },
+    formKey: {
+      type: String as PropType<string>,
+      required: true,
     },
   },
-  emits: ['update:modelValue'],
-  data(props) {
+  data() {
     return {
-      value: props.modelValue,
       BaseFieldTypes,
     };
-  },
-  watch: {
-    value(val) {
-      this.$emit('update:modelValue', val);
-    },
   },
   computed: {
     component(): Component {

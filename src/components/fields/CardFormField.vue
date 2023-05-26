@@ -12,7 +12,10 @@
       <slot name="body" />
     </div>
     <slot />
-    <div class="card-footer text-muted" v-if="!!field.footer || !!$slots.footer">
+    <div
+      class="card-footer text-muted"
+      v-if="!!field.footer || !!$slots.footer"
+    >
       {{ field.footer }}
       <slot name="footer" />
     </div>
@@ -21,11 +24,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import BaseFormField from '@/components/fields/BaseFormField.vue';
 import { CardFormFieldDefinition } from '@/use/fields/base';
 
 export default defineComponent({
-  extends: BaseFormField,
   props: {
     field: {
       type: Object as PropType<CardFormFieldDefinition>,

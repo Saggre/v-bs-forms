@@ -95,8 +95,8 @@ const fields: FormInputFields<LoginFormData> = {
     floating: true,
     deserialize: (value: string) => moment(value),
     serialize: (value: Moment) => value.toISOString(),
-    onChange: (value: Moment) =>
-      console.log(`Selected: ${value.toISOString()}`),
+    onChange: (value: Moment, form: FormDefinition<any>) =>
+      console.log(`Selected: ${value.toISOString()}`, form),
   },
   textarea: {
     type: 'textarea',
@@ -195,16 +195,17 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'number',
     title: 'Number 1',
     floating: true,
-    onInput: (value: number) => {
-      console.log(`Selected: ${value}`);
-      data.number2 = value * 2;
+    onInput: (value: number, form: FormDefinition<any>) => {
+      console.log(`Selected: ${value}`, form);
+      form.accessors.data['number2'] = value * 2;
     },
   },
   number2: {
     type: 'number',
     title: 'Number 2',
     floating: true,
-    onInput: (value: number) => console.log(`Selected: ${value}`),
+    onInput: (value: number, form: FormDefinition<any>) =>
+      console.log(`Selected: ${value}`, form),
   },
   numberStep: {
     type: 'number',
@@ -213,7 +214,8 @@ const fields: FormInputFields<LoginFormData> = {
     step: 0.1,
     min: 10,
     max: 20,
-    onInput: (value: number) => console.log(`Selected: ${value}`),
+    onInput: (value: number, form: FormDefinition<any>) =>
+      console.log(`Selected: ${value}`, form),
   },
 };
 
@@ -254,7 +256,7 @@ export default defineComponent({
   components: {
     AppForm,
   },
-  setup() {
+  data() {
     return {
       loginForm: useLoginForm(),
     };

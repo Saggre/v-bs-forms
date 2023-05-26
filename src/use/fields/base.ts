@@ -1,4 +1,4 @@
-import { FormErrorType } from '@/use/form';
+import { FormDefinition, FormErrorType } from '@/use/form';
 
 export const enum HtmlFormFieldType {
   Text = 'text',
@@ -43,8 +43,8 @@ export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
   validate?: (value: V) => ValidationResult;
   deserialize?: (value: S) => V;
   serialize?: (value: V) => S;
-  onChange?: (value: V) => void;
-  onInput?: (value: V) => void;
+  onChange?: (value: V, form: FormDefinition<any>) => void;
+  onInput?: (value: V, form: FormDefinition<any>) => void;
   disabled?: boolean;
   inputmode?: string;
   pattern?: string;

@@ -66,14 +66,14 @@ export default defineComponent({
       const element = event.target as HTMLInputElement;
 
       if (this.field.onChange) {
-        this.field.onChange(element.value as unknown as number);
+        this.field.onChange(element.value as unknown as number, this.form);
       }
     },
     onInput(event: Event) {
       const element = event.target as HTMLInputElement;
 
       if (this.field.onInput) {
-        this.field.onInput(element.value as unknown as number);
+        this.field.onInput(element.value as unknown as number, this.form);
       }
     },
   },

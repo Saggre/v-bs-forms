@@ -1,14 +1,15 @@
 import { VueWrapper, mount } from '@vue/test-utils';
 import Form from '@/components/Form.vue';
 import { useInertiaForm } from '@/use/form';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/vue3';
+import { MockedFunction } from 'vitest';
 
 describe('InertiaJS form', () => {
   let wrapper: VueWrapper;
   let form;
 
   beforeAll(() => {
-    Inertia.visit = vi.fn();
+    router.visit = vi.fn() as MockedFunction<any>;
 
     form = useInertiaForm(
       'http://localhost',
@@ -48,9 +49,9 @@ describe('InertiaJS form', () => {
     });
 
     it('Inertia visit was called', async () => {
-      expect(Inertia.visit.called).toEqual(true);
+      expect(router.visit.called).toEqual(true);
 
-      const [url, options] = Inertia.visit.calls[0];
+      const [url, options] = router.visit.calls[0];
       expect(url).toEqual('http://localhost');
       expect(options).toContain({
         method: 'post',

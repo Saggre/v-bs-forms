@@ -18,11 +18,11 @@ export default defineComponent({
     },
     form: {
       type: Object as PropType<FormDefinition<any>>,
-      required: true,
+      required: false,
     },
     formKey: {
       type: String as PropType<string>,
-      required: true,
+      required: false,
     },
     modelValue: {
       default: undefined,

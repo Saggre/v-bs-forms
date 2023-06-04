@@ -9,6 +9,7 @@ describe('InertiaJS form', () => {
   let form;
 
   beforeAll(() => {
+    // @ts-ignore
     router.visit = vi.fn() as MockedFunction<any>;
 
     form = useInertiaForm(
@@ -49,8 +50,10 @@ describe('InertiaJS form', () => {
     });
 
     it('Inertia visit was called', async () => {
+      // @ts-ignore
       expect(router.visit.called).toEqual(true);
 
+      // @ts-ignore
       const [url, options] = router.visit.calls[0];
       expect(url).toEqual('http://localhost');
       expect(options).toContain({

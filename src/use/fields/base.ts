@@ -43,8 +43,8 @@ export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
   validate?: (value: V) => ValidationResult;
   deserialize?: (value: S) => V;
   serialize?: (value: V) => S;
-  onChange?: (value: V, form: FormDefinition<any>) => void;
-  onInput?: (value: V, form: FormDefinition<any>) => void;
+  onChange?: (value: V, form: FormDefinition<any> | undefined) => void;
+  onInput?: (value: V, form: FormDefinition<any> | undefined) => void;
   disabled?: boolean;
   inputmode?: string;
   pattern?: string;

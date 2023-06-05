@@ -1,11 +1,12 @@
 <template>
-  <div class="w-100 input-group flex-nowrap">
+  <div class="w-100 input-group mb-3">
     <div
       :class="{
         'flex-grow-1': true,
         'form-floating': true,
         ...containerClass,
         'is-invalid': attributes.class['is-invalid'],
+        'flex-basis-0': true,
       }"
     >
       <FieldInput
@@ -20,9 +21,9 @@
     </div>
     <button
       v-if="field.toggleable"
-      class="btn btn-dark position-relative btn--password-toggle mb-3"
+      class="btn btn-dark position-relative btn--password-toggle"
       type="button"
-      style="width: 58px"
+      style="width: 58px; min-height: 58px"
       @click="togglePassword"
     >
       <span
@@ -38,6 +39,9 @@
 <style lang="css">
 .btn--password-toggle:focus {
   outline: none !important;
+}
+.flex-basis-0 {
+  flex-basis: 0 !important;
 }
 </style>
 
@@ -76,6 +80,19 @@ export default defineComponent({
           hide: '👁️‍🗨️',
         }
       );
+    },
+    containerClass() {
+      let classes = {} as Record<string, boolean>;
+
+      if (this.field.floating ?? false) {
+        classes['form-floating'] = true;
+      }
+
+      if (this.field.containerClass) {
+        classes = { ...classes, ...this.field.containerClass };
+      }
+
+      return classes;
     },
   },
   data() {

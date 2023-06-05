@@ -24,7 +24,6 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
 ) => {
   const field = props.field.value;
   const form = props.form.value;
-  const validation = props.validation.value;
   const { tooltipAttributes } = useTooltip(field.tooltip);
   const { onChange, onInput } = useInputEvents<T, F>(field, form);
 
@@ -45,7 +44,7 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
       class: {
         ...baseClasses,
         'is-invalid': !props.validation.value.valid,
-        ...(field.class ? { [field.class]: !!field.class } : {}),
+        ...(field.class ?? {}),
       },
       disabled: field.disabled || false,
       inputmode: field.inputmode || null,

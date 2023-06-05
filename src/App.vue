@@ -80,7 +80,12 @@ const fields: FormInputFields<LoginFormData> = {
     autocomplete: 'password',
     autofocus: true,
     disabled: false,
-    toggleable: true,
+    toggleable: {
+      icons: {
+        show: '🙈',
+        hide: '🙉',
+      },
+    },
     validate: (value: string): ValidationResult => {
       if (value.length < 8) {
         return {

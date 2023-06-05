@@ -44,15 +44,15 @@ export default defineComponent({
     },
   },
   computed: {
-    containerClass(): string[] {
-      const classes = ['mb-3'];
+    containerClass() {
+      let classes = { 'mb-3': true } as Record<string, boolean>;
 
       if (this.field.floating ?? false) {
-        classes.push('form-floating');
+        classes['form-floating'] = true;
       }
 
       if (this.field.containerClass) {
-        classes.push(this.field.containerClass);
+        classes = { ...classes, ...this.field.containerClass };
       }
 
       return classes;

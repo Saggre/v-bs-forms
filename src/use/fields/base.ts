@@ -50,8 +50,8 @@ export interface TooltipOptions {
 
 export interface GlobalFormField<V, S = string> {
   type: string;
-  class?: string;
-  containerClass?: string;
+  class?: { [key: string]: boolean };
+  containerClass?: { [key: string]: boolean };
   validate?: (value: V) => ValidationResult;
   deserialize?: (value: S) => V;
   serialize?: (value: V) => S;

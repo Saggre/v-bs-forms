@@ -1,6 +1,13 @@
 <template>
-  <div class="w-100 input-group mb-3">
-    <div :class="`flex-grow-1 form-floating ${containerClass}`">
+  <div class="w-100 input-group flex-nowrap">
+    <div
+      :class="{
+        'flex-grow-1': true,
+        'form-floating': true,
+        ...containerClass,
+        'is-invalid': attributes.class['is-invalid'],
+      }"
+    >
       <FieldInput
         ref="root"
         v-bind="attributes"
@@ -10,11 +17,10 @@
         :type="showPassword ? 'text' : 'password'"
       />
       <FieldLabel :for="attributes.id" :value="field.title" />
-      <FieldInputError :validation="validation" />
     </div>
     <button
       v-if="field.toggleable"
-      class="btn btn-outline-dark position-relative btn--password-toggle"
+      class="btn btn-dark position-relative btn--password-toggle mb-3"
       type="button"
       style="width: 58px"
       @click="togglePassword"
@@ -22,9 +28,10 @@
       <span
         class="fs-2 position-absolute top-50 start-50"
         style="transform: translate(-50%, -50%)"
-        >{{ showPassword ? '🙉' : '🙈' }}</span
+        >{{ showPassword ? icons.show : icons.hide }}</span
       >
     </button>
+    <FieldInputError :validation="validation" />
   </div>
 </template>
 
@@ -59,6 +66,16 @@ export default defineComponent({
   methods: {
     togglePassword() {
       this.showPassword = !this.showPassword;
+    },
+  },
+  computed: {
+    icons(): { show: string; hide: string } {
+      return (
+        this.field.toggleable?.icons ?? {
+          show: '👁️',
+          hide: '👁️‍🗨️',
+        }
+      );
     },
   },
   data() {

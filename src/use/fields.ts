@@ -86,7 +86,14 @@ export type TextareaFormField<V = string> = BaseFormFieldDefinition<V> &
 export type PasswordFormField<V = string> = BaseFormFieldDefinition<V> &
   InputFormField & {
     type: 'password';
-    toggleable?: boolean;
+    toggleable?:
+      | boolean
+      | {
+          icons: {
+            show: string;
+            hide: string;
+          };
+        };
   };
 
 export type FileFormField<V = string> = BaseFormFieldDefinition<V> &

@@ -28,6 +28,11 @@ interface LoginFormData extends FormDataDefinition {
   email: string;
   password: string;
   action: boolean;
+  number1: number;
+  number2: number;
+  numberStep: number;
+  datetime: Moment;
+  checkbox: boolean;
 }
 
 type LoginForm = FormDefinition<LoginFormData>;
@@ -95,7 +100,7 @@ const fields: FormInputFields<LoginFormData> = {
     floating: true,
     deserialize: (value: string) => moment(value),
     serialize: (value: Moment) => value.toISOString(),
-    onChange: (value: Moment, form: FormDefinition<any>) =>
+    onChange: (value: Moment, form: LoginForm | undefined) =>
       console.log(`Selected: ${value.toISOString()}`, form),
   },
   textarea: {
@@ -195,16 +200,19 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'number',
     title: 'Number 1',
     floating: true,
-    onInput: (value: number, form: FormDefinition<any>) => {
+    onInput: (value: number, form: LoginForm | undefined) => {
       console.log(`Selected: ${value}`, form);
-      form.accessors.data['number2'] = value * 2;
+
+      if (form) {
+        form.accessors.data['number2'] = value * 2;
+      }
     },
   },
   number2: {
     type: 'number',
     title: 'Number 2',
     floating: true,
-    onInput: (value: number, form: FormDefinition<any>) =>
+    onInput: (value: number, form: LoginForm | undefined) =>
       console.log(`Selected: ${value}`, form),
   },
   numberStep: {
@@ -214,7 +222,7 @@ const fields: FormInputFields<LoginFormData> = {
     step: 0.1,
     min: 10,
     max: 20,
-    onInput: (value: number, form: FormDefinition<any>) =>
+    onInput: (value: number, form: LoginForm | undefined) =>
       console.log(`Selected: ${value}`, form),
   },
 };

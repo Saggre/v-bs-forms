@@ -95,14 +95,14 @@ export type FileFormField<V = string> = BaseFormFieldDefinition<V> &
     onInput?: never;
   };
 
-export type FormField =
-  | StandardFormField
-  | NumberFormField
-  | DropdownFormField
-  | TextareaFormField
-  | DateTimeFormField
-  | ActionFormField
-  | ListGroupFormField
-  | CheckboxFormField
-  | FileFormField
-  | PasswordFormField;
+export type FormField<V> =
+  | StandardFormField<V>
+  | NumberFormField<V>
+  | DropdownFormField<V>
+  | TextareaFormField<V>
+  | DateTimeFormField<V>
+  | ActionFormField<V>
+  | ListGroupFormField<V>
+  | CheckboxFormField<V>
+  | FileFormField<V>
+  | PasswordFormField<V>;

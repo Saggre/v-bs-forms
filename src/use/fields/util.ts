@@ -4,7 +4,7 @@ import { FormField } from '@/use/fields';
  *
  * @param field
  */
-export const getContainerClass = (field: FormField): string[] => {
+export const getContainerClass = (field: FormField<any>): string[] => {
   const classes = ['mb-3'];
 
   if (field.floating ?? false) {

@@ -35,7 +35,7 @@ export interface FormCallbacks<T extends FormDataDefinition> {
 }
 
 export type FormInputFields<T extends FormDataDefinition> = {
-  [key in keyof T]: FormField;
+  [K in keyof T]: FormField<T[K]>;
 };
 
 export type FormDefinition<T extends FormDataDefinition> = {
@@ -118,7 +118,7 @@ function validateFields<T extends FormDataDefinition>(
   const results = {} as Record<keyof T, ValidationResult>;
 
   for (const key in form.fields) {
-    const field: FormField = form.fields[key];
+    const field = form.fields[key];
 
     if (field.validate) {
       const value = form?.accessors?.data?.[key];

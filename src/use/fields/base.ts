@@ -15,15 +15,7 @@ export const enum HtmlFormFieldType {
   Hidden = 'hidden',
 }
 
-export type FormDataTypeDefinition =
-  | string
-  | number
-  | boolean
-  | null
-  | undefined
-  | FormDataTypeDefinition[];
-
-export type FormDataDefinition = Record<string, FormDataTypeDefinition>;
+export type FormDataDefinition = Record<string, any>;
 
 export interface ValidationSuccess {
   valid: true;
@@ -51,7 +43,12 @@ export interface CommonHtmlAttributes {
   required: boolean | null;
 }
 
-export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
+export interface TooltipOptions {
+  title: string;
+  placement: 'top' | 'bottom' | 'left' | 'right';
+}
+
+export interface GlobalFormField<V, S = string> {
   type: string;
   class?: string;
   containerClass?: string;
@@ -67,7 +64,7 @@ export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
   autofocus?: boolean;
   id?: string;
   name?: string;
-  tooltip?: string;
+  tooltip?: TooltipOptions;
 }
 
 export interface InputFormField {

@@ -1,8 +1,16 @@
 import { ref, onMounted } from 'vue';
 import { Tooltip } from 'bootstrap';
+import { TooltipOptions } from '@/use/fields/base';
 
-export const useTooltip = () => {
-  const tooltip = ref<Tooltip>();
+export const useTooltip = (options: TooltipOptions | undefined) => {
+  if (!options) {
+    return {
+      bootstrapTooltip: null,
+      tooltipAttributes: {},
+    };
+  }
+
+  const bootstrapTooltip = ref<Tooltip>();
   const root = ref<HTMLElement | null>(null);
 
   const init = () => {
@@ -12,10 +20,16 @@ export const useTooltip = () => {
       return;
     }
 
-    tooltip.value = new Tooltip(el);
+    bootstrapTooltip.value = new Tooltip(el);
   };
+
+  const tooltipAttributes = ref<Record<string, string>>({
+    'data-bs-toggle': 'tooltip',
+    'data-bs-placement': options.placement,
+    title: options.title,
+  });
 
   onMounted(() => init());
 
-  return { tooltip };
+  return { bootstrapTooltip, tooltipAttributes };
 };

@@ -43,7 +43,7 @@ export default defineComponent({
   },
   props: {
     field: {
-      type: Object as PropType<FormField>,
+      type: Object as PropType<FormField<any>>,
       required: true,
     },
   },

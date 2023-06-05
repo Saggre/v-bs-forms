@@ -3,7 +3,7 @@
     <div :class="containerClass">
       <input
         ref="root"
-        v-bind="commonHtmlAttributes"
+        v-bind="attributes"
         :min="field.min || null"
         :max="field.max || null"
         :step="field.step || null"
@@ -12,9 +12,6 @@
         @input="onInput"
         :placeholder="placeholder"
         type="number"
-        data-bs-toggle="tooltip"
-        data-bs-placement="top"
-        title="Tooltip on top"
       />
       <FieldLabel :for="commonHtmlAttributes.id" :value="field.title" />
       <FieldInputError :validation="validation" />
@@ -55,13 +52,19 @@ export default defineComponent({
 
       return '';
     },
+    attributes(): object {
+      return {
+        ...this.commonHtmlAttributes,
+        ...this.tooltipAttributes,
+      };
+    },
   },
   setup(props) {
-    const { tooltip } = useTooltip();
+    const { tooltipAttributes } = useTooltip(props.field.tooltip);
     const { onChange, onInput } = useInputEvents(props.field, props.form);
 
     return {
-      tooltip,
+      tooltipAttributes,
       onChange,
       onInput,
     };

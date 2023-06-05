@@ -46,6 +46,8 @@ export type FormDefinition<T extends FormDataDefinition> = {
   callbacks: FormCallbacks<T>;
 };
 
+export type AbstractFormDefinition = FormDefinition<{ [key: string]: any }>;
+
 export type PartialFormDefinition<T extends FormDataDefinition> = Partial<{
   title?: string;
   description?: string;

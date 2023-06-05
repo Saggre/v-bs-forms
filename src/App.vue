@@ -4,6 +4,19 @@
       <template #title>
         <h1>Title override</h1>
       </template>
+      <div class="w-100">
+        <div class="mb-3 form-floating">
+          <input
+            class="form-control"
+            id="extra"
+            autocomplete="off"
+            name="extra"
+            type="text"
+            placeholder="Extra field"
+          />
+          <label class="" for="Email"><span>Extra field</span></label>
+        </div>
+      </div>
     </AppForm>
   </div>
 </template>
@@ -33,7 +46,7 @@ interface LoginFormData extends FormDataDefinition {
   numberStep: number;
   datetime: Moment;
   checkbox: boolean;
-  foo: never;
+  extra: string;
 }
 
 type LoginForm = FormDefinition<LoginFormData>;

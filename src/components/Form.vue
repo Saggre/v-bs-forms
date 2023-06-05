@@ -89,8 +89,8 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import {
+  AbstractFormDefinition,
   FormClasses,
-  FormDefinition,
   FormErrorType,
   FormTranslations,
   FormVisibility,
@@ -98,6 +98,7 @@ import {
 import SectionTitle from '@/components/section/SectionTitle.vue';
 import { ValidationError } from '@/use/fields/base';
 import FormField from '@/components/fields/FormField.vue';
+import { getFormExtraFields } from '@/utils/form';
 
 type form =
   | undefined
@@ -114,7 +115,7 @@ export default defineComponent({
   },
   props: {
     form: {
-      type: Object as PropType<FormDefinition<any>>,
+      type: Object as PropType<AbstractFormDefinition>,
       required: true,
     },
     translations: {
@@ -164,10 +165,19 @@ export default defineComponent({
   },
   mounted() {
     this.form.callbacks?.onRender?.(this.form);
+    const form = this.htmlForm;
+
+    form.addEventListener('input', () => {
+      // TODO: If extra fields contain an image, it will have type File, which will cause an error here.
+      this.form.accessors.data = {
+        ...getFormExtraFields(form, this.form.fields),
+        ...this.form.accessors.data,
+      };
+    });
   },
   methods: {
     getFieldValidation(key: string | number): ValidationError | undefined {
-      const error = this.form?.accessors?.errors?.[key] ?? null;
+      const error = this.form.accessors.errors?.[key] ?? null;
 
       if (!error) {
         return undefined;
@@ -185,7 +195,7 @@ export default defineComponent({
 
       return {
         valid: false,
-        message: this.form?.accessors?.errors?.[key] ?? '',
+        message: this.form.accessors.errors?.[key] ?? '',
       };
     },
     async onSubmit() {

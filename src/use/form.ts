@@ -34,9 +34,9 @@ export interface FormCallbacks<T extends FormDataDefinition> {
   ) => void;
 }
 
-export type FormInputFields<T extends FormDataDefinition> = {
+export type FormInputFields<T extends FormDataDefinition> = Partial<{
   [K in keyof T]: FormField<T[K]>;
-};
+}>;
 
 export type FormDefinition<T extends FormDataDefinition> = {
   title?: string;
@@ -94,7 +94,7 @@ const getRequiredFieldErrors = <T extends FormDataDefinition>(
   const errors = {} as Partial<Record<keyof T, ValidationError>>;
 
   for (const key in form.fields) {
-    const field = form.fields[key];
+    const field = form.fields[key] as FormField<any>;
 
     if ('required' in field && field.required && !form?.accessors?.data[key]) {
       errors[key] = {
@@ -118,7 +118,7 @@ function validateFields<T extends FormDataDefinition>(
   const results = {} as Record<keyof T, ValidationResult>;
 
   for (const key in form.fields) {
-    const field = form.fields[key];
+    const field = form.fields[key] as FormField<any>;
 
     if (field.validate) {
       const value = form?.accessors?.data?.[key];

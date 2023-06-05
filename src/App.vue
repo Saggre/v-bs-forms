@@ -33,6 +33,7 @@ interface LoginFormData extends FormDataDefinition {
   numberStep: number;
   datetime: Moment;
   checkbox: boolean;
+  foo: never;
 }
 
 type LoginForm = FormDefinition<LoginFormData>;

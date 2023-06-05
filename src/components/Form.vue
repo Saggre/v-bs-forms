@@ -37,7 +37,7 @@
               :validation="getFieldValidation(key)"
               :field="{
                 ...field,
-                name: field.name ?? key,
+                name: field && field.name ? field.name : key,
               }"
               :form="form"
             />

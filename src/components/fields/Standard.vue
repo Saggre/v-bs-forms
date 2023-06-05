@@ -5,12 +5,11 @@
         ref="root"
         v-bind="attributes"
         v-model="value"
-        @change="onChange"
-        @input="onInput"
+        @change="events.onChange"
+        @input="events.onInput"
         :type="field.type"
-        :placeholder="placeholder"
       />
-      <FieldLabel :for="field.id ?? field.title" :value="field.title" />
+      <FieldLabel :for="id" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>
@@ -23,6 +22,7 @@ import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
+import { useStdComponent } from '@/composables/stdComponent';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -37,18 +37,14 @@ export default defineComponent({
       required: true,
     },
   },
-  computed: {
-    placeholder(): string {
-      if (this.field.placeholder) {
-        return this.field.placeholder;
-      }
+  setup(props) {
+    const { attributes, events } = useStdComponent(
+      props.field,
+      props.form,
+      props.validation,
+    );
 
-      if (this.field.floating) {
-        return this.field.title;
-      }
-
-      return '';
-    },
+    return { attributes, events, id: attributes.id };
   },
 });
 </script>

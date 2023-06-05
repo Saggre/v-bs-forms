@@ -40,6 +40,7 @@ export interface CommonHtmlAttributes {
   id: string | null;
   name: string | null;
   required: boolean | null;
+  placeholder: string | null;
 }
 
 export interface TooltipOptions {
@@ -64,9 +65,13 @@ export interface GlobalFormField<V, S = string> {
   id?: string;
   name?: string;
   tooltip?: TooltipOptions;
+  required?: boolean;
   visible?: boolean | ((form: FormDefinition<any>) => boolean);
 }
 
+/**
+ * @deprecated
+ */
 export interface InputFormField {
   required?: boolean;
 }

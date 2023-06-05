@@ -2,7 +2,7 @@
   <div class="w-100">
     <div :class="containerClass">
       <FieldLabel
-        :for="field.id ?? field.title"
+        :for="attributes.id"
         :value="field.title"
         class="form-label"
       />
@@ -12,7 +12,6 @@
         :accept="field.accept || 'image/*'"
         v-model="value"
         :type="field.type"
-        :placeholder="placeholder"
       />
       <FieldInputError :validation="validation" />
     </div>
@@ -20,12 +19,13 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {FileFormField} from '@/use/fields';
+import { defineComponent, PropType } from 'vue';
+import { FileFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
+import { useStdComponent } from '@/composables/stdComponent';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -40,18 +40,8 @@ export default defineComponent({
       required: true,
     },
   },
-  computed: {
-    placeholder(): string {
-      if (this.field.placeholder) {
-        return this.field.placeholder;
-      }
-
-      if (this.field.floating) {
-        return this.field.title;
-      }
-
-      return '';
-    },
+  setup(props) {
+    return useStdComponent(props.field, props.form, props.validation);
   },
 });
 </script>

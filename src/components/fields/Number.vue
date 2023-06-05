@@ -8,23 +8,23 @@
         :max="field.max || null"
         :step="field.step || null"
         v-model="value"
-        @change="onChange"
-        @input="onInput"
-        :placeholder="placeholder"
+        @change="events.onChange"
+        @input="events.onInput"
         type="number"
       />
-      <FieldLabel :for="commonHtmlAttributes.id" :value="field.title" />
+      <FieldLabel :for="attributes.id" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {NumberFormField} from '@/use/fields';
+import { defineComponent, PropType } from 'vue';
+import { NumberFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
+import { useStdComponent } from '@/composables/stdComponent';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -38,18 +38,8 @@ export default defineComponent({
       required: true,
     },
   },
-  computed: {
-    placeholder(): string {
-      if (this.field.placeholder) {
-        return this.field.placeholder;
-      }
-
-      if (this.field.floating) {
-        return this.field.title;
-      }
-
-      return '';
-    },
+  setup(props) {
+    return useStdComponent(props.field, props.form, props.validation);
   },
 });
 </script>

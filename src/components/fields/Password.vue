@@ -5,12 +5,11 @@
         ref="root"
         v-bind="attributes"
         v-model="value"
-        @change="onChange"
-        @input="onInput"
+        @change="events.onChange"
+        @input="events.onInput"
         :type="showPassword ? 'text' : 'password'"
-        :placeholder="placeholder"
       />
-      <FieldLabel :for="field.id ?? field.title" :value="field.title" />
+      <FieldLabel :for="attributes.id" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
     <button
@@ -36,12 +35,13 @@
 </style>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {PasswordFormField} from '@/use/fields';
+import { defineComponent, PropType } from 'vue';
+import { PasswordFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
+import { useStdComponent } from '@/composables/stdComponent';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -66,18 +66,8 @@ export default defineComponent({
       showPassword: false,
     };
   },
-  computed: {
-    placeholder(): string {
-      if (this.field.placeholder) {
-        return this.field.placeholder;
-      }
-
-      if (this.field.floating) {
-        return this.field.title;
-      }
-
-      return '';
-    },
+  setup(props) {
+    return useStdComponent(props.field, props.form, props.validation);
   },
 });
 </script>

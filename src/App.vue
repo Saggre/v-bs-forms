@@ -66,6 +66,10 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'text',
     title: 'Email',
     floating: true,
+    tooltip: {
+      title: 'Tooltip title',
+      placement: 'top',
+    },
   },
   password: {
     type: 'password',

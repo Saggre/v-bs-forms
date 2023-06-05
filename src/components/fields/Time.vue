@@ -4,11 +4,12 @@
       <FieldInput
         ref="root"
         v-bind="attributes"
+        @change="events.onChange"
+        @input="events.onInput"
         v-model="value"
         type="time"
-        :placeholder="field.placeholder"
       />
-      <FieldLabel :for="field.id ?? field.title" :value="field.title" />
+      <FieldLabel :for="attributes.id" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>
@@ -21,6 +22,7 @@ import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
 import { TimeFormField } from '@/use/fields';
+import { useStdComponent } from '@/composables/stdComponent';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -34,6 +36,9 @@ export default defineComponent({
       type: Object as PropType<TimeFormField>,
       required: true,
     },
+  },
+  setup(props) {
+    return useStdComponent(props.field, props.form, props.validation);
   },
 });
 </script>

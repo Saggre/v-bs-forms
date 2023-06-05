@@ -5,10 +5,11 @@
         ref="root"
         v-bind="attributes"
         v-model="value"
+        @change="events.onChange"
+        @input="events.onInput"
         type="date"
-        :placeholder="field.placeholder"
       />
-      <FieldLabel :for="field.id ?? field.title" :value="field.title" />
+      <FieldLabel :for="attributes.id" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>
@@ -21,6 +22,7 @@ import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
 import { DateFormField } from '@/use/fields';
+import { useStdComponent } from '@/composables/stdComponent';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -35,32 +37,8 @@ export default defineComponent({
       required: true,
     },
   },
-  /* data() {
-    const date = this.internalModelValue();
-    return {
-      value: `${date.getYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-    };
+  setup(props) {
+    return useStdComponent(props.field, props.form, props.validation);
   },
-  watch: {
-    value(fieldValue: string) {
-      const parts = fieldValue.split('-');
-      const date = new Date(
-        parseInt(parts[0], 10),
-        parseInt(parts[1]) - 1,
-        parseInt(parts[2]),
-      );
-
-      this.value = this.field.serialize(date);
-
-      if (this.field.onChange) {
-        this.field.onChange(date, this.form);
-      }
-    },
-  },
-  methods: {
-    internalModelValue(): Date {
-      return this.field.deserialize(this.modelValue);
-    },
-  },*/
 });
 </script>

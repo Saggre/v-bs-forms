@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { ValidationResult } from '@/use/fields/base';
-import { getContainerClass } from '@/use/fields/util';
 import { FormDefinition } from '@/use/form';
 
 export default defineComponent({
@@ -46,7 +45,17 @@ export default defineComponent({
   },
   computed: {
     containerClass(): string[] {
-      return getContainerClass(this.field);
+      const classes = ['mb-3'];
+
+      if (this.field.floating ?? false) {
+        classes.push('form-floating');
+      }
+
+      if (this.field.containerClass) {
+        classes.push(this.field.containerClass);
+      }
+
+      return classes;
     },
   },
   data(props) {

@@ -9,14 +9,14 @@
         @input="events.onInput"
         :type="field.type"
       />
-      <FieldLabel :for="id" :value="field.title" />
+      <FieldLabel :for="attributes.id" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 import { FormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
@@ -38,13 +38,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { attributes, events } = useStdComponent(
-      props.field,
-      props.form,
-      props.validation,
-    );
-
-    return { attributes, events, id: attributes.id };
+    return useStdComponent(props.field, props.form, props.validation);
   },
 });
 </script>

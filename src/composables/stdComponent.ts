@@ -18,15 +18,17 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
   const { tooltipAttributes } = useTooltip(field.tooltip);
   const { onChange, onInput } = useInputEvents<T, F>(field, form);
 
-  let placeholder = null;
+  const getPlaceholder = (field: F) => {
+    if ('placeholder' in field && field.placeholder) {
+      return field.placeholder;
+    }
 
-  if ('placeholder' in field && field.placeholder) {
-    placeholder = field.placeholder;
-  }
+    if (field.floating) {
+      return field.title ?? null;
+    }
 
-  if (field.floating) {
-    placeholder = field.title ?? null;
-  }
+    return null;
+  };
 
   return {
     attributes: {
@@ -43,7 +45,7 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
       id: field.id || field.title,
       name: field.name || field.title,
       required: field.required || false,
-      placeholder,
+      placeholder: getPlaceholder(field),
       ...tooltipAttributes,
     },
     events: {

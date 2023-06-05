@@ -30,17 +30,18 @@
         <div :class="`card ${classes.card}`">
           <div class="card-body">
             <slot name="head" />
-            <FormField
-              v-for="(field, key) in form.fields"
-              :key="key"
-              :form-key="`${key}`"
-              :validation="getFieldValidation(key)"
-              :field="{
-                ...field,
-                name: field && field.name ? field.name : key,
-              }"
-              :form="form"
-            />
+            <span v-for="(field, key) in form.fields" :key="key">
+              <FormFieldComponent
+                v-if="isFieldVisible(field)"
+                :form-key="`${key}`"
+                :validation="getFieldValidation(key)"
+                :field="{
+                  ...field,
+                  name: field && field.name ? field.name : key,
+                }"
+                :form="form"
+              />
+            </span>
             <slot />
             <div
               v-if="loading"
@@ -97,8 +98,9 @@ import {
 } from '@/use/form';
 import SectionTitle from '@/components/section/SectionTitle.vue';
 import { ValidationError } from '@/use/fields/base';
-import FormField from '@/components/fields/FormField.vue';
+import FormFieldComponent from '@/components/fields/FormField.vue';
 import { getFormExtraFields } from '@/utils/form';
+import { FormField } from '@/use/fields';
 
 type form =
   | undefined
@@ -111,7 +113,7 @@ type form =
 export default defineComponent({
   components: {
     SectionTitle,
-    FormField,
+    FormFieldComponent,
   },
   props: {
     form: {
@@ -176,6 +178,11 @@ export default defineComponent({
     });
   },
   methods: {
+    isFieldVisible(field: FormField<any>): boolean {
+      return field.visible instanceof Function
+        ? field.visible(this.form)
+        : field.visible ?? true;
+    },
     getFieldValidation(key: string | number): ValidationError | undefined {
       const error = this.form.accessors.errors?.[key] ?? null;
 

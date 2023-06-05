@@ -238,6 +238,13 @@ const fields: FormInputFields<LoginFormData> = {
     max: 20,
     onInput: (value: number, form: LoginForm | undefined) =>
       console.log(`Selected: ${value}`, form),
+    visible: (form: LoginForm | undefined) => {
+      if (form) {
+        return form.accessors.data['number1'] > 10;
+      }
+
+      return false;
+    },
   },
 };
 

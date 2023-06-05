@@ -65,6 +65,7 @@ export interface GlobalFormField<V, S = string> {
   id?: string;
   name?: string;
   tooltip?: TooltipOptions;
+  visible?: boolean | ((form: FormDefinition<any>) => boolean);
 }
 
 export interface InputFormField {

@@ -16,8 +16,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {TextareaFormField} from '@/use/fields';
+import { defineComponent, PropType } from 'vue';
+import { TextareaFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';

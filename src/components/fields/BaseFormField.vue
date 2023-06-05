@@ -83,7 +83,7 @@ export default defineComponent({
   },
   data(props) {
     return {
-      value: props.modelValue,
+      value: props.modelValue as any,
     };
   },
   mounted() {

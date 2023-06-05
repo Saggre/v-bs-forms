@@ -5,10 +5,8 @@
         ref="root"
         v-bind="attributes"
         v-model="value"
-        @change="onChange"
-        @input="onInput"
-        :type="field.type"
-        :placeholder="placeholder"
+        type="date"
+        :placeholder="field.placeholder"
       />
       <FieldLabel :for="field.id ?? field.title" :value="field.title" />
       <FieldInputError :validation="validation" />
@@ -18,11 +16,11 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { FormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
+import { DateFormField } from '@/use/fields';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -33,22 +31,36 @@ export default defineComponent({
   },
   props: {
     field: {
-      type: Object as PropType<FormField<any>>,
+      type: Object as PropType<DateFormField>,
       required: true,
     },
   },
-  computed: {
-    placeholder(): string {
-      if (this.field.placeholder) {
-        return this.field.placeholder;
-      }
+  /* data() {
+    const date = this.internalModelValue();
+    return {
+      value: `${date.getYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+    };
+  },
+  watch: {
+    value(fieldValue: string) {
+      const parts = fieldValue.split('-');
+      const date = new Date(
+        parseInt(parts[0], 10),
+        parseInt(parts[1]) - 1,
+        parseInt(parts[2]),
+      );
 
-      if (this.field.floating) {
-        return this.field.title;
-      }
+      this.value = this.field.serialize(date);
 
-      return '';
+      if (this.field.onChange) {
+        this.field.onChange(date, this.form);
+      }
     },
   },
+  methods: {
+    internalModelValue(): Date {
+      return this.field.deserialize(this.modelValue);
+    },
+  },*/
 });
 </script>

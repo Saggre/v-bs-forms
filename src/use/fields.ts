@@ -5,7 +5,6 @@ import {
   InputFormField,
   ValidationResult,
 } from '@/use/fields/base';
-import { Moment } from 'moment/moment';
 
 export type StandardFormField<V = string> = BaseFormFieldDefinition<V> &
   InputFormField & {
@@ -37,12 +36,16 @@ export type ActionFormField<V = boolean> = BaseFormFieldDefinition<V> &
     onInput?: never;
   };
 
-export type DateTimeFormField<V = Moment> = BaseFormFieldDefinition<V> &
+export type DateFormField<V = Date> = BaseFormFieldDefinition<V> &
   InputFormField & {
-    type: 'datetime';
+    type: 'date';
     deserialize: (value: string) => V;
     serialize: (value: V) => string;
-    onInput?: never;
+  };
+
+export type TimeFormField<V = string> = BaseFormFieldDefinition<V> &
+  InputFormField & {
+    type: 'time';
   };
 
 export interface ListItem {
@@ -100,7 +103,8 @@ export type FormField<V> =
   | NumberFormField<V>
   | DropdownFormField<V>
   | TextareaFormField<V>
-  | DateTimeFormField<V>
+  | DateFormField<V>
+  | TimeFormField<V>
   | ActionFormField<V>
   | ListGroupFormField<V>
   | CheckboxFormField<V>

@@ -7,7 +7,6 @@ export const enum HtmlFormFieldType {
   Radio = 'radio',
   Date = 'date',
   Time = 'time',
-  Datetime = 'datetime',
   Email = 'email',
   Tel = 'tel',
   Url = 'url',

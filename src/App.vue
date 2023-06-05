@@ -35,7 +35,6 @@ import {
   ValidationResult,
   ValidationSuccess,
 } from '@/use/fields/base';
-import moment, { Moment } from 'moment/moment';
 
 interface LoginFormData extends FormDataDefinition {
   email: string;
@@ -44,7 +43,8 @@ interface LoginFormData extends FormDataDefinition {
   number1: number;
   number2: number;
   numberStep: number;
-  datetime: Moment;
+  date: Date;
+  time: string;
   checkbox: boolean;
   extra: string;
 }
@@ -108,14 +108,19 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'file',
     title: 'Profile image',
   },
-  datetime: {
-    type: 'datetime',
-    title: 'Datetime',
+  date: {
+    type: 'date',
+    title: 'Date',
     floating: true,
-    deserialize: (value: string) => moment(value),
-    serialize: (value: Moment) => value.toISOString(),
-    onChange: (value: Moment, form: LoginForm | undefined) =>
+    deserialize: (value: string) => new Date(value),
+    serialize: (value: Date) => value.toISOString(),
+    onChange: (value: Date, form: LoginForm | undefined) =>
       console.log(`Selected: ${value.toISOString()}`, form),
+  },
+  time: {
+    type: 'time',
+    title: 'Time',
+    floating: true,
   },
   textarea: {
     type: 'textarea',

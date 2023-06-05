@@ -36,6 +36,21 @@ export interface ValidationError {
 
 export type ValidationResult = ValidationSuccess | ValidationError;
 
+/**
+ * Attributes that are common for all input types.
+ */
+export interface CommonHtmlAttributes {
+  class: string | object | null;
+  disabled: boolean | null;
+  inputmode: string | null;
+  pattern: string | null;
+  autocomplete: string | null;
+  autofocus: boolean | null;
+  id: string | null;
+  name: string | null;
+  required: boolean | null;
+}
+
 export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
   type: string;
   class?: string;
@@ -52,6 +67,7 @@ export interface GlobalFormField<V, S extends FormDataTypeDefinition = string> {
   autofocus?: boolean;
   id?: string;
   name?: string;
+  tooltip?: string;
 }
 
 export interface InputFormField {

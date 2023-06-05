@@ -2,28 +2,21 @@
   <div class="w-100">
     <div :class="containerClass">
       <input
-        :id="field.id ?? field.title"
-        :autocomplete="field.autocomplete || 'off'"
-        :autofocus="field.autofocus || false"
-        :disabled="field.disabled || false"
-        :inputmode="field.inputmode || null"
+        ref="root"
+        v-bind="commonHtmlAttributes"
         :min="field.min || null"
         :max="field.max || null"
         :step="field.step || null"
-        :name="field.name ?? field.title"
-        :required="field.required || false"
         v-model="value"
         @change="onChange"
         @input="onInput"
-        class="form-control"
-        :class="{
-          'is-invalid': !validation.valid,
-          [field.class]: !!field.class,
-        }"
         :placeholder="placeholder"
         type="number"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="Tooltip on top"
       />
-      <FieldLabel :for="field.id ?? field.title" :value="field.title" />
+      <FieldLabel :for="commonHtmlAttributes.id" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>
@@ -35,6 +28,7 @@ import { NumberFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
+import { useTooltip } from '@/composables/tooltip';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -76,6 +70,13 @@ export default defineComponent({
         this.field.onInput(element.value as unknown as number, this.form);
       }
     },
+  },
+  setup() {
+    const { tooltip } = useTooltip();
+
+    return {
+      tooltip,
+    };
   },
 });
 </script>

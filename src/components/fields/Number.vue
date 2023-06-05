@@ -29,6 +29,7 @@ import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
 import { useTooltip } from '@/composables/tooltip';
+import { useInputEvents } from '@/composables/inputEvents';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -55,27 +56,14 @@ export default defineComponent({
       return '';
     },
   },
-  methods: {
-    onChange(event: Event) {
-      const element = event.target as HTMLInputElement;
-
-      if (this.field.onChange) {
-        this.field.onChange(element.value as unknown as number, this.form);
-      }
-    },
-    onInput(event: Event) {
-      const element = event.target as HTMLInputElement;
-
-      if (this.field.onInput) {
-        this.field.onInput(element.value as unknown as number, this.form);
-      }
-    },
-  },
-  setup() {
+  setup(props) {
     const { tooltip } = useTooltip();
+    const { onChange, onInput } = useInputEvents(props.field, props.form);
 
     return {
       tooltip,
+      onChange,
+      onInput,
     };
   },
 });

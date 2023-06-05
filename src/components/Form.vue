@@ -32,7 +32,7 @@
             <slot name="head" />
             <span v-for="(field, key) in form.fields" :key="key">
               <FormFieldComponent
-                v-if="isFieldVisible(field)"
+                v-if="field && isFieldVisible(field)"
                 :form-key="`${key}`"
                 :validation="getFieldValidation(key)"
                 :field="{

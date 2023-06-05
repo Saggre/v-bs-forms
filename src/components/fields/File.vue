@@ -7,19 +7,11 @@
         class="form-label"
       />
       <FieldInput
-        :id="field.id ?? field.title"
-        :autocomplete="field.autocomplete || 'off'"
-        :autofocus="field.autofocus || false"
-        :disabled="field.disabled || false"
-        :name="field.name ?? field.title"
-        :required="field.required || false"
+        ref="root"
+        v-bind="attributes"
         :accept="field.accept || 'image/*'"
         v-model="value"
         :type="field.type"
-        :class="{
-          'is-invalid': !validation.valid,
-          [field.class]: !!field.class,
-        }"
         :placeholder="placeholder"
       />
       <FieldInputError :validation="validation" />
@@ -28,8 +20,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { FileFormField } from '@/use/fields';
+import {defineComponent, PropType} from 'vue';
+import {FileFormField} from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';

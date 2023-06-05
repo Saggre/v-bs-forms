@@ -2,23 +2,7 @@
   <div class="w-100">
     <div :class="containerClass">
       <div class="form-check">
-        <input
-          :id="field.id ?? field.title"
-          :autocomplete="field.autocomplete || 'off'"
-          :autofocus="field.autofocus || false"
-          :disabled="field.disabled || false"
-          :inputmode="field.inputmode || null"
-          :pattern="field.pattern || null"
-          :name="field.name ?? field.title"
-          :required="field.required || false"
-          :class="{
-            'form-check-input': true,
-            'is-invalid': !validation.valid,
-            [field.class]: !!field.class,
-          }"
-          type="checkbox"
-          v-model="value"
-        />
+        <input ref="root" v-bind="attributes" type="checkbox" v-model="value" />
         <FieldLabel :for="field.id ?? field.title" :value="field.title" />
         <FieldInputError :validation="validation" />
       </div>
@@ -43,6 +27,13 @@ export default defineComponent({
     field: {
       type: Object as PropType<CheckboxFormField>,
       required: true,
+    },
+  },
+  computed: {
+    baseClass() {
+      return {
+        'form-check-input': true,
+      };
     },
   },
 });

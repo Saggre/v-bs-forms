@@ -20,13 +20,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { NumberFormField } from '@/use/fields';
+import {defineComponent, PropType} from 'vue';
+import {NumberFormField} from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
-import { useTooltip } from '@/composables/tooltip';
-import { useInputEvents } from '@/composables/inputEvents';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -52,22 +50,6 @@ export default defineComponent({
 
       return '';
     },
-    attributes(): object {
-      return {
-        ...this.commonHtmlAttributes,
-        ...this.tooltipAttributes,
-      };
-    },
-  },
-  setup(props) {
-    const { tooltipAttributes } = useTooltip(props.field.tooltip);
-    const { onChange, onInput } = useInputEvents(props.field, props.form);
-
-    return {
-      tooltipAttributes,
-      onChange,
-      onInput,
-    };
   },
 });
 </script>

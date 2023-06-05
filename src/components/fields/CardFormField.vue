@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" ref="root" v-bind="tooltipAttributes">
     <div class="card-header" v-if="!!field.header">{{ field.header }}</div>
     <div class="card-body">
       <h5 class="card-title" v-if="!!field.title">{{ field.title }}</h5>
@@ -25,6 +25,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { CardFormFieldDefinition } from '@/use/fields/base';
+import { useTooltip } from '@/composables/tooltip';
 
 export default defineComponent({
   props: {
@@ -32,6 +33,13 @@ export default defineComponent({
       type: Object as PropType<CardFormFieldDefinition>,
       required: true,
     },
+  },
+  setup(props) {
+    const { tooltipAttributes } = useTooltip(props.field.tooltip);
+
+    return {
+      tooltipAttributes,
+    };
   },
 });
 </script>

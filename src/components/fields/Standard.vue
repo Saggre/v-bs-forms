@@ -2,22 +2,12 @@
   <div class="w-100">
     <div :class="containerClass">
       <FieldInput
-        :id="field.id ?? field.title"
-        :autocomplete="field.autocomplete || 'off'"
-        :autofocus="field.autofocus || false"
-        :inputmode="field.inputmode || null"
-        :pattern="field.pattern || null"
-        :disabled="field.disabled || false"
-        :name="field.name ?? field.title"
-        :required="field.required || false"
+        ref="root"
+        v-bind="attributes"
         v-model="value"
         @change="onChange"
         @input="onInput"
         :type="field.type"
-        :class="{
-          'is-invalid': !validation.valid,
-          [field.class]: !!field.class,
-        }"
         :placeholder="placeholder"
       />
       <FieldLabel :for="field.id ?? field.title" :value="field.title" />
@@ -27,8 +17,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { FormField } from '@/use/fields';
+import {defineComponent, PropType} from 'vue';
+import {FormField} from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
@@ -58,22 +48,6 @@ export default defineComponent({
       }
 
       return '';
-    },
-  },
-  methods: {
-    onChange(event: Event) {
-      const element = event.target as HTMLInputElement;
-
-      if (this.field.onChange) {
-        this.field.onChange(element.value, this.form);
-      }
-    },
-    onInput(event: Event) {
-      const element = event.target as HTMLInputElement;
-
-      if (this.field.onInput) {
-        this.field.onInput(element.value, this.form);
-      }
     },
   },
 });

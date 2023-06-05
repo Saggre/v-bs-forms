@@ -4,6 +4,8 @@ import { CommonHtmlAttributes, ValidationResult } from '@/use/fields/base';
 import { getContainerClass } from '@/use/fields/util';
 import { FormDefinition } from '@/use/form';
 import { Tooltip } from 'bootstrap';
+import { useTooltip } from '@/composables/tooltip';
+import { useInputEvents } from '@/composables/inputEvents';
 
 export default defineComponent({
   props: {
@@ -46,6 +48,11 @@ export default defineComponent({
     },
   },
   computed: {
+    baseClass() {
+      return {
+        'form-control': true,
+      };
+    },
     containerClass(): string[] {
       return getContainerClass(this.field);
     },
@@ -53,7 +60,7 @@ export default defineComponent({
       const field = this.field;
       return {
         class: {
-          'form-control': true,
+          ...this.baseClass,
           'is-invalid': !this.validation.valid,
           [field.class]: !!field.class,
         },
@@ -65,6 +72,12 @@ export default defineComponent({
         id: field.id || field.title,
         name: field.name || field.title,
         required: field.required || false,
+      };
+    },
+    attributes(): object {
+      return {
+        ...this.commonHtmlAttributes,
+        ...this.tooltipAttributes,
       };
     },
   },
@@ -83,6 +96,16 @@ export default defineComponent({
         return new Tooltip(el);
       }
     },
+  },
+  setup(props) {
+    const { tooltipAttributes } = useTooltip(props.field.tooltip);
+    const { onChange, onInput } = useInputEvents(props.field, props.form);
+
+    return {
+      tooltipAttributes,
+      onChange,
+      onInput,
+    };
   },
 });
 </script>

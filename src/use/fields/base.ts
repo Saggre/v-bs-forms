@@ -79,6 +79,7 @@ export interface CardFormFieldDefinition {
   header?: string;
   footer?: string;
   floating: never;
+  tooltip?: TooltipOptions;
 }
 
 export interface StaticFormField {

@@ -2,19 +2,11 @@
   <div class="w-100">
     <div :class="containerClass">
       <select
+        ref="root"
+        v-bind="attributes"
         :id="field.id ?? field.title"
-        :autocomplete="field.autocomplete || 'off'"
-        :autofocus="field.autofocus || false"
-        :disabled="field.disabled || false"
-        :inputmode="field.inputmode || null"
-        :name="field.name ?? field.title"
-        :required="field.required || false"
         v-model="value"
         class="form-select"
-        :class="{
-          'is-invalid': !validation.valid,
-          [field.class]: !!field.class,
-        }"
       >
         <option
           v-for="(option, key) in field.options"

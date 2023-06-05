@@ -47,6 +47,7 @@ interface LoginFormData extends FormDataDefinition {
   time: string;
   checkbox: boolean;
   extra: string;
+  role: string;
 }
 
 type LoginForm = FormDefinition<LoginFormData>;
@@ -98,9 +99,9 @@ const fields: FormInputFields<LoginFormData> = {
     title: 'Role',
     floating: true,
     options: {
-      foo: 'foo',
-      bar: 'bar',
-      baz: 'baz',
+      foo: 'Foo',
+      bar: 'Bar',
+      baz: 'Baz',
     },
   },
   number: {
@@ -116,10 +117,8 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'date',
     title: 'Date',
     floating: true,
-    deserialize: (value: string) => new Date(value),
-    serialize: (value: Date) => value.toISOString(),
     onChange: (value: Date, form: LoginForm | undefined) =>
-      console.log(`Selected: ${value.toISOString()}`, form),
+      console.log(`Selected: ${value}`, form),
   },
   time: {
     type: 'time',

@@ -1,6 +1,6 @@
 <template>
   <div class="w-100 input-group mb-3">
-    <div :class="`flex-grow-1 form-floating ${field.containerClass}`">
+    <div :class="`flex-grow-1 form-floating ${containerClass}`">
       <FieldInput
         ref="root"
         v-bind="attributes"
@@ -35,7 +35,7 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, toRefs } from 'vue';
 import { PasswordFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
@@ -67,7 +67,7 @@ export default defineComponent({
     };
   },
   setup(props) {
-    return useStdComponent(props.field, props.form, props.validation);
+    return useStdComponent(toRefs(props));
   },
 });
 </script>

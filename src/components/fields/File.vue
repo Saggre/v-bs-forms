@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, toRefs } from 'vue';
 import { FileFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInput from '@/components/fields/standard/Input.vue';
@@ -41,7 +41,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    return useStdComponent(props.field, props.form, props.validation);
+    return useStdComponent(toRefs(props));
   },
 });
 </script>

@@ -12,7 +12,7 @@
           v-for="(option, key) in field.options"
           :key="key"
           :value="key"
-          :selected="value === option"
+          :selected="value === key"
         >
           {{ option }}
         </option>
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, toRefs } from 'vue';
 import { DropdownFormField } from '@/use/fields';
 import FieldLabel from '@/components/fields/standard/Label.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
@@ -44,7 +44,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    return useStdComponent(props.field, props.form, props.validation);
+    return useStdComponent(toRefs(props));
   },
 });
 </script>

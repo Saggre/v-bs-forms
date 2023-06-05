@@ -171,10 +171,11 @@ export default defineComponent({
 
     form.addEventListener('input', () => {
       // TODO: If extra fields contain an image, it will have type File, which will cause an error here.
-      this.form.accessors.data = {
-        ...getFormExtraFields(form, this.form.fields),
-        ...this.form.accessors.data,
-      };
+      Object.entries(getFormExtraFields(form, this.form.fields)).forEach(
+        ([key, value]) => {
+          this.form.accessors.data[key] = value;
+        },
+      );
     });
   },
   methods: {

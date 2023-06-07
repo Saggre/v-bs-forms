@@ -5,7 +5,7 @@ import {
 } from '@/use/fields/base';
 import { FormField } from '@/use/fields';
 import { Errors, VisitOptions } from '@inertiajs/core/types/types';
-import { Router, router } from '@inertiajs/core';
+import { router } from '@inertiajs/core';
 
 export type FormAccessorData<T extends FormDataDefinition> = Partial<{
   [K in keyof T]: T[K];
@@ -68,13 +68,17 @@ export interface FormClasses {
   card: string;
 }
 
-let inertiaRouter: Router;
+export interface VisitRouter {
+  visit: (url: string | URL, options?: VisitOptions) => void;
+}
 
-export const setInertiaRouter = (router: Router) => {
+let inertiaRouter: VisitRouter;
+
+export const setInertiaRouter = (router: VisitRouter) => {
   inertiaRouter = router;
 };
 
-export const getInertiaRouter = (): Router => inertiaRouter ?? router;
+export const getInertiaRouter = (): VisitRouter => inertiaRouter ?? router;
 
 /**
  * Validates fields marked as required.

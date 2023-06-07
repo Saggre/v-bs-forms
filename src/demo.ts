@@ -1,4 +1,8 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
+import { setInertiaRouter } from '@/use/form';
+import { getTestRouter } from '@/use/testRouter';
 
-createApp(App).mount('#app')
+setInertiaRouter(getTestRouter());
+
+createApp(App).mount('#app');

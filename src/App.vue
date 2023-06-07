@@ -22,19 +22,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 import AppForm from '@/components/Form.vue';
-import {
-  FormDefinition,
-  FormCallbacks,
-  FormInputFields,
-  useForm,
-} from '@/use/form';
-import {
-  FormDataDefinition,
-  ValidationResult,
-  ValidationSuccess,
-} from '@/use/fields/base';
+import {FormCallbacks, FormDefinition, FormInputFields, useInertiaForm,} from '@/use/form';
+import {FormDataDefinition, ValidationResult, ValidationSuccess,} from '@/use/fields/base';
 
 interface LoginFormData extends FormDataDefinition {
   email: string;
@@ -283,16 +274,20 @@ const callbacks: FormCallbacks<LoginFormData> = {
 };
 
 export const useLoginForm = () =>
-  useForm<LoginFormData>({
-    title: 'Login',
-    description: 'Login to your account',
-    fields,
-    accessors: {
-      data,
-      errors: {},
+  useInertiaForm<LoginFormData>(
+    '',
+    {},
+    {
+      title: 'Login',
+      description: 'Login to your account',
+      fields,
+      accessors: {
+        data,
+        errors: {},
+      },
+      callbacks,
     },
-    callbacks,
-  });
+  );
 
 export default defineComponent({
   components: {

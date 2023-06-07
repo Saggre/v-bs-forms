@@ -264,7 +264,7 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
           ]),
         ) as FormAccessorErrors<T>;
         visitOptions?.onError?.(errors);
-        reject(errors);
+        reject(form.accessors.errors);
       },
       onSuccess: (page: any) => {
         form.accessors.errors = {};
@@ -308,6 +308,7 @@ export const useInertiaForm = <T extends FormDataDefinition>(
         visitOptions,
       );
     } catch (errors) {
+      // TODO: Errors are already set in submitInertiaForm, so this is not needed.
       form.accessors.errors = errors as FormAccessorErrors<T>;
       form.callbacks.onError?.(form.accessors.errors, form);
     }

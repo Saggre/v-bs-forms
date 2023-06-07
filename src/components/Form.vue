@@ -176,7 +176,7 @@ export default defineComponent({
     });
   },
   methods: {
-    isFieldVisible(field: FormField<any>): boolean {
+    isFieldVisible(field: FormField): boolean {
       if (field.type === 'html') {
         return false;
       }

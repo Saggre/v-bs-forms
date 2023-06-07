@@ -11,9 +11,9 @@ export const enum FormErrorType {
   Required = 1,
 }
 
-export type FormAccessorData<T extends FormDataDefinition> = Partial<
-  Record<keyof T, T[keyof T] | undefined>
->;
+export type FormAccessorData<T extends FormDataDefinition> = Partial<{
+  [K in keyof T]: T[K];
+}>;
 
 export type FormAccessorErrors<T extends FormDataDefinition> = Partial<
   Record<keyof T, string | FormErrorType>
@@ -35,7 +35,8 @@ export interface FormCallbacks<T extends FormDataDefinition> {
 }
 
 export type FormInputFields<T extends FormDataDefinition> = Partial<{
-  [K in keyof T]: FormField<T[K]>;
+  // TODO: Allow form field types based on defined value type.
+  [K in keyof T]: FormField;
 }>;
 
 export type FormDefinition<T extends FormDataDefinition> = {
@@ -96,7 +97,7 @@ const getRequiredFieldErrors = <T extends FormDataDefinition>(
   const errors = {} as Partial<Record<keyof T, ValidationError>>;
 
   for (const key in form.fields) {
-    const field = form.fields[key] as FormField<any>;
+    const field = form.fields[key] as FormField;
 
     if ('required' in field && field.required && !form?.accessors?.data[key]) {
       errors[key] = {
@@ -120,7 +121,7 @@ function validateFields<T extends FormDataDefinition>(
   const results = {} as Record<keyof T, ValidationResult>;
 
   for (const key in form.fields) {
-    const field = form.fields[key] as FormField<any>;
+    const field = form.fields[key] as FormField;
 
     if (field.validate) {
       const value = form?.accessors?.data?.[key];
@@ -272,9 +273,8 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
 ) => {
   await new Promise<void>((resolve, reject) => {
     getInertiaRouter().visit(url, {
-      data:
-        visitOptions.submitTransform?.(form.accessors.data) ??
-        form.accessors.data,
+      data: (visitOptions.submitTransform?.(form.accessors.data) ??
+        form.accessors.data) as {},
       preserveState: true,
       ...visitOptions,
       onError: (errors: Errors) => {

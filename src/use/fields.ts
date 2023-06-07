@@ -2,22 +2,19 @@ import {
   BaseFormFieldDefinition,
   CardFormFieldDefinition,
   HtmlFormFieldType,
-  InputFormField,
   ValidationResult,
 } from '@/use/fields/base';
 
-export type StandardFormField<V = string> = BaseFormFieldDefinition<V> &
-  InputFormField & {
-    type: HtmlFormFieldType[keyof HtmlFormFieldType];
-  };
+export type StandardFormField = BaseFormFieldDefinition<string> & {
+  type: HtmlFormFieldType[keyof HtmlFormFieldType];
+};
 
-export type NumberFormField<V = number> = BaseFormFieldDefinition<V> &
-  InputFormField & {
-    type: 'number';
-    min?: number;
-    max?: number;
-    step?: number;
-  };
+export type NumberFormField = BaseFormFieldDefinition<number> & {
+  type: 'number';
+  min?: number;
+  max?: number;
+  step?: number;
+};
 
 export interface ActionFormFieldTexts {
   submit: string;
@@ -25,7 +22,7 @@ export interface ActionFormFieldTexts {
   description?: string;
 }
 
-export type ActionFormField<V = boolean> = BaseFormFieldDefinition<V> &
+export type ActionFormField = BaseFormFieldDefinition<boolean> &
   CardFormFieldDefinition & {
     type: 'action';
     onSubmit: () => void;
@@ -36,24 +33,20 @@ export type ActionFormField<V = boolean> = BaseFormFieldDefinition<V> &
     onInput?: never;
   };
 
-export type DateFormField<V = Date> = BaseFormFieldDefinition<V> &
-  InputFormField & {
-    type: 'date';
-    deserialize: (value: string) => V;
-    serialize: (value: V) => string;
-  };
+export type DateFormField = BaseFormFieldDefinition<string> & {
+  type: 'date';
+};
 
-export type TimeFormField<V = string> = BaseFormFieldDefinition<V> &
-  InputFormField & {
-    type: 'time';
-  };
+export type TimeFormField = BaseFormFieldDefinition<string> & {
+  type: 'time';
+};
 
 export interface ListItem {
   name: string;
   description: string;
 }
 
-export type ListGroupFormField<V = ListItem> = BaseFormFieldDefinition<V> &
+export type ListGroupFormField = BaseFormFieldDefinition<ListItem> &
   CardFormFieldDefinition & {
     type: 'list-group';
     options: Record<string, ListItem>;
@@ -61,63 +54,54 @@ export type ListGroupFormField<V = ListItem> = BaseFormFieldDefinition<V> &
     onInput?: never;
   };
 
-export type CheckboxFormField<V = boolean> = BaseFormFieldDefinition<V> &
-  InputFormField & {
-    type: 'checkbox';
-    indeterminate?: boolean;
-    onChange?: never;
-    onInput?: never;
-  };
-
-export type DropdownFormField<V = string[]> = BaseFormFieldDefinition<V> &
-  InputFormField & {
-    type: 'dropdown';
-    options: Record<string, string>;
-    onChange?: never;
-    onInput?: never;
-  };
-
-export type TextareaFormField<V = string> = BaseFormFieldDefinition<V> &
-  InputFormField & {
-    type: 'textarea';
-    rows?: number;
-  };
-
-export type PasswordFormField<V = string> = BaseFormFieldDefinition<V> &
-  InputFormField & {
-    type: 'password';
-    toggleable?:
-      | boolean
-      | {
-          icons: {
-            show: string;
-            hide: string;
-          };
-        };
-  };
-
-export type FileFormField<V = string> = BaseFormFieldDefinition<V> &
-  InputFormField & {
-    type: 'file';
-    accept?: string;
-    floating?: never;
-    onChange?: never;
-    onInput?: never;
-  };
-
-export type HtmlFormField = {
-  type: 'html';
+export type CheckboxFormField = BaseFormFieldDefinition<boolean> & {
+  type: 'checkbox';
+  indeterminate?: boolean;
+  onChange?: never;
+  onInput?: never;
 };
 
-export type FormField<V> =
-  | StandardFormField<V>
-  | NumberFormField<V>
-  | DropdownFormField<V>
-  | TextareaFormField<V>
-  | DateFormField<V>
-  | TimeFormField<V>
-  | ActionFormField<V>
-  | ListGroupFormField<V>
-  | CheckboxFormField<V>
-  | FileFormField<V>
-  | PasswordFormField<V>;
+export type DropdownFormField = BaseFormFieldDefinition<string[]> & {
+  type: 'dropdown';
+  options: Record<string, string>;
+  onChange?: never;
+  onInput?: never;
+};
+
+export type TextareaFormField = BaseFormFieldDefinition<string> & {
+  type: 'textarea';
+  rows?: number;
+};
+
+export type PasswordFormField = BaseFormFieldDefinition<string> & {
+  type: 'password';
+  toggleable?:
+    | boolean
+    | {
+        icons: {
+          show: string;
+          hide: string;
+        };
+      };
+};
+
+export type FileFormField = BaseFormFieldDefinition<string> & {
+  type: 'file';
+  accept?: string;
+  floating?: never;
+  onChange?: never;
+  onInput?: never;
+};
+
+export type FormField =
+  | StandardFormField
+  | NumberFormField
+  | DropdownFormField
+  | TextareaFormField
+  | DateFormField
+  | TimeFormField
+  | ActionFormField
+  | ListGroupFormField
+  | CheckboxFormField
+  | FileFormField
+  | PasswordFormField;

@@ -14,7 +14,7 @@ export const enum HtmlFormFieldType {
   Hidden = 'hidden',
 }
 
-export type FormDataDefinition = Record<string, any>;
+export type FormDataDefinition = Record<string, unknown>;
 
 export interface ValidationSuccess {
   valid: true;
@@ -48,13 +48,11 @@ export interface TooltipOptions {
   placement: 'top' | 'bottom' | 'left' | 'right';
 }
 
-export interface GlobalFormField<V, S = string> {
+export interface GlobalFormField<V> {
   type: string;
   class?: { [key: string]: boolean };
   containerClass?: { [key: string]: boolean };
   validate?: (value: V) => ValidationResult;
-  deserialize?: (value: S) => V;
-  serialize?: (value: V) => S;
   onChange?: (value: V, form: FormDefinition<any> | undefined) => void;
   onInput?: (value: V, form: FormDefinition<any> | undefined) => void;
   disabled?: boolean;
@@ -67,13 +65,6 @@ export interface GlobalFormField<V, S = string> {
   tooltip?: TooltipOptions;
   required?: boolean;
   visible?: boolean | ((form: FormDefinition<any>) => boolean);
-}
-
-/**
- * @deprecated
- */
-export interface InputFormField {
-  required?: boolean;
 }
 
 export interface CardFormFieldDefinition {

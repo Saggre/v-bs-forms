@@ -122,7 +122,7 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'date',
     title: 'Date',
     floating: true,
-    onChange: (value: Date, form: LoginForm | undefined) =>
+    onChange: (value: string, form: LoginForm | undefined) =>
       console.log(`Selected: ${value}`, form),
   },
   time: {
@@ -217,7 +217,7 @@ const fields: FormInputFields<LoginFormData> = {
       success: 'Success',
       description: 'Description',
     },
-    validate: () => {
+    validate: (): ValidationResult => {
       return {
         valid: true,
       };
@@ -253,7 +253,7 @@ const fields: FormInputFields<LoginFormData> = {
       console.log(`Selected: ${value}`, form),
     visible: (form: LoginForm | undefined) => {
       if (form) {
-        return form.accessors.data['number1'] > 10;
+        return (form.accessors.data.number1 ?? 0) > 10;
       }
 
       return false;

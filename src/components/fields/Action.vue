@@ -5,6 +5,12 @@
       'mb-3': true,
       'border-danger': !validation.valid,
     }"
+    :id="attributes.id"
+    :attributes="{
+      'data-bs-toggle': attributes['data-bs-toggle'],
+      'data-bs-placement': attributes['data-bs-placement'],
+      title: attributes['title'],
+    }"
   >
     <template #body>
       <div v-if="value">
@@ -18,7 +24,7 @@
         :class="{
           'is-invalid': !validation.valid,
         }"
-        @click="onSubmit"
+        @click.prevent="onSubmit"
         >{{ field.texts.submit }}</a
       >
     </template>
@@ -30,10 +36,11 @@
 
 <script lang="ts">
 import { ActionFormField } from '@/use/fields';
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, toRefs } from 'vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import CardFormField from '@/components/fields/CardFormField.vue';
+import { useStdComponent } from '@/composables/stdComponent';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -60,6 +67,9 @@ export default defineComponent({
     checkValid() {
       this.value = this.field.validate().valid;
     },
+  },
+  setup(props) {
+    return useStdComponent(toRefs(props));
   },
 });
 </script>

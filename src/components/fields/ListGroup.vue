@@ -5,7 +5,12 @@
       'mb-3': true,
       'border-danger': !validation.valid,
     }"
-    :id="field.id ?? field.title"
+    :id="attributes.id"
+    :attributes="{
+      'data-bs-toggle': attributes['data-bs-toggle'],
+      'data-bs-placement': attributes['data-bs-placement'],
+      title: attributes['title'],
+    }"
   >
     <template #default>
       <ul class="list-group list-group-flush">
@@ -51,11 +56,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, toRefs } from 'vue';
 import { ListGroupFormField } from '@/use/fields';
 import FieldInputError from '@/components/fields/standard/InputError.vue';
 import BaseFormField from '@/components/fields/BaseFormField.vue';
 import CardFormField from '@/components/fields/CardFormField.vue';
+import { useStdComponent } from '@/composables/stdComponent';
 
 export default defineComponent({
   extends: BaseFormField,
@@ -76,6 +82,9 @@ export default defineComponent({
     select(value: any) {
       return (this.value = value);
     },
+  },
+  setup(props) {
+    return useStdComponent(toRefs(props));
   },
 });
 </script>

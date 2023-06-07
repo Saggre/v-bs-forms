@@ -1,17 +1,18 @@
-import { BaseFormFieldDefinition, ValidationResult } from '@/use/fields/base';
+import { BaseFormFieldDefinition } from '@/use/fields/base';
 import { useTooltip } from '@/composables/tooltip';
 import { useInputEvents } from '@/composables/inputEvents';
 import { FormDefinition } from '@/use/form';
 import { computed, Ref } from 'vue';
+import { useValidation } from '@/composables/validation';
 
 export interface StdComponentOptions {
   baseClasses: { [key: string]: boolean };
 }
 
 type BaseFormFieldProps<T, F extends BaseFormFieldDefinition<T>> = {
+  formKey: string;
   field: F;
-  form: FormDefinition<any> | undefined;
-  validation: ValidationResult;
+  form: FormDefinition<any>;
 };
 
 export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
@@ -26,6 +27,7 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
   const form = props.form.value;
   const { tooltipAttributes } = useTooltip(field.tooltip);
   const { onChange, onInput } = useInputEvents<T, F>(field, form);
+  const { validation } = useValidation(props.formKey, props.form);
 
   const getPlaceholder = (field: F) => {
     if ('placeholder' in field && field.placeholder) {
@@ -43,7 +45,7 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
     attributes: computed(() => ({
       class: {
         ...baseClasses,
-        'is-invalid': !props.validation.value.valid,
+        'is-invalid': !validation.value.valid,
         ...(field.class ?? {}),
       },
       disabled: field.disabled || false,
@@ -61,5 +63,6 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
       onChange,
       onInput,
     },
+    validation,
   };
 };

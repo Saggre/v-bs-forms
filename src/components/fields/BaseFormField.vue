@@ -1,27 +1,20 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { ValidationResult } from '@/use/fields/base';
 import { FormDefinition } from '@/use/form';
 
 export default defineComponent({
   props: {
-    validation: {
-      type: Object as PropType<ValidationResult>,
-      default: {
-        valid: true,
-      } as ValidationResult,
-    },
     field: {
       type: Object as PropType<any>,
       required: true,
     },
     form: {
       type: Object as PropType<FormDefinition<any>>,
-      required: false,
+      required: true,
     },
     formKey: {
       type: String as PropType<string>,
-      required: false,
+      required: true,
     },
     modelValue: {
       default: undefined,

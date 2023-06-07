@@ -4,7 +4,6 @@
       :is="component"
       :field="field"
       :form-key="formKey"
-      :validation="_validation"
       :form="form"
       v-model="form.accessors.data[formKey]"
     ></component>
@@ -24,7 +23,6 @@ import TextareaField from '@/components/fields/Textarea.vue';
 import NumberField from '@/components/fields/Number.vue';
 import CheckboxField from '@/components/fields/Checkbox.vue';
 import FileField from '@/components/fields/File.vue';
-import { ValidationResult } from '@/use/fields/base';
 import { formFieldPlugin } from '@/use/plugins';
 import { FormDefinition } from '@/use/form';
 
@@ -55,10 +53,6 @@ export default defineComponent({
     FileField,
   },
   props: {
-    validation: {
-      type: Object as PropType<ValidationResult | undefined>,
-      default: undefined,
-    },
     field: {
       type: Object as PropType<any>,
       required: true,
@@ -114,13 +108,6 @@ export default defineComponent({
     },
     type() {
       return this.field.type;
-    },
-    _validation(): ValidationResult {
-      return (
-        this.validation ?? {
-          valid: true,
-        }
-      );
     },
   },
 });

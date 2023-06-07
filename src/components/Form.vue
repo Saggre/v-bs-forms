@@ -34,7 +34,6 @@
               <FormFieldComponent
                 v-if="field && isFieldVisible(field)"
                 :form-key="`${key}`"
-                :validation="getFieldValidation(key)"
                 :field="{
                   ...field,
                   name: field && field.name ? field.name : key,
@@ -92,12 +91,10 @@ import { defineComponent, PropType } from 'vue';
 import {
   AbstractFormDefinition,
   FormClasses,
-  FormErrorType,
   FormTranslations,
   FormVisibility,
 } from '@/use/form';
 import SectionTitle from '@/components/section/SectionTitle.vue';
-import { ValidationError } from '@/use/fields/base';
 import FormFieldComponent from '@/components/fields/FormField.vue';
 import { getFormExtraFields } from '@/utils/form';
 import { FormField } from '@/use/fields';
@@ -183,28 +180,6 @@ export default defineComponent({
       return field.visible instanceof Function
         ? field.visible(this.form)
         : field.visible ?? true;
-    },
-    getFieldValidation(key: string | number): ValidationError | undefined {
-      const error = this.form.accessors.errors?.[key] ?? null;
-
-      if (!error) {
-        return undefined;
-      }
-
-      switch (error) {
-        case FormErrorType.Required:
-          return {
-            valid: false,
-            message:
-              this.translations?.errors?.[FormErrorType.Required] ??
-              'This field is required',
-          };
-      }
-
-      return {
-        valid: false,
-        message: this.form.accessors.errors?.[key] ?? '',
-      };
     },
     async onSubmit() {
       this.loading = true;

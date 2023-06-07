@@ -29,6 +29,7 @@ import {
   FormCallbacks,
   FormInputFields,
   useForm,
+  useInertiaForm,
 } from '@/use/form';
 import {
   FormDataDefinition,
@@ -283,16 +284,20 @@ const callbacks: FormCallbacks<LoginFormData> = {
 };
 
 export const useLoginForm = () =>
-  useForm<LoginFormData>({
-    title: 'Login',
-    description: 'Login to your account',
-    fields,
-    accessors: {
-      data,
-      errors: {},
+  useInertiaForm<LoginFormData>(
+    'http://localhost:8080/data',
+    {},
+    {
+      title: 'Login',
+      description: 'Login to your account',
+      fields,
+      accessors: {
+        data,
+        errors: {},
+      },
+      callbacks,
     },
-    callbacks,
-  });
+  );
 
 export default defineComponent({
   components: {

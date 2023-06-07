@@ -7,16 +7,12 @@ import { FormField } from '@/use/fields';
 import { Errors, VisitOptions } from '@inertiajs/core/types/types';
 import { Router, router } from '@inertiajs/core';
 
-export const enum FormErrorType {
-  Required = 1,
-}
-
 export type FormAccessorData<T extends FormDataDefinition> = Partial<{
   [K in keyof T]: T[K];
 }>;
 
 export type FormAccessorErrors<T extends FormDataDefinition> = Partial<
-  Record<keyof T, string | FormErrorType>
+  Record<keyof T, ValidationResult>
 >;
 
 export interface FormAccessors<T extends FormDataDefinition> {
@@ -28,10 +24,7 @@ export interface FormCallbacks<T extends FormDataDefinition> {
   onSubmit: (form: FormDefinition<T>) => Promise<void>;
   onRender?: (form: FormDefinition<T>) => void;
   onCancel?: (form: FormDefinition<T>) => void;
-  onError?: (
-    errors: Partial<Record<keyof T, string | FormErrorType>>,
-    form: FormDefinition<T>,
-  ) => void;
+  onError?: (errors: FormAccessorErrors<T>, form: FormDefinition<T>) => void;
 }
 
 export type FormInputFields<T extends FormDataDefinition> = Partial<{
@@ -64,9 +57,6 @@ export interface FormButtons<T> {
 
 export interface FormTranslations {
   buttons?: FormButtons<string>;
-  errors?: {
-    [key in FormErrorType]: string;
-  };
 }
 
 export interface FormVisibility {
@@ -102,7 +92,8 @@ const getRequiredFieldErrors = <T extends FormDataDefinition>(
     if ('required' in field && field.required && !form?.accessors?.data[key]) {
       errors[key] = {
         valid: false,
-        message: FormErrorType.Required,
+        // TODO: Allow translation of error messages.
+        message: 'Kenttä on pakollinen.',
       };
     }
   }
@@ -142,8 +133,8 @@ function validateFields<T extends FormDataDefinition>(
 const getDefaultAccessors = <
   T extends FormDataDefinition,
 >(): FormAccessors<T> => ({
-  data: {} as FormAccessorData<T>,
-  errors: {} as Record<keyof T, string>,
+  data: {},
+  errors: {},
 });
 
 /**
@@ -186,7 +177,7 @@ const createForm = <T extends FormDataDefinition>(
 export const resetFormErrors = <T extends FormDataDefinition>(
   form: FormDefinition<T>,
 ) => {
-  form.accessors.errors = {} as Partial<Record<keyof T, string>>;
+  form.accessors.errors = {};
 };
 
 const getValidationErrors = (
@@ -201,8 +192,8 @@ const getValidationErrors = (
 
 const getErrorMessages = (
   validationErrors: Partial<Record<string, ValidationError>>,
-): Partial<Record<string, string | FormErrorType>> => {
-  const errors: Partial<Record<string, string | FormErrorType>> = {};
+): Record<string, string> => {
+  const errors: Record<string, string> = {};
 
   for (const key in validationErrors) {
     const validationError = validationErrors[key];
@@ -247,7 +238,7 @@ export const useForm = <T extends FormDataDefinition>(
       await onSubmitValidation(form);
       await onSubmit(form);
     } catch (errors) {
-      form.accessors.errors = errors as Partial<Record<keyof T, string>>;
+      form.accessors.errors = errors as FormAccessorErrors<T>;
       form.callbacks.onError?.(form.accessors.errors, form);
     }
   };
@@ -278,7 +269,15 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
       preserveState: true,
       ...visitOptions,
       onError: (errors: Errors) => {
-        form.accessors.errors = errors as Partial<Record<keyof T, string>>;
+        form.accessors.errors = Object.fromEntries(
+          Object.entries(errors).map(([key, message]) => [
+            key,
+            {
+              valid: false,
+              message,
+            } as ValidationError,
+          ]),
+        ) as FormAccessorErrors<T>;
         visitOptions?.onError?.(errors);
         reject(errors);
       },
@@ -324,7 +323,7 @@ export const useInertiaForm = <T extends FormDataDefinition>(
         visitOptions,
       );
     } catch (errors) {
-      form.accessors.errors = errors as Partial<Record<keyof T, string>>;
+      form.accessors.errors = errors as FormAccessorErrors<T>;
       form.callbacks.onError?.(form.accessors.errors, form);
     }
   };

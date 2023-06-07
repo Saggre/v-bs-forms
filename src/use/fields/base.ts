@@ -1,4 +1,4 @@
-import { FormDefinition, FormErrorType } from '@/use/form';
+import { FormDefinition } from '@/use/form';
 
 export const enum HtmlFormFieldType {
   Text = 'text',
@@ -22,7 +22,7 @@ export interface ValidationSuccess {
 
 export interface ValidationError {
   valid: false;
-  message: string | FormErrorType;
+  message: string;
 }
 
 export type ValidationResult = ValidationSuccess | ValidationError;

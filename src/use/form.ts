@@ -294,7 +294,7 @@ export const useInertiaForm = <T extends FormDataDefinition>(
   const form = useForm<T>(formDefinition);
   const onSubmit = form.callbacks.onSubmit;
 
-  form.callbacks.onSubmit = async () => {
+  form.callbacks.onSubmit = async form => {
     try {
       await onSubmit(form);
     } catch (e) {

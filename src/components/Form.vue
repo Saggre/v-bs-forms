@@ -177,6 +177,10 @@ export default defineComponent({
   },
   methods: {
     isFieldVisible(field: FormField<any>): boolean {
+      if (field.type === 'html') {
+        return false;
+      }
+
       return field.visible instanceof Function
         ? field.visible(this.form)
         : field.visible ?? true;

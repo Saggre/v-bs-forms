@@ -105,6 +105,10 @@ export type FileFormField<V = string> = BaseFormFieldDefinition<V> &
     onInput?: never;
   };
 
+export type HtmlFormField = {
+  type: 'html';
+};
+
 export type FormField<V> =
   | StandardFormField<V>
   | NumberFormField<V>

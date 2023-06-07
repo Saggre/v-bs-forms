@@ -26,7 +26,6 @@ export type ActionFormField = BaseFormFieldDefinition<boolean> &
   CardFormFieldDefinition & {
     type: 'action';
     onSubmit: () => void;
-    validate: () => ValidationResult;
     texts: ActionFormFieldTexts;
     autocomplete?: never;
     onChange?: never;

@@ -1,7 +1,7 @@
 {
   "name": "@saggre/v-bs-forms",
   "type": "module",
-  "version": "5.2.1-RC17",
+  "version": "5.2.1-RC18",
   "description": "Typed Bootstrap form builder for Vue3",
   "author": "Sakri Koskimies <sakri.koskimies@hotmail.com>",
   "repository": {
@@ -31,7 +31,8 @@
     "build": "vue-tsc --declaration --emitDeclarationOnly && vite build",
     "dev": "vite",
     "test": "vitest",
-    "lint": "eslint . --ext .js,.vue"
+    "lint": "eslint . --ext .js,.vue",
+    "server": "json-server --port 8080 --watch db.json"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",

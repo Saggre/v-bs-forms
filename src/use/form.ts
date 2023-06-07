@@ -115,9 +115,8 @@ function validateFields<T extends FormDataDefinition>(
     const field = form.fields[key] as FormField;
 
     if (field.validate) {
-      const value = form?.accessors?.data?.[key];
-      const validate = field.validate as (value: any) => ValidationResult;
-      results[key] = validate(value);
+      const value = form.accessors.data[key];
+      results[key] = field.validate(value as never);
     }
   }
 
@@ -190,19 +189,6 @@ const getValidationErrors = (
   ) as Partial<Record<string, ValidationError>>;
 };
 
-const getErrorMessages = (
-  validationErrors: Partial<Record<string, ValidationError>>,
-): Record<string, string> => {
-  const errors: Record<string, string> = {};
-
-  for (const key in validationErrors) {
-    const validationError = validationErrors[key];
-    errors[key] = validationError?.message ?? '';
-  }
-
-  return errors;
-};
-
 /**
  * Validates a form and throws an error if there are any validation errors.
  *
@@ -213,10 +199,9 @@ export const onSubmitValidation = async <T extends FormDataDefinition>(
 ) => {
   const validationResults = validateFields(form);
   const validationErrors = getValidationErrors(validationResults);
-  const errorMessages = getErrorMessages(validationErrors);
 
   if (Object.keys(validationErrors).length > 0) {
-    throw errorMessages;
+    throw validationErrors;
   }
 };
 

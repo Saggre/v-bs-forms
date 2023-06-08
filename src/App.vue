@@ -49,6 +49,7 @@ type LoginForm = FormDefinition<LoginFormData>;
 const data = {
   email: '',
   password: '',
+  password2: '',
   action: false,
   number: 1337,
   number2: 0,
@@ -80,6 +81,23 @@ const fields: FormInputFields<LoginFormData> = {
         hide: '🙉',
       },
     },
+    validate: (value: string): ValidationResult => {
+      if (value.length < 8) {
+        return {
+          message: 'Password must be at least 8 characters',
+          valid: false,
+        };
+      }
+
+      return {
+        valid: true,
+      };
+    },
+  },
+  password2: {
+    type: 'password',
+    title: 'Password',
+    floating: true,
     validate: (value: string): ValidationResult => {
       if (value.length < 8) {
         return {

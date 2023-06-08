@@ -40,8 +40,13 @@
 .btn--password-toggle:focus {
   outline: none !important;
 }
+
 .flex-basis-0 {
   flex-basis: 0 !important;
+}
+
+.input-group > .form-floating {
+  min-width: auto !important;
 }
 </style>
 

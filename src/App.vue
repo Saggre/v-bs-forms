@@ -22,17 +22,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import AppForm from '@/components/Form.vue';
-import {
-  FormCallbacks,
-  FormDefinition,
-  FormInputFields,
-  useInertiaForm,
-} from '@/use/form';
+import { FormCallbacks, FormDefinition, FormInputFields } from '@/use/form';
 import {
   FormDataDefinition,
   ValidationResult,
   ValidationSuccess,
 } from '@/use/fields/base';
+import { useInertiaForm } from '@/composables/inertiaForm';
 
 interface LoginFormData extends FormDataDefinition {
   email: string;

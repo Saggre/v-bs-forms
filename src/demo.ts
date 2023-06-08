@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import { setInertiaRouter } from '@/use/form';
 import { getTestRouter } from '@/use/testRouter';
+import { setInertiaRouter } from '@/composables/inertiaForm';
 
 setInertiaRouter(getTestRouter());
 

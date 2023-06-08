@@ -3,6 +3,8 @@ export * from './composables/stdComponent';
 export * from './composables/inputEvents';
 export * from './composables/tooltip';
 export * from './composables/validation';
+export * from './composables/form';
+export * from './composables/inertiaForm';
 export * from './use/plugins';
 export * from './use/form';
 export * from './use/fields';

@@ -73,8 +73,14 @@ export const useForm = <T extends FormDataDefinition>(
       await onSubmitValidation(form);
       await onSubmit(form);
     } catch (errors) {
-      form.accessors.errors = errors as FormAccessorErrors<T>;
+      form.accessors.errors = {
+        ...form.accessors.errors,
+        ...(errors as FormAccessorErrors<T>),
+      };
+
       form.callbacks.onError?.(form.accessors.errors, form);
+
+      throw errors;
     }
   };
 

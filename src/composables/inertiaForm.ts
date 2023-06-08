@@ -44,7 +44,7 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
       preserveState: true,
       ...visitOptions,
       onError: (errors: Errors) => {
-        form.accessors.errors = Object.fromEntries(
+        const errorObjects = Object.fromEntries(
           Object.entries(errors).map(([key, message]) => [
             key,
             {
@@ -54,7 +54,7 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
           ]),
         ) as FormAccessorErrors<T>;
         visitOptions?.onError?.(errors);
-        reject(form.accessors.errors);
+        reject(errorObjects);
       },
       onSuccess: (page: any) => {
         form.accessors.errors = {};
@@ -85,11 +85,7 @@ export const useInertiaForm = <T extends FormDataDefinition>(
   const onSubmit = form.callbacks.onSubmit;
 
   form.callbacks.onSubmit = async form => {
-    try {
-      await onSubmit(form);
-    } catch (e) {
-      return;
-    }
+    await onSubmit(form);
 
     try {
       await submitInertiaForm(
@@ -98,9 +94,14 @@ export const useInertiaForm = <T extends FormDataDefinition>(
         visitOptions,
       );
     } catch (errors) {
-      // TODO: Errors are already set in submitInertiaForm, so this is not needed.
-      form.accessors.errors = errors as FormAccessorErrors<T>;
+      form.accessors.errors = {
+        ...form.accessors.errors,
+        ...(errors as FormAccessorErrors<T>),
+      };
+
       form.callbacks.onError?.(form.accessors.errors, form);
+
+      throw errors;
     }
   };
 

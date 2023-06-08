@@ -33,8 +33,6 @@ export type FormInputFields<T extends FormDataDefinition> = Partial<{
 }>;
 
 export type FormDefinition<T extends FormDataDefinition> = {
-  title?: string;
-  description?: string;
   fields: FormInputFields<T>;
   accessors: FormAccessors<T>;
   callbacks: FormCallbacks<T>;
@@ -43,8 +41,6 @@ export type FormDefinition<T extends FormDataDefinition> = {
 export type AbstractFormDefinition = FormDefinition<{ [key: string]: any }>;
 
 export type PartialFormDefinition<T extends FormDataDefinition> = Partial<{
-  title?: string;
-  description?: string;
   fields: FormInputFields<T>;
   accessors: Partial<FormAccessors<T>>;
   callbacks: Partial<FormCallbacks<T>>;
@@ -163,8 +159,6 @@ const createForm = <T extends FormDataDefinition>(
   formDefinition: PartialFormDefinition<T>,
 ) => {
   return {
-    title: formDefinition.title ?? undefined,
-    description: formDefinition.description ?? undefined,
     fields: formDefinition.fields ?? ({} as FormInputFields<T>),
     accessors: {
       ...getDefaultAccessors<T>(),

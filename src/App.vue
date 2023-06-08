@@ -1,9 +1,6 @@
 <template>
   <div class="container py-5">
-    <AppForm :form="loginForm">
-      <template #title>
-        <h1>Title override</h1>
-      </template>
+    <AppForm :form="loginForm" class="foobar">
       <div class="w-100">
         <div class="mb-3 form-floating">
           <input
@@ -17,15 +14,25 @@
           <label class="" for="Email"><span>Extra field</span></label>
         </div>
       </div>
+      <button type="submit" class="btn btn-primary w-100">Send</button>
     </AppForm>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import AppForm from '@/components/Form.vue';
-import {FormCallbacks, FormDefinition, FormInputFields, useInertiaForm,} from '@/use/form';
-import {FormDataDefinition, ValidationResult, ValidationSuccess,} from '@/use/fields/base';
+import {
+  FormCallbacks,
+  FormDefinition,
+  FormInputFields,
+  useInertiaForm,
+} from '@/use/form';
+import {
+  FormDataDefinition,
+  ValidationResult,
+  ValidationSuccess,
+} from '@/use/fields/base';
 
 interface LoginFormData extends FormDataDefinition {
   email: string;
@@ -278,8 +285,6 @@ export const useLoginForm = () =>
     '',
     {},
     {
-      title: 'Login',
-      description: 'Login to your account',
       fields,
       accessors: {
         data,

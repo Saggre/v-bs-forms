@@ -1,115 +1,44 @@
 <template>
-  <div :id="form.title" class="row pb-3 overflow-visible position-relative">
+  <form
+    ref="form"
+    class="needs-validation"
+    novalidate
+    @submit.prevent="onSubmit"
+  >
+    <slot name="head" />
+    <span v-for="(field, key) in form.fields" :key="key">
+      <FormFieldComponent
+        v-if="field && isFieldVisible(field)"
+        :form-key="`${key}`"
+        :field="{
+          ...field,
+          name: field && field.name ? field.name : key,
+        }"
+        :form="form"
+      />
+    </span>
+    <slot />
     <div
-      :class="visibility.sidebar ? 'col-md-4' : 'col-12'"
-      v-if="!!form.title || !!form.description"
+      v-if="loading"
+      class="position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center"
+      style="background-color: rgba(255, 255, 255, 0.6)"
     >
-      <SectionTitle>
-        <template #title>
-          <slot name="title">
-            {{ form.title }}
-          </slot>
-        </template>
-        <template #description>
-          <slot name="description">
-            <span class="small">
-              {{ form.description }}
-            </span>
-          </slot>
-        </template>
-      </SectionTitle>
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">{{ 'Loading...' }}</span>
+      </div>
     </div>
-
-    <div :class="visibility.sidebar ? 'col-md-8' : 'col-12'">
-      <form
-        ref="form"
-        class="needs-validation position-relative"
-        novalidate
-        @submit.prevent="onSubmit"
-      >
-        <div :class="`card ${classes.card}`">
-          <div class="card-body">
-            <slot name="head" />
-            <span v-for="(field, key) in form.fields" :key="key">
-              <FormFieldComponent
-                v-if="field && isFieldVisible(field)"
-                :form-key="`${key}`"
-                :field="{
-                  ...field,
-                  name: field && field.name ? field.name : key,
-                }"
-                :form="form"
-              />
-            </span>
-            <slot />
-            <div
-              v-if="loading"
-              class="position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center"
-              style="background-color: rgba(255, 255, 255, 0.6)"
-            >
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">{{ 'Loading...' }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer d-flex justify-content-end">
-            <slot name="buttons-before" />
-            <slot name="buttons">
-              <button
-                v-if="visibility.buttons?.previous"
-                class="btn btn-outline-dark text-uppercase nav-prev me-2"
-                type="button"
-                :disabled="loading"
-                @click="cancel()"
-              >
-                <i class="bi bi-arrow-left me-2" />{{
-                  translations.buttons?.previous
-                }}
-              </button>
-              <button
-                v-if="visibility.buttons?.next"
-                class="btn btn-dark text-uppercase nav-next"
-                :class="{ 'text-white-50': loading }"
-                :disabled="loading"
-                type="submit"
-                @click="submit()"
-              >
-                {{ translations.buttons?.next
-                }}<i class="bi bi-arrow-right ms-2" />
-              </button>
-            </slot>
-            <slot name="buttons-after" />
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
+  </form>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import {
-  AbstractFormDefinition,
-  FormClasses,
-  FormTranslations,
-  FormVisibility,
-} from '@/use/form';
-import SectionTitle from '@/components/section/SectionTitle.vue';
+import { AbstractFormDefinition } from '@/use/form';
 import FormFieldComponent from '@/components/fields/FormField.vue';
 import { getFormExtraFields } from '@/utils/form';
 import { FormField } from '@/use/fields';
 
-type form =
-  | undefined
-  | {
-      loading: boolean;
-      submit: () => void;
-      cancel: () => void;
-    };
-
 export default defineComponent({
   components: {
-    SectionTitle,
     FormFieldComponent,
   },
   props: {
@@ -117,39 +46,15 @@ export default defineComponent({
       type: Object as PropType<AbstractFormDefinition>,
       required: true,
     },
-    translations: {
-      type: Object as PropType<FormTranslations>,
-      default: () => ({
-        buttons: {
-          next: 'Finish',
-          previous: 'Back',
-        },
-      }),
-    },
-    submitInternally: {
-      type: Boolean as PropType<boolean>,
-      default: true,
-    },
     resetOnCancel: {
       type: Boolean as PropType<boolean>,
       default: false,
     },
-    visibility: {
-      type: Object as PropType<FormVisibility>,
-      default: () => ({
-        buttons: {
-          next: true,
-          previous: true,
-        },
-        sidebar: true,
-      }),
-    },
-    classes: {
-      type: Object as PropType<FormClasses>,
-      default: () => ({
-        card: 'shadow-sm',
-      }),
-    },
+  },
+  provide() {
+    return {
+      loading: this.loading,
+    };
   },
   emits: ['submit', 'cancel'],
   computed: {
@@ -189,9 +94,7 @@ export default defineComponent({
       this.loading = true;
 
       try {
-        if (this.submitInternally) {
-          await this.form?.callbacks?.onSubmit?.(this.form);
-        }
+        await this.form?.callbacks?.onSubmit?.(this.form);
 
         this.$emit('submit', this.form, this.htmlForm);
       } catch (err) {
@@ -207,12 +110,21 @@ export default defineComponent({
       }
       this.$emit('cancel', this.form, this.htmlForm);
     },
+    /**
+     * Can be called externally to reset the form.
+     */
     reset() {
       this.htmlForm.reset();
     },
+    /**
+     * Can be called externally to submit the form.
+     */
     submit() {
       this.htmlForm.requestSubmit();
     },
+    /**
+     * Can be called externally to cancel the form.
+     */
     cancel() {
       if (this.resetOnCancel) {
         this.reset();

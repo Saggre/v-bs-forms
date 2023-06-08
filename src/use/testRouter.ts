@@ -4,6 +4,7 @@ import { VisitRouter } from '@/use/form';
 const visit = (href: string | URL, options?: VisitOptions) => {
   options?.onError?.({
     foo: 'bar',
+    // password: 'Server error',
   });
 };
 

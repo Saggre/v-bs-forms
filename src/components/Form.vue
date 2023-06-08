@@ -19,11 +19,10 @@
       />
     </span>
     <slot />
-    <div v-if="loading" class="v-bs-form-glasspane">
+    <div v-if="loading" class="v-bs-form-glasspane-container">
       <slot name="glasspane">
         <div
-          class="position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center"
-          style="background-color: rgba(255, 255, 255, 0.6)"
+          class="v-bs-form-glasspane position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center"
         >
           <div class="spinner-border" role="status">
             <span class="visually-hidden">{{ 'Loading...' }}</span>
@@ -33,6 +32,13 @@
     </div>
   </form>
 </template>
+
+<style>
+.v-bs-form-glasspane {
+  background-color: rgba(255, 255, 255, 0.6);
+  z-index: 9999;
+}
+</style>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';

@@ -300,10 +300,10 @@ const callbacks: FormCallbacks<LoginFormData> = {
   onValidate: (errors, form) => {
     return {
       ...errors,
-      image: {
+      /*image: {
         valid: false,
         message: 'Custom error',
-      },
+      },*/
     };
   },
 };

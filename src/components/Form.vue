@@ -1,7 +1,7 @@
 <template>
   <form
     ref="form"
-    class="needs-validation"
+    class="v-bs-form needs-validation position-relative"
     novalidate
     @submit.prevent="onSubmit"
   >
@@ -12,20 +12,24 @@
         :form-key="`${key}`"
         :field="{
           ...field,
+          // TODO: More robust process for default values.
           name: field && field.name ? field.name : key,
         }"
         :form="form"
       />
     </span>
     <slot />
-    <div
-      v-if="loading"
-      class="position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center"
-      style="background-color: rgba(255, 255, 255, 0.6)"
-    >
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">{{ 'Loading...' }}</span>
-      </div>
+    <div v-if="loading" class="v-bs-form-glasspane">
+      <slot name="glasspane">
+        <div
+          class="position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center"
+          style="background-color: rgba(255, 255, 255, 0.6)"
+        >
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">{{ 'Loading...' }}</span>
+          </div>
+        </div>
+      </slot>
     </div>
   </form>
 </template>

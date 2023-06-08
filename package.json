@@ -1,7 +1,7 @@
 {
   "name": "@saggre/v-bs-forms",
   "type": "module",
-  "version": "5.2.1-RC22",
+  "version": "1.0.0-RC1",
   "description": "Typed Bootstrap form builder for Vue3",
   "author": "Sakri Koskimies <sakri.koskimies@hotmail.com>",
   "repository": {

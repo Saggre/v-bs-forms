@@ -22,7 +22,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import AppForm from '@/components/Form.vue';
-import { FormCallbacks, FormDefinition, FormInputFields } from '@/use/form';
+import {
+  FormAccessorErrors,
+  FormCallbacks,
+  FormDefinition,
+  FormInputFields,
+} from '@/use/form';
 import {
   FormDataDefinition,
   ValidationResult,
@@ -283,14 +288,23 @@ const callbacks: FormCallbacks<LoginFormData> = {
       }, 1000);
     });
   },
-  onRender: (form: LoginForm) => {
+  onRender: form => {
     console.log('Render', form.accessors.data);
   },
-  onCancel: (form: LoginForm) => {
+  onCancel: form => {
     console.log('Cancel', form.accessors.data);
   },
   onError: errors => {
     console.log('Validation error', errors);
+  },
+  onValidate: (errors, form) => {
+    return {
+      ...errors,
+      image: {
+        valid: false,
+        message: 'Custom error',
+      },
+    };
   },
 };
 

@@ -20,9 +20,17 @@ export interface FormAccessors<T extends FormDataDefinition> {
 
 export interface FormCallbacks<T extends FormDataDefinition> {
   onSubmit: (form: FormDefinition<T>) => Promise<void>;
+  /**
+   * Called when the form is validated.
+   * The function can return errors to prevent the form from being submitted and to display custom errors.
+   */
+  onValidate?: (
+    errors: FormAccessorErrors<T>,
+    form: FormDefinition<T>,
+  ) => FormAccessorErrors<T>;
+  onError?: (errors: FormAccessorErrors<T>, form: FormDefinition<T>) => void;
   onRender?: (form: FormDefinition<T>) => void;
   onCancel?: (form: FormDefinition<T>) => void;
-  onError?: (errors: FormAccessorErrors<T>, form: FormDefinition<T>) => void;
 }
 
 export type FormInputFields<T extends FormDataDefinition> = Partial<{
@@ -112,20 +120,30 @@ function validateFields<T extends FormDataDefinition>(
   };
 }
 
+/**
+ * Resets form errors.
+ *
+ * @param form
+ */
 export const resetFormErrors = <T extends FormDataDefinition>(
   form: FormDefinition<T>,
 ) => {
   form.accessors.errors = {};
 };
 
-const getValidationErrors = (
-  validationResults: Partial<Record<string, ValidationResult>>,
-): Partial<Record<string, ValidationError>> => {
+/**
+ * Filter validation errors from all validation results.
+ *
+ * @param validationResults
+ */
+const getValidationErrors = <T extends FormDataDefinition>(
+  validationResults: FormAccessorErrors<T>,
+): FormAccessorErrors<T> => {
   return Object.fromEntries(
     Object.entries(validationResults).filter(
       ([, validationResult]) => !validationResult?.valid,
     ),
-  ) as Partial<Record<string, ValidationError>>;
+  ) as FormAccessorErrors<T>;
 };
 
 /**
@@ -137,7 +155,11 @@ export const onSubmitValidation = async <T extends FormDataDefinition>(
   form: FormDefinition<T>,
 ) => {
   const validationResults = validateFields(form);
-  const validationErrors = getValidationErrors(validationResults);
+  let validationErrors = getValidationErrors(validationResults);
+
+  if (form.callbacks.onValidate) {
+    validationErrors = form.callbacks.onValidate(validationErrors, form);
+  }
 
   if (Object.keys(validationErrors).length > 0) {
     throw validationErrors;

@@ -3,7 +3,7 @@
     ref="form"
     class="v-bs-form needs-validation position-relative"
     novalidate
-    @submit.prevent="onSubmit"
+    @submit="onSubmit"
   >
     <slot name="head" />
     <span v-for="(field, key) in form.fields" :key="key">
@@ -44,7 +44,6 @@
 import { defineComponent, PropType } from 'vue';
 import { AbstractFormDefinition } from '@/use/form';
 import FormFieldComponent from '@/components/fields/FormField.vue';
-import { getFormExtraFields } from '@/utils/form';
 import { FormField } from '@/use/fields';
 
 export default defineComponent({
@@ -59,6 +58,10 @@ export default defineComponent({
     resetOnCancel: {
       type: Boolean as PropType<boolean>,
       default: false,
+    },
+    preventDefault: {
+      type: Boolean as PropType<boolean>,
+      default: true,
     },
   },
   provide() {
@@ -79,16 +82,6 @@ export default defineComponent({
   },
   mounted() {
     this.form.callbacks?.onRender?.(this.form);
-    const form = this.htmlForm;
-
-    form.addEventListener('input', () => {
-      // TODO: If extra fields contain an image, it will have type File, which will cause an error here.
-      Object.entries(getFormExtraFields(form, this.form.fields)).forEach(
-        ([key, value]) => {
-          this.form.accessors.data[key] = value;
-        },
-      );
-    });
   },
   methods: {
     isFieldVisible(field: FormField): boolean {
@@ -100,7 +93,11 @@ export default defineComponent({
         ? field.visible(this.form)
         : field.visible ?? true;
     },
-    async onSubmit() {
+    async onSubmit(event: Event) {
+      if (this.preventDefault) {
+        event.preventDefault();
+      }
+
       this.loading = true;
 
       try {

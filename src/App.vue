@@ -22,12 +22,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import AppForm from '@/components/Form.vue';
-import {
-  FormAccessorErrors,
-  FormCallbacks,
-  FormDefinition,
-  FormInputFields,
-} from '@/use/form';
+import { FormCallbacks, FormDefinition, FormInputFields } from '@/use/form';
 import {
   FormDataDefinition,
   ValidationResult,
@@ -52,6 +47,7 @@ interface LoginFormData extends FormDataDefinition {
 type LoginForm = FormDefinition<LoginFormData>;
 
 const data = {
+  checkbox: false,
   email: '',
   password: '',
   password2: '',
@@ -60,6 +56,7 @@ const data = {
   number2: 0,
   role: 'foo',
   'list-group': 'bar',
+  'valid-action': true,
 };
 
 const fields: FormInputFields<LoginFormData> = {

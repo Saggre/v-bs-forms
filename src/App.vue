@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5">
-    <AppForm :form="loginForm" class="foobar">
+    <AppForm :form="loginForm" class="foobar" :prevent-default="false">
       <div class="w-100">
         <div class="mb-3 form-floating">
           <input

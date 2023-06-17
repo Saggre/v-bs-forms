@@ -105,7 +105,7 @@ export default defineComponent({
 
         this.$emit('submit', this.form, this.htmlForm);
       } catch (err) {
-        // Do nothing.
+        event.preventDefault();
       }
 
       this.loading = false;

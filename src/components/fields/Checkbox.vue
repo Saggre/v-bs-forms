@@ -2,8 +2,12 @@
   <div class="w-100">
     <div :class="containerClass">
       <div class="form-check">
+        <FieldLabel
+          class="form-label"
+          :for="attributes.id"
+          :value="field.title"
+        />
         <input ref="root" v-bind="attributes" type="checkbox" v-model="value" />
-        <FieldLabel :for="attributes.id" :value="field.title" />
         <FieldInputError :validation="validation" />
       </div>
     </div>

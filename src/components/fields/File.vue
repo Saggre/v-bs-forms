@@ -2,9 +2,9 @@
   <div class="w-100">
     <div :class="containerClass">
       <FieldLabel
+        class="form-label"
         :for="attributes.id"
         :value="field.title"
-        class="form-label"
       />
       <FieldInput
         ref="root"

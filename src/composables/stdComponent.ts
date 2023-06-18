@@ -34,10 +34,6 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
       return field.placeholder;
     }
 
-    if (field.floating) {
-      return field.title ?? null;
-    }
-
     return null;
   };
 

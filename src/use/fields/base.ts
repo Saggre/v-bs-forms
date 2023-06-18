@@ -73,19 +73,16 @@ export interface CardFormFieldDefinition {
   description?: string;
   header?: string;
   footer?: string;
-  floating: never;
   tooltip?: TooltipOptions;
 }
 
 export interface StaticFormField {
   title: string;
   placeholder?: string;
-  floating?: false;
 }
 
 export interface FloatingFormField {
   title: string;
-  floating: true;
 }
 
 export type BaseFormFieldDefinition<V> = (StaticFormField | FloatingFormField) &

@@ -1,5 +1,5 @@
 <template>
-  <label :class="_class">
+  <label>
     <span v-if="!!value">{{ value }}</span>
     <span v-else><slot /></span>
   </label>
@@ -13,15 +13,6 @@ export default defineComponent({
     value: {
       type: String as PropType<string>,
       value: '',
-    },
-    class: {
-      type: String as PropType<string>,
-      default: '',
-    },
-  },
-  computed: {
-    _class(): string {
-      return this.class;
     },
   },
 });

@@ -40,10 +40,6 @@ export default defineComponent({
     containerClass() {
       let classes = { 'mb-3': true } as Record<string, boolean>;
 
-      if (this.field.floating ?? false) {
-        classes['form-floating'] = true;
-      }
-
       if (this.field.containerClass) {
         classes = { ...classes, ...this.field.containerClass };
       }

@@ -2,7 +2,8 @@
   <div class="container py-5">
     <AppForm :form="loginForm" class="foobar" :prevent-default="false">
       <div class="w-100">
-        <div class="mb-3 form-floating">
+        <div class="mb-3">
+          <label class="form-label" for="Email"><span>Extra field</span></label>
           <input
             class="form-control"
             id="extra"
@@ -11,7 +12,6 @@
             type="text"
             placeholder="Extra field"
           />
-          <label class="" for="Email"><span>Extra field</span></label>
         </div>
       </div>
       <button type="submit" class="btn btn-primary w-100">Send</button>
@@ -63,7 +63,6 @@ const fields: FormInputFields<LoginFormData> = {
   email: {
     type: 'text',
     title: 'Email',
-    floating: true,
     tooltip: {
       title: 'Tooltip title',
       placement: 'top',
@@ -72,7 +71,6 @@ const fields: FormInputFields<LoginFormData> = {
   password: {
     type: 'password',
     title: 'Password',
-    floating: true,
     id: 'password-id',
     autocomplete: 'password',
     autofocus: true,
@@ -99,7 +97,6 @@ const fields: FormInputFields<LoginFormData> = {
   password2: {
     type: 'password',
     title: 'Password',
-    floating: true,
     validate: (value: string): ValidationResult => {
       if (value.length < 8) {
         return {
@@ -116,7 +113,6 @@ const fields: FormInputFields<LoginFormData> = {
   role: {
     type: 'dropdown',
     title: 'Role',
-    floating: true,
     options: {
       foo: 'Foo',
       bar: 'Bar',
@@ -126,28 +122,26 @@ const fields: FormInputFields<LoginFormData> = {
   number: {
     type: 'number',
     title: 'Number',
-    floating: true,
   },
   image: {
     type: 'file',
     title: 'Profile image',
+    required: true,
+    accept: 'image/*',
   },
   date: {
     type: 'date',
     title: 'Date',
-    floating: true,
     onChange: (value: string, form: LoginForm | undefined) =>
       console.log(`Selected: ${value}`, form),
   },
   time: {
     type: 'time',
     title: 'Time',
-    floating: true,
   },
   textarea: {
     type: 'textarea',
     title: 'Textarea',
-    floating: true,
     rows: 5,
     required: true,
   },
@@ -240,7 +234,6 @@ const fields: FormInputFields<LoginFormData> = {
   number1: {
     type: 'number',
     title: 'Number 1',
-    floating: true,
     onInput: (value: number, form: LoginForm | undefined) => {
       console.log(`Selected: ${value}`, form);
 
@@ -252,14 +245,12 @@ const fields: FormInputFields<LoginFormData> = {
   number2: {
     type: 'number',
     title: 'Number 2',
-    floating: true,
     onInput: (value: number, form: LoginForm | undefined) =>
       console.log(`Selected: ${value}`, form),
   },
   numberStep: {
     type: 'number',
     title: 'Number stepped',
-    floating: true,
     step: 0.1,
     min: 10,
     max: 20,

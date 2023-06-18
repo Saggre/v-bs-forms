@@ -1,6 +1,11 @@
 <template>
   <div class="w-100">
     <div :class="containerClass">
+      <FieldLabel
+        class="form-label"
+        :for="attributes.id"
+        :value="field.title"
+      />
       <input
         ref="root"
         v-bind="attributes"
@@ -12,7 +17,6 @@
         @input="events.onInput"
         type="number"
       />
-      <FieldLabel :for="attributes.id" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>

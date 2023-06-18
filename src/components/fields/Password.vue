@@ -1,36 +1,21 @@
 <template>
-  <div class="w-100 input-group mb-3">
-    <div
-      :class="{
-        'flex-grow-1': true,
-        'form-floating': true,
-        ...containerClass,
-        'is-invalid': attributes.class['is-invalid'],
-        'flex-basis-0': true,
-      }"
-    >
-      <FieldInput
-        ref="root"
-        v-bind="attributes"
-        v-model="value"
-        @change="events.onChange"
-        @input="events.onInput"
-        :type="showPassword ? 'text' : 'password'"
-      />
-      <FieldLabel :for="attributes.id" :value="field.title" />
-    </div>
+  <FieldLabel class="form-label" :for="attributes.id" :value="field.title" />
+  <div class="input-group mb-3">
+    <FieldInput
+      ref="root"
+      v-bind="attributes"
+      v-model="value"
+      @change="events.onChange"
+      @input="events.onInput"
+      :type="showPassword ? 'text' : 'password'"
+    />
     <button
       v-if="field.toggleable"
       class="btn btn-dark position-relative btn--password-toggle"
       type="button"
-      style="width: 58px; min-height: 58px"
       @click="togglePassword"
     >
-      <span
-        class="fs-2 position-absolute top-50 start-50"
-        style="transform: translate(-50%, -50%)"
-        >{{ showPassword ? icons.show : icons.hide }}</span
-      >
+      <span>{{ showPassword ? icons.show : icons.hide }}</span>
     </button>
     <FieldInputError :validation="validation" />
   </div>
@@ -43,10 +28,6 @@
 
 .flex-basis-0 {
   flex-basis: 0 !important;
-}
-
-.input-group > .form-floating {
-  min-width: auto !important;
 }
 </style>
 
@@ -88,10 +69,6 @@ export default defineComponent({
     },
     containerClass() {
       let classes = {} as Record<string, boolean>;
-
-      if (this.field.floating ?? false) {
-        classes['form-floating'] = true;
-      }
 
       if (this.field.containerClass) {
         classes = { ...classes, ...this.field.containerClass };

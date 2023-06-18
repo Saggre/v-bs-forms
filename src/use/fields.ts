@@ -87,7 +87,6 @@ export type PasswordFormField = BaseFormFieldDefinition<string> & {
 export type FileFormField = BaseFormFieldDefinition<string> & {
   type: 'file';
   accept?: string;
-  floating?: never;
   onChange?: never;
   onInput?: never;
 };

@@ -1,6 +1,11 @@
 <template>
   <div class="w-100">
     <div :class="containerClass">
+      <FieldLabel
+        class="form-label"
+        :for="attributes.id"
+        :value="field.title"
+      />
       <textarea
         ref="root"
         v-bind="attributes"
@@ -9,7 +14,6 @@
         @input="events.onInput"
         :rows="field.rows ?? 3"
       />
-      <FieldLabel :for="attributes.id" :value="field.title" />
       <FieldInputError :validation="validation" />
     </div>
   </div>

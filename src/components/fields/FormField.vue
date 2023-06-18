@@ -14,8 +14,6 @@
 import { Component, defineComponent, PropType } from 'vue';
 import ActionField from '@/components/fields/Action.vue';
 import StandardField from '@/components/fields/Standard.vue';
-import DateField from '@/components/fields/Date.vue';
-import TimeField from '@/components/fields/Time.vue';
 import ListGroupField from '@/components/fields/ListGroup.vue';
 import PasswordField from '@/components/fields/Password.vue';
 import DropdownField from '@/components/fields/Dropdown.vue';
@@ -43,8 +41,6 @@ export default defineComponent({
   components: {
     ActionField,
     StandardField,
-    DateField,
-    TimeField,
     ListGroupField,
     DropdownField,
     NumberField,
@@ -82,10 +78,6 @@ export default defineComponent({
       }
 
       switch (this.type) {
-        case BaseFieldTypes.Date:
-          return DateField;
-        case BaseFieldTypes.Time:
-          return TimeField;
         case BaseFieldTypes.Action:
           return ActionField;
         case BaseFieldTypes.ListGroup:

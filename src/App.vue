@@ -75,6 +75,10 @@ const fields: FormInputFields<LoginFormData> = {
     autocomplete: 'password',
     autofocus: true,
     disabled: false,
+    columnClass: {
+      'col-12': true,
+      'col-md-6': true,
+    },
     toggleable: {
       icons: {
         show: '🙈',
@@ -97,6 +101,10 @@ const fields: FormInputFields<LoginFormData> = {
   password2: {
     type: 'password',
     title: 'Password',
+    columnClass: {
+      'col-12': true,
+      'col-md-6': true,
+    },
     validate: (value: string): ValidationResult => {
       if (value.length < 8) {
         return {

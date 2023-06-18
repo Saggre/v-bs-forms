@@ -6,18 +6,28 @@
     @submit="onSubmit"
   >
     <slot name="head" />
-    <span v-for="(field, key) in form.fields" :key="key">
-      <FormFieldComponent
-        v-if="field && isFieldVisible(field)"
-        :form-key="`${key}`"
-        :field="{
-          ...field,
-          // TODO: More robust process for default values.
-          name: field && field.name ? field.name : key,
-        }"
-        :form="form"
-      />
-    </span>
+    <div class="row">
+      <div
+        v-for="(field, key) in form.fields"
+        :key="key"
+        :class="
+          field.columnClass ?? {
+            'col-12': true,
+          }
+        "
+      >
+        <FormFieldComponent
+          v-if="field && isFieldVisible(field)"
+          :form-key="`${key}`"
+          :field="{
+            ...field,
+            // TODO: More robust process for default values.
+            name: field && field.name ? field.name : key,
+          }"
+          :form="form"
+        />
+      </div>
+    </div>
     <slot />
     <div v-if="loading" class="v-bs-form-glasspane-container">
       <slot name="glasspane">

@@ -50,8 +50,11 @@ export interface TooltipOptions {
 
 export interface GlobalFormField<V> {
   type: string;
+  title: string;
+  placeholder?: string;
   class?: { [key: string]: boolean };
   containerClass?: { [key: string]: boolean };
+  columnClass?: { [key: string]: boolean };
   validate?: (value: V) => ValidationResult;
   onChange?: (value: V, form: FormDefinition<any> | undefined) => void;
   onInput?: (value: V, form: FormDefinition<any> | undefined) => void;
@@ -77,14 +80,4 @@ export interface CardFormFieldDefinition {
   required?: boolean;
 }
 
-export interface StaticFormField {
-  title: string;
-  placeholder?: string;
-}
-
-export interface FloatingFormField {
-  title: string;
-}
-
-export type BaseFormFieldDefinition<V> = (StaticFormField | FloatingFormField) &
-  GlobalFormField<V>;
+export type BaseFormFieldDefinition<V> = GlobalFormField<V>;

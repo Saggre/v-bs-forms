@@ -1,27 +1,35 @@
 <template>
-  <FieldLabel
-    class="form-label"
-    :for="attributes.id"
-    :value="field.title"
-    :required="field.required || false"
-  />
-  <div class="input-group mb-3">
-    <FieldInput
-      ref="root"
-      v-bind="attributes"
-      v-model="value"
-      @change="events.onChange"
-      @input="events.onInput"
-      :type="showPassword ? 'text' : 'password'"
+  <div class="mb-3">
+    <FieldLabel
+      class="form-label"
+      :for="attributes.id"
+      :value="field.title"
+      :required="field.required || false"
     />
-    <button
-      v-if="field.toggleable"
-      class="btn btn-dark position-relative btn--password-toggle"
-      type="button"
-      @click="togglePassword"
+    <div
+      class="input-group"
+      :class="{
+        ...containerClass,
+        'is-invalid': attributes.class['is-invalid'],
+      }"
     >
-      <span>{{ showPassword ? icons.show : icons.hide }}</span>
-    </button>
+      <FieldInput
+        ref="root"
+        v-bind="attributes"
+        v-model="value"
+        @change="events.onChange"
+        @input="events.onInput"
+        :type="showPassword ? 'text' : 'password'"
+      />
+      <button
+        v-if="field.toggleable"
+        class="btn btn-dark position-relative btn--password-toggle"
+        type="button"
+        @click="togglePassword"
+      >
+        <span>{{ showPassword ? icons.show : icons.hide }}</span>
+      </button>
+    </div>
     <FieldInputError :validation="validation" />
   </div>
 </template>

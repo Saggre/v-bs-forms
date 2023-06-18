@@ -5,6 +5,7 @@
         class="form-label"
         :for="attributes.id"
         :value="field.title"
+        :required="field.required || false"
       />
       <textarea
         ref="root"

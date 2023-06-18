@@ -122,6 +122,7 @@ const fields: FormInputFields<LoginFormData> = {
   number: {
     type: 'number',
     title: 'Number',
+    required: true,
   },
   image: {
     type: 'file',
@@ -148,6 +149,7 @@ const fields: FormInputFields<LoginFormData> = {
   checkbox: {
     type: 'checkbox',
     title: 'Checkbox',
+    required: true,
     validate: (value: boolean): ValidationResult => {
       if (!value) {
         return {
@@ -190,6 +192,7 @@ const fields: FormInputFields<LoginFormData> = {
     description: 'Description',
     header: 'Header',
     footer: 'Footer',
+    required: true,
     onSubmit: () => {
       console.log('Action submitted');
       data.action = true;

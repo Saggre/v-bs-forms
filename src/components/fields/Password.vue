@@ -1,5 +1,10 @@
 <template>
-  <FieldLabel class="form-label" :for="attributes.id" :value="field.title" />
+  <FieldLabel
+    class="form-label"
+    :for="attributes.id"
+    :value="field.title"
+    :required="field.required || false"
+  />
   <div class="input-group mb-3">
     <FieldInput
       ref="root"

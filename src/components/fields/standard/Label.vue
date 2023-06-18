@@ -1,6 +1,8 @@
 <template>
   <label>
-    <span v-if="!!value">{{ value }}</span>
+    <span v-if="!!value"
+      >{{ value }}<span v-if="required" class="text-danger ms-1">*</span></span
+    >
     <span v-else><slot /></span>
   </label>
 </template>
@@ -12,7 +14,11 @@ export default defineComponent({
   props: {
     value: {
       type: String as PropType<string>,
-      value: '',
+      default: '',
+    },
+    required: {
+      type: Boolean as PropType<boolean>,
+      default: false,
     },
   },
 });

@@ -74,6 +74,7 @@ export interface CardFormFieldDefinition {
   header?: string;
   footer?: string;
   tooltip?: TooltipOptions;
+  required?: boolean;
 }
 
 export interface StaticFormField {

@@ -11,7 +11,7 @@
         v-for="(field, key) in form.fields"
         :key="key"
         :class="
-          field.columnClass ?? {
+          field?.columnClass ?? {
             'col-12': true,
           }
         "

@@ -16,6 +16,7 @@
           }
         "
       >
+        <slot name="before-field" :key="`${key}`" :field="field" />
         <FormFieldComponent
           v-if="field && isFieldVisible(field)"
           :form-key="`${key}`"
@@ -26,6 +27,7 @@
           }"
           :form="form"
         />
+        <slot name="after-field" :key="`${key}`" :field="field" />
       </div>
     </div>
     <slot />

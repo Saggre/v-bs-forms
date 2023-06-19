@@ -1,6 +1,9 @@
 <template>
   <div class="container py-5">
     <AppForm :form="loginForm" class="foobar" :prevent-default="false">
+      <template #before-field="{ key }">
+        <h1 v-if="key === 'password'">Password?</h1>
+      </template>
       <div class="w-100">
         <div class="mb-3">
           <label class="form-label" for="Email"><span>Extra field</span></label>

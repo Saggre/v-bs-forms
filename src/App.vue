@@ -1,8 +1,8 @@
 <template>
   <div class="container py-5">
     <AppForm :form="loginForm" class="foobar" :prevent-default="false">
-      <template #before-field="{ key }">
-        <h1 v-if="key === 'password'">Password?</h1>
+      <template #before-field="{ fieldKey }">
+        <h1 v-if="fieldKey === 'password'">Password?</h1>
       </template>
       <div class="w-100">
         <div class="mb-3">

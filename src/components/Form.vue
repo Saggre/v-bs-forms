@@ -10,11 +10,7 @@
       <div
         v-for="(field, key) in form.fields"
         :key="key"
-        :class="
-          field?.columnClass ?? {
-            'col-12': true,
-          }
-        "
+        :class="field?.columnClass ?? {}"
       >
         <slot name="before-field" :field-key="`${key}`" :field="field" />
         <FormFieldComponent

@@ -71,31 +71,6 @@ export interface FormClasses {
 }
 
 /**
- * Validates fields marked as required.
- *
- * @param form
- */
-const getRequiredFieldErrors = <T extends FormDataDefinition>(
-  form: FormDefinition<T>,
-): Partial<Record<keyof T, ValidationError>> => {
-  const errors = {} as Partial<Record<keyof T, ValidationError>>;
-
-  for (const key in form.fields) {
-    const field = form.fields[key] as FormField;
-
-    if ('required' in field && field.required && !form?.accessors?.data[key]) {
-      errors[key] = {
-        valid: false,
-        // TODO: Allow translation of error messages.
-        message: 'Kenttä on pakollinen.',
-      };
-    }
-  }
-
-  return errors;
-};
-
-/**
  * Validates all fields in a form with a provided validation function.
  *
  * @param form
@@ -114,10 +89,7 @@ function validateFields<T extends FormDataDefinition>(
     }
   }
 
-  return {
-    ...results,
-    ...getRequiredFieldErrors(form),
-  };
+  return results;
 }
 
 /**

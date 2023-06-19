@@ -37,14 +37,12 @@ export default defineComponent({
     },
   },
   computed: {
-    containerClass() {
-      let classes = { 'mb-3': true } as Record<string, boolean>;
-
-      if (this.field.containerClass) {
-        classes = { ...classes, ...this.field.containerClass };
-      }
-
-      return classes;
+    containerClass(): Record<string, boolean> {
+      return (
+        this.field.containerClass ?? {
+          'mb-3': true,
+        }
+      );
     },
   },
   data(props) {

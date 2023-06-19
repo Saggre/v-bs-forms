@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-3">
+  <div :class="containerClass">
     <FieldLabel
       class="form-label"
       :for="attributes.id"
@@ -9,7 +9,6 @@
     <div
       class="input-group"
       :class="{
-        ...containerClass,
         'is-invalid': attributes.class['is-invalid'],
       }"
     >
@@ -79,15 +78,6 @@ export default defineComponent({
           hide: '👁️‍🗨️',
         }
       );
-    },
-    containerClass() {
-      let classes = {} as Record<string, boolean>;
-
-      if (this.field.containerClass) {
-        classes = { ...classes, ...this.field.containerClass };
-      }
-
-      return classes;
     },
   },
   data() {

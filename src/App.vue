@@ -108,6 +108,7 @@ const fields: FormInputFields<LoginFormData> = {
       'col-12': true,
       'col-md-6': true,
     },
+    toggleable: true,
     validate: (value: string): ValidationResult => {
       if (value.length < 8) {
         return {
@@ -134,6 +135,9 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'number',
     title: 'Number',
     required: true,
+    containerClass: {
+      'mb-0': true,
+    },
   },
   image: {
     type: 'file',

@@ -134,7 +134,17 @@ export default defineComponent({
      * Can be called externally to submit the form.
      */
     submit() {
-      this.htmlForm.requestSubmit();
+      if (this.htmlForm.requestSubmit) {
+        this.htmlForm.requestSubmit();
+      } else {
+        // Safari & Firefox compatibility.
+        const submitter = document.createElement('input');
+        submitter.type = 'submit';
+        submitter.hidden = true;
+        this.htmlForm.appendChild(submitter);
+        submitter.click();
+        this.htmlForm.removeChild(submitter);
+      }
     },
     /**
      * Can be called externally to cancel the form.

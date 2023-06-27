@@ -1,6 +1,11 @@
 <template>
   <div class="container py-5">
-    <AppForm :form="loginForm" class="foobar" :prevent-default="false">
+    <AppForm
+      :form="loginForm"
+      class="foobar"
+      :prevent-default="true"
+      ref="form"
+    >
       <template #before-field="{ fieldKey }">
         <h1 v-if="fieldKey === 'password'">Password?</h1>
       </template>
@@ -17,7 +22,7 @@
           />
         </div>
       </div>
-      <button type="submit" class="btn btn-primary w-100">Send</button>
+      <button type="submit" class="btn btn-primary w-100 mb-3">Send</button>
     </AppForm>
   </div>
 </template>

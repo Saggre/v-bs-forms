@@ -14,8 +14,18 @@
         @change="events.onChange"
         @input="events.onInput"
         :rows="field.rows ?? 3"
+        :maxlength="field.maxlength ?? null"
+        :minlength="field.minlength ?? null"
       />
       <FieldInputError :validation="validation" />
+      <span
+        v-if="field.maxlength"
+        :class="{
+          'text-danger': value?.length > field.maxlength,
+          'small text-muted': true,
+        }"
+        >{{ `${value?.length ?? 0} / ${field.maxlength}` }}</span
+      >
     </div>
   </div>
 </template>
@@ -45,3 +55,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+textarea:after {
+  content: '10 / 100';
+}
+</style>

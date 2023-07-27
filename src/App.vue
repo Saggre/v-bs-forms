@@ -164,7 +164,20 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'textarea',
     title: 'Textarea',
     rows: 5,
+    maxlength: 140,
     required: true,
+    validate: (value: string): ValidationResult => {
+      if (value.length < 140) {
+        return {
+          message: 'Textarea must be at least 10 characters',
+          valid: false,
+        };
+      }
+
+      return {
+        valid: true,
+      };
+    },
   },
   checkbox: {
     type: 'checkbox',

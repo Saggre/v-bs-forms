@@ -69,6 +69,8 @@ export type DropdownFormField = BaseFormFieldDefinition<string[]> & {
 
 export type TextareaFormField = BaseFormFieldDefinition<string> & {
   type: 'textarea';
+  maxlength?: number;
+  minlength?: number;
   rows?: number;
 };
 

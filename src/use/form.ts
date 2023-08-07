@@ -1,8 +1,4 @@
-import {
-  FormDataDefinition,
-  ValidationError,
-  ValidationResult,
-} from '@/use/fields/base';
+import { FormDataDefinition, ValidationResult } from '@/use/fields/base';
 import { FormField } from '@/use/fields';
 
 export type FormAccessorData<T extends FormDataDefinition> = Partial<{
@@ -38,8 +34,17 @@ export type FormInputFields<T extends FormDataDefinition> = Partial<{
   [K in keyof T]: FormField;
 }>;
 
-export type FormDefinition<T extends FormDataDefinition> = {
+export type FormInputGroup<T extends FormDataDefinition> = {
+  type: 'group';
   fields: FormInputFields<T>;
+};
+
+export type FormInputGroups<T extends FormDataDefinition> = {
+  [key: string]: FormInputGroup<T>;
+};
+
+export type FormDefinition<T extends FormDataDefinition> = {
+  fields: FormInputFields<T> & FormInputGroups<T>;
   accessors: FormAccessors<T>;
   callbacks: FormCallbacks<T>;
 };
@@ -47,27 +52,57 @@ export type FormDefinition<T extends FormDataDefinition> = {
 export type AbstractFormDefinition = FormDefinition<{ [key: string]: any }>;
 
 export type PartialFormDefinition<T extends FormDataDefinition> = Partial<{
-  fields: FormInputFields<T>;
+  fields: FormInputFields<T> & FormInputGroups<T>;
   accessors: Partial<FormAccessors<T>>;
   callbacks: Partial<FormCallbacks<T>>;
 }>;
 
-export interface FormButtons<T> {
-  next: T;
-  previous: T;
+export function isFormField<T extends FormDataDefinition>(
+  field: FormField | FormInputGroup<T>,
+): field is FormField {
+  return field.type !== 'group';
 }
 
-export interface FormTranslations {
-  buttons?: FormButtons<string>;
+export function isFormFieldGroup<T extends FormDataDefinition>(
+  field: FormField | FormInputGroup<T>,
+): field is FormInputGroup<T> {
+  return field.type === 'group';
 }
 
-export interface FormVisibility {
-  buttons: FormButtons<boolean>;
-  sidebar: boolean;
+function getFormFieldGroups<T extends FormDataDefinition>(
+  form: FormDefinition<T>,
+): FormInputGroups<T> {
+  return Object.fromEntries(
+    Object.entries(form.fields).filter(([, field]) => {
+      return isFormFieldGroup(field);
+    }),
+  ) as FormInputGroups<T>;
 }
 
-export interface FormClasses {
-  card: string;
+/**
+ * Get all form fields in a flat form, even if they are nested in a group.
+ *
+ * @param form
+ */
+function getFormFields<T extends FormDataDefinition>(
+  form: FormDefinition<T>,
+): FormInputFields<T> {
+  let fields = {} as FormInputFields<T>;
+
+  // Get all fields that are not in a group.
+  fields = {
+    ...fields,
+    ...Object.fromEntries(
+      Object.entries(form.fields).filter(([, field]) => isFormField<T>(field)),
+    ),
+  };
+
+  // Get all fields from groups.
+  Object.values(getFormFieldGroups<T>(form)).forEach(group => {
+    fields = { ...fields, ...Object.values(group.fields) };
+  });
+
+  return fields;
 }
 
 /**
@@ -79,9 +114,10 @@ function validateFields<T extends FormDataDefinition>(
   form: FormDefinition<T>,
 ): Record<keyof T, ValidationResult> {
   const results = {} as Record<keyof T, ValidationResult>;
+  const fields = getFormFields(form);
 
-  for (const key in form.fields) {
-    const field = form.fields[key] as FormField;
+  for (const key in fields) {
+    const field = fields[key] as FormField;
 
     if (field.validate) {
       const value = form.accessors.data[key];

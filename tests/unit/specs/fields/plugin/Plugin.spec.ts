@@ -2,7 +2,7 @@ import { VueWrapper, mount } from '@vue/test-utils';
 import PluginFieldComponent from '../../../mock/PluginFieldComponent.vue';
 import { formFieldPlugin } from '@/use/plugins';
 import Form from '@/components/Form.vue';
-import { useForm } from '@/use/form';
+import { useForm } from '@/composables/form';
 
 describe('Plugin field tests', () => {
   let wrapper: VueWrapper;

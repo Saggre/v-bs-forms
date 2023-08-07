@@ -1,19 +1,28 @@
 import { VueWrapper, mount } from '@vue/test-utils';
 import StandardField from '@/components/fields/Standard.vue';
 import { DOMWrapper } from '@vue/test-utils/dist/domWrapper';
+import { createForm } from '@/composables/form';
 
 describe('Text field', () => {
   let wrapper: VueWrapper;
   let field: Omit<DOMWrapper<HTMLInputElement>, 'exists'>;
 
+  const form = createForm({
+    fields: {
+      field: {
+        type: 'text',
+        title: 'Field title',
+      },
+    },
+  });
+
   beforeEach(() => {
+    // @ts-ignore
     wrapper = mount(StandardField, {
       props: {
-        field: {
-          type: 'text',
-          title: 'Field title',
-          floating: true,
-        },
+        field: form.fields.field,
+        form,
+        formKey: 'field',
         modelValue: 'initialText',
       },
     });

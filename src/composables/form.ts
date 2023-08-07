@@ -35,15 +35,15 @@ const getDefaultCallbacks = <
 });
 
 /**
- * Creates a form object with default values.
+ * Creates a form object with default values from a partial form object.
  *
  * @param formDefinition
  */
-const createForm = <T extends FormDataDefinition>(
+export const createForm = <T extends FormDataDefinition>(
   formDefinition: PartialFormDefinition<T>,
-) => {
+): FormDefinition<T> => {
   return {
-    fields: formDefinition.fields ?? ({} as FormInputFields<T>),
+    fields: formDefinition.fields ?? {},
     accessors: {
       ...getDefaultAccessors<T>(),
       ...(formDefinition.accessors ?? {}),
@@ -52,7 +52,7 @@ const createForm = <T extends FormDataDefinition>(
       ...getDefaultCallbacks<T>(),
       ...(formDefinition.callbacks ?? {}),
     },
-  };
+  } as FormDefinition<T>;
 };
 
 /**

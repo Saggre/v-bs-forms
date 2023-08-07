@@ -1,6 +1,7 @@
 import { VueWrapper, mount } from '@vue/test-utils';
 import Form from '@/components/Form.vue';
-import { FormDefinition, useForm } from '@/use/form';
+import { FormDefinition } from '@/use/form';
+import { useForm } from '@/composables/form';
 import { MockedFunction } from 'vitest';
 
 describe('Form', () => {
@@ -13,6 +14,7 @@ describe('Form', () => {
       onCancel: vi.fn(),
       onError: vi.fn(),
     };
+    // @ts-ignore
     wrapper = mount(Form, {
       props: {
         form: useForm({
@@ -20,7 +22,6 @@ describe('Form', () => {
             foo: {
               type: 'text',
               title: 'Foo',
-              floating: true,
             },
           },
           callbacks: {

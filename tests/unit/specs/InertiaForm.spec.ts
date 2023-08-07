@@ -1,8 +1,14 @@
-import { VueWrapper, mount } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import Form from '@/components/Form.vue';
-import { useInertiaForm } from '@/use/form';
+import { useInertiaForm } from '@/composables/inertiaForm';
 import { router } from '@inertiajs/vue3';
 import { MockedFunction } from 'vitest';
+import { FormDataDefinition } from '@/use/fields/base';
+
+interface FormData extends FormDataDefinition {
+  email: string;
+  password: string;
+}
 
 describe('InertiaJS form', () => {
   let wrapper: VueWrapper;
@@ -12,11 +18,9 @@ describe('InertiaJS form', () => {
     // @ts-ignore
     router.visit = vi.fn() as MockedFunction<any>;
 
-    form = useInertiaForm(
+    form = useInertiaForm<FormData>(
       'http://localhost',
-      {
-        method: 'post',
-      },
+      { method: 'post' },
       {
         fields: {
           email: {

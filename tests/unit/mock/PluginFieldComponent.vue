@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { PluginField } from '@/unit/mock/plugin';
+import { PluginField } from './plugin';
 
 export default defineComponent({
   props: {

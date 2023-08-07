@@ -52,7 +52,7 @@ export type FormDefinition<T extends FormDataDefinition> = {
 export type AbstractFormDefinition = FormDefinition<{ [key: string]: any }>;
 
 export type PartialFormDefinition<T extends FormDataDefinition> = Partial<{
-  fields: FormInputFields<T> & FormInputGroups<T>;
+  fields: Partial<FormInputFields<T> | FormInputGroups<T>>;
   accessors: Partial<FormAccessors<T>>;
   callbacks: Partial<FormCallbacks<T>>;
 }>;

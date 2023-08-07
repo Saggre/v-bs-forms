@@ -55,9 +55,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-textarea:after {
-  content: '10 / 100';
-}
-</style>

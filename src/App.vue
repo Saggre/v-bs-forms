@@ -165,6 +165,7 @@ const fields: FormInputFields<LoginFormData> = {
   date: {
     type: 'date',
     title: 'Date',
+    min: '2022-01-01',
     onChange: (value: string, form: LoginForm | undefined) =>
       console.log(`Selected: ${value}`, form),
   },

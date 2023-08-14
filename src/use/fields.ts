@@ -9,12 +9,16 @@ export type StandardFormField = BaseFormFieldDefinition<string> & {
   type: HtmlFormFieldType[keyof HtmlFormFieldType];
 };
 
-export type NumberFormField = BaseFormFieldDefinition<number> & {
-  type: 'number';
-  min?: number;
-  max?: number;
-  step?: number;
+export type MinMaxField<T> = {
+  min?: T;
+  max?: T;
 };
+
+export type NumberFormField = BaseFormFieldDefinition<number> &
+  MinMaxField<number> & {
+    type: 'number';
+    step?: number;
+  };
 
 export interface ActionFormFieldTexts {
   submit: string;
@@ -32,13 +36,15 @@ export type ActionFormField = BaseFormFieldDefinition<boolean> &
     onInput?: never;
   };
 
-export type DateFormField = BaseFormFieldDefinition<string> & {
-  type: 'date';
-};
+export type DateFormField = BaseFormFieldDefinition<string> &
+  MinMaxField<string> & {
+    type: 'date';
+  };
 
-export type TimeFormField = BaseFormFieldDefinition<string> & {
-  type: 'time';
-};
+export type TimeFormField = BaseFormFieldDefinition<string> &
+  MinMaxField<string> & {
+    type: 'time';
+  };
 
 export interface ListItem {
   name: string;

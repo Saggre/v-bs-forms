@@ -53,6 +53,8 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
       name: field.name || field.title,
       required: field.required || false,
       placeholder: getPlaceholder(field),
+      min: field.min ?? null,
+      max: field.max ?? null,
       ...tooltipAttributes,
     })),
     events: {

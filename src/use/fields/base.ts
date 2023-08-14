@@ -1,4 +1,5 @@
 import { FormDefinition } from '@/use/form';
+import { MinMaxField } from '@/use/fields';
 
 export const enum HtmlFormFieldType {
   Text = 'text',
@@ -90,4 +91,5 @@ export interface CardFormFieldDefinition {
   required?: boolean;
 }
 
-export type BaseFormFieldDefinition<V> = GlobalFormField<V>;
+export type BaseFormFieldDefinition<V> = GlobalFormField<V> &
+  Partial<MinMaxField<any>>;

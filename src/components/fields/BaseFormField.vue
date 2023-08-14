@@ -37,9 +37,9 @@ export default defineComponent({
     },
   },
   computed: {
-    containerClass(): Record<string, boolean> {
+    wrapperClass(): Record<string, boolean> {
       return (
-        this.field.containerClass ?? {
+        this.field.wrapperClass ?? {
           'mb-3': true,
         }
       );

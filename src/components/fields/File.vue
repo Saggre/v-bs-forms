@@ -1,6 +1,6 @@
 <template>
   <div class="w-100">
-    <div :class="containerClass">
+    <div :class="wrapperClass">
       <FieldLabel
         class="form-label"
         :for="attributes.id"

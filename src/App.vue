@@ -152,7 +152,7 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'number',
     title: 'Number',
     required: true,
-    containerClass: {
+    wrapperClass: {
       'mb-0': true,
     },
   },

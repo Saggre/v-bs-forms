@@ -36,7 +36,10 @@ export type FormInputFields<T extends FormDataDefinition> = Partial<{
 
 export type FormInputGroup<T extends FormDataDefinition> = {
   type: 'group';
-  columnClass?: { [key: string]: boolean };
+  /**
+   * Class for the group element. Usually a row.
+   */
+  class?: { [key: string]: boolean };
   fields: FormInputFields<T>;
 };
 

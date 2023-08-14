@@ -1,12 +1,26 @@
 <template>
-  <div class="row">
+  <div>
     <div
       v-for="(field, key) in fields"
       :key="key"
-      :class="field?.columnClass ?? {}"
+      :class="
+        field.wrapperClass ??
+        field.columnClass ?? {
+          col: true,
+          'col-12': true,
+        }
+      "
     >
       <component :is="groupComponent" v-if="isFormFieldGroup(field)">
-        <FormFieldGroup :fields="field.fields" :form="form"></FormFieldGroup>
+        <FormFieldGroup
+          :class="
+            field.class ?? {
+              row: true,
+            }
+          "
+          :fields="field.fields"
+          :form="form"
+        ></FormFieldGroup>
       </component>
       <div v-else>
         <slot name="before-field" :field-key="`${key}`" :field="field" />

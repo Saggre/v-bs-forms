@@ -1,6 +1,6 @@
 <template>
   <div class="w-100">
-    <div :class="containerClass">
+    <div :class="wrapperClass">
       <div class="form-check">
         <FieldLabel
           class="form-label"

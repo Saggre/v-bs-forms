@@ -10,6 +10,7 @@
       :fields="form.fields"
       :form="form"
       :group-component="groupComponent"
+      :class="groupContainerClass"
     >
     </FormFieldGroup>
     <slot />
@@ -49,6 +50,12 @@ export default defineComponent({
         ReturnType<typeof defineComponent> | string
       >,
       default: 'div',
+    },
+    groupContainerClass: {
+      type: Object as PropType<Record<string, boolean>>,
+      default: {
+        row: true,
+      },
     },
     form: {
       type: Object as PropType<AbstractFormDefinition>,

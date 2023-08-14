@@ -12,8 +12,14 @@
       :group-component="groupComponent"
       :class="groupContainerClass"
     >
+      <template #before-field="{ fieldKey, field }">
+        <slot name="before-field" :field-key="`${fieldKey}`" :field="field" />
+      </template>
+      <template #after-field="{ fieldKey, field }">
+        <slot name="after-field" :field-key="`${fieldKey}`" :field="field" />
+      </template>
+      <slot />
     </FormFieldGroup>
-    <slot />
     <div v-if="loading" class="v-bs-form-glasspane-container">
       <slot name="glasspane">
         <div
@@ -53,6 +59,7 @@ export default defineComponent({
     },
     groupContainerClass: {
       type: Object as PropType<Record<string, boolean>>,
+      // eslint-disable-next-line vue/require-valid-default-prop
       default: {
         row: true,
       },

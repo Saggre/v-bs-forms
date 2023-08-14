@@ -3,20 +3,24 @@
     <template #before-field="{ fieldKey }">
       <h1 v-if="fieldKey === 'password'">Password?</h1>
     </template>
-    <div class="w-100">
-      <div class="mb-3">
-        <label class="form-label" for="Email"><span>Extra field</span></label>
-        <input
-          class="form-control"
-          id="extra"
-          autocomplete="off"
-          name="extra"
-          type="text"
-          placeholder="Extra field"
-        />
+    <div>
+      <div class="w-100">
+        <div class="mb-3">
+          <label class="form-label text-white" for="Email"
+            ><span>Extra field</span></label
+          >
+          <input
+            class="form-control"
+            id="extra"
+            autocomplete="off"
+            name="extra"
+            type="text"
+            placeholder="Extra field"
+          />
+        </div>
       </div>
+      <button type="submit" class="btn btn-primary w-100 mb-3">Send</button>
     </div>
-    <button type="submit" class="btn btn-primary w-100 mb-3">Send</button>
   </AppForm>
 </template>
 
@@ -61,23 +65,17 @@ const data = {
 };
 
 const fields: FormInputFields<LoginFormData> = {
-  email: {
-    type: 'text',
-    title: 'Email',
-    tooltip: {
-      title: 'Tooltip title',
-      placement: 'top',
-    },
-  },
-  'password-group': {
+  'login-group': {
     type: 'group',
-    containerClass: {
-      'bg-secondary': true,
-      'py-5': true,
-      'px-3': true,
-      'my-5': true,
-    },
     fields: {
+      email: {
+        type: 'text',
+        title: 'Email',
+        tooltip: {
+          title: 'Tooltip title',
+          placement: 'top',
+        },
+      },
       password: {
         type: 'password',
         title: 'Password',
@@ -131,178 +129,183 @@ const fields: FormInputFields<LoginFormData> = {
       },
     },
   },
-  role: {
-    type: 'dropdown',
-    title: 'Role',
-    options: {
-      foo: 'Foo',
-      bar: 'Bar',
-      baz: 'Baz',
-    },
-  },
-  number: {
-    type: 'number',
-    title: 'Number',
-    required: true,
-    wrapperClass: {
-      'mb-0': true,
-    },
-  },
-  image: {
-    type: 'file',
-    title: 'Profile image',
-    required: true,
-    accept: 'image/*',
-  },
-  date: {
-    type: 'date',
-    title: 'Date',
-    min: '2022-01-01',
-    onChange: (value: string, form: LoginForm | undefined) =>
-      console.log(`Selected: ${value}`, form),
-  },
-  time: {
-    type: 'time',
-    title: 'Time',
-  },
-  textarea: {
-    type: 'textarea',
-    title: 'Textarea',
-    rows: 5,
-    maxlength: 140,
-    required: true,
-    validate: (value: string | undefined): ValidationResult => {
-      if (value && value.length < 140) {
-        return {
-          message: 'Textarea must be at least 10 characters',
-          valid: false,
-        };
-      }
-
-      return {
-        valid: true,
-      };
-    },
-  },
-  checkbox: {
-    type: 'checkbox',
-    title: 'Checkbox',
-    required: true,
-    validate: (value: boolean | undefined): ValidationResult => {
-      if (!value) {
-        return {
-          message: 'Checkbox must be checked',
-          valid: false,
-        };
-      }
-
-      return {
-        valid: true,
-      };
-    },
-  },
-  'list-group': {
-    type: 'list-group',
-    title: 'List group',
-    subtitle: 'Subtitle',
-    description: 'Description',
-    header: 'Header',
-    footer: 'Footer',
-    options: {
-      foo: {
-        name: 'Foo',
-        description: 'Foo description',
+  'other-group': {
+    type: 'group',
+    fields: {
+      role: {
+        type: 'dropdown',
+        title: 'Role',
+        options: {
+          foo: 'Foo',
+          bar: 'Bar',
+          baz: 'Baz',
+        },
       },
-      bar: {
-        name: 'Bar',
-        description: 'Bar description',
+      number: {
+        type: 'number',
+        title: 'Number',
+        required: true,
+        wrapperClass: {
+          'mb-0': true,
+        },
       },
-      baz: {
-        name: 'Baz',
-        description: 'Baz description',
+      image: {
+        type: 'file',
+        title: 'Profile image',
+        required: true,
+        accept: 'image/*',
       },
-    },
-  },
-  action: {
-    type: 'action',
-    title: 'Action',
-    subtitle: 'Subtitle',
-    description: 'Description',
-    header: 'Header',
-    footer: 'Footer',
-    required: true,
-    onSubmit: () => {
-      console.log('Action submitted');
-      data.action = true;
-    },
-    validate: () => {
-      if (data.action) {
-        return {
-          valid: true,
-        } as ValidationSuccess;
-      }
+      date: {
+        type: 'date',
+        title: 'Date',
+        min: '2022-01-01',
+        onChange: (value: string, form: LoginForm | undefined) =>
+          console.log(`Selected: ${value}`, form),
+      },
+      time: {
+        type: 'time',
+        title: 'Time',
+      },
+      textarea: {
+        type: 'textarea',
+        title: 'Textarea',
+        rows: 5,
+        maxlength: 140,
+        required: true,
+        validate: (value: string | undefined): ValidationResult => {
+          if (value && value.length < 140) {
+            return {
+              message: 'Textarea must be at least 10 characters',
+              valid: false,
+            };
+          }
 
-      return {
-        message: 'Action must be completed',
-        valid: false,
-      };
-    },
-    texts: {
-      submit: 'Submit',
-      success: 'Success',
-      description: 'Description',
-    },
-  },
-  'valid-action': {
-    type: 'action',
-    title: 'Valid action',
-    subtitle: 'An action that is always valid',
-    header: 'Valid action',
-    onSubmit: () => {
-      return;
-    },
-    texts: {
-      submit: 'Submit',
-      success: 'Success',
-      description: 'Description',
-    },
-    validate: (): ValidationResult => {
-      return {
-        valid: true,
-      };
-    },
-  },
-  number1: {
-    type: 'number',
-    title: 'Number 1',
-    onInput: (value: number, form: LoginForm | undefined) => {
-      console.log(`Selected: ${value}`, form);
+          return {
+            valid: true,
+          };
+        },
+      },
+      checkbox: {
+        type: 'checkbox',
+        title: 'Checkbox',
+        required: true,
+        validate: (value: boolean | undefined): ValidationResult => {
+          if (!value) {
+            return {
+              message: 'Checkbox must be checked',
+              valid: false,
+            };
+          }
 
-      if (form) {
-        form.accessors.data['number2'] = value * 2;
-      }
-    },
-  },
-  number2: {
-    type: 'number',
-    title: 'Number 2',
-    onInput: (value: number, form: LoginForm | undefined) =>
-      console.log(`Selected: ${value}`, form),
-  },
-  numberStep: {
-    type: 'number',
-    title: 'Number stepped',
-    step: 0.1,
-    min: 10,
-    max: 20,
-    onInput: (value: number, form: LoginForm | undefined) =>
-      console.log(`Selected: ${value}`, form),
-    visible: (form: LoginForm | undefined) => {
-      if (form) {
-        return (form.accessors.data.number1 ?? 0) > 10;
-      }
+          return {
+            valid: true,
+          };
+        },
+      },
+      'list-group': {
+        type: 'list-group',
+        title: 'List group',
+        subtitle: 'Subtitle',
+        description: 'Description',
+        header: 'Header',
+        footer: 'Footer',
+        options: {
+          foo: {
+            name: 'Foo',
+            description: 'Foo description',
+          },
+          bar: {
+            name: 'Bar',
+            description: 'Bar description',
+          },
+          baz: {
+            name: 'Baz',
+            description: 'Baz description',
+          },
+        },
+      },
+      action: {
+        type: 'action',
+        title: 'Action',
+        subtitle: 'Subtitle',
+        description: 'Description',
+        header: 'Header',
+        footer: 'Footer',
+        required: true,
+        onSubmit: () => {
+          console.log('Action submitted');
+          data.action = true;
+        },
+        validate: () => {
+          if (data.action) {
+            return {
+              valid: true,
+            } as ValidationSuccess;
+          }
 
-      return false;
+          return {
+            message: 'Action must be completed',
+            valid: false,
+          };
+        },
+        texts: {
+          submit: 'Submit',
+          success: 'Success',
+          description: 'Description',
+        },
+      },
+      'valid-action': {
+        type: 'action',
+        title: 'Valid action',
+        subtitle: 'An action that is always valid',
+        header: 'Valid action',
+        onSubmit: () => {
+          return;
+        },
+        texts: {
+          submit: 'Submit',
+          success: 'Success',
+          description: 'Description',
+        },
+        validate: (): ValidationResult => {
+          return {
+            valid: true,
+          };
+        },
+      },
+      number1: {
+        type: 'number',
+        title: 'Number 1',
+        onInput: (value: number, form: LoginForm | undefined) => {
+          console.log(`Selected: ${value}`, form);
+
+          if (form) {
+            form.accessors.data['number2'] = value * 2;
+          }
+        },
+      },
+      number2: {
+        type: 'number',
+        title: 'Number 2',
+        onInput: (value: number, form: LoginForm | undefined) =>
+          console.log(`Selected: ${value}`, form),
+      },
+      numberStep: {
+        type: 'number',
+        title: 'Number stepped',
+        step: 0.1,
+        min: 10,
+        max: 20,
+        onInput: (value: number, form: LoginForm | undefined) =>
+          console.log(`Selected: ${value}`, form),
+        visible: (form: LoginForm | undefined) => {
+          if (form) {
+            return (form.accessors.data.number1 ?? 0) > 10;
+          }
+
+          return false;
+        },
+      },
     },
   },
 };

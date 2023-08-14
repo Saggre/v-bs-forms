@@ -19,15 +19,28 @@
         "
         v-if="field && isFormFieldGroup(field)"
       >
-        <FormFieldGroup
-          :class="
-            field?.wrapperClass ?? {
-              row: true,
-            }
-          "
-          :fields="field.fields"
-          :form="form"
-        ></FormFieldGroup>
+        <FormFieldGroup :fields="field.fields" :form="form">
+          <template
+            #before-field="//@ts-ignore
+          { fieldKey, field }"
+          >
+            <slot
+              name="before-field"
+              :field-key="`${fieldKey}`"
+              :field="field"
+            />
+          </template>
+          <template
+            #after-field="//@ts-ignore
+           { fieldKey, field }"
+          >
+            <slot
+              name="after-field"
+              :field-key="`${fieldKey}`"
+              :field="field"
+            />
+          </template>
+        </FormFieldGroup>
       </component>
       <div v-else>
         <slot name="before-field" :field-key="`${key}`" :field="field" />
@@ -44,6 +57,7 @@
         <slot name="after-field" :field-key="`${key}`" :field="field" />
       </div>
     </div>
+    <slot></slot>
   </div>
 </template>
 

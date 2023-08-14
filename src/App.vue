@@ -1,44 +1,35 @@
 <template>
-  <div class="container py-5">
-    <AppForm :form="loginForm" class="foobar" ref="form">
-      <template #before-field="{ fieldKey }">
-        <h1 v-if="fieldKey === 'password'">Password?</h1>
-      </template>
-      <div class="w-100">
-        <div class="mb-3">
-          <label class="form-label" for="Email"><span>Extra field</span></label>
-          <input
-            class="form-control"
-            id="extra"
-            autocomplete="off"
-            name="extra"
-            type="text"
-            placeholder="Extra field"
-          />
-        </div>
+  <AppForm :form="loginForm" class="foobar" ref="form">
+    <template #before-field="{ fieldKey }">
+      <h1 v-if="fieldKey === 'password'">Password?</h1>
+    </template>
+    <div class="w-100">
+      <div class="mb-3">
+        <label class="form-label" for="Email"><span>Extra field</span></label>
+        <input
+          class="form-control"
+          id="extra"
+          autocomplete="off"
+          name="extra"
+          type="text"
+          placeholder="Extra field"
+        />
       </div>
-      <button type="submit" class="btn btn-primary w-100 mb-3">Send</button>
-    </AppForm>
-  </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100 mb-3">Send</button>
+  </AppForm>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import AppForm from '@/components/Form.vue';
-import {
-  FormCallbacks,
-  FormDefinition,
-  FormInputFields,
-  FormInputGroup,
-  FormInputGroups,
-} from '@/use/form';
+import { FormCallbacks, FormDefinition, FormInputFields } from '@/use/form';
 import {
   FormDataDefinition,
   ValidationResult,
   ValidationSuccess,
 } from '@/use/fields/base';
 import { useInertiaForm } from '@/composables/inertiaForm';
-import { FormField } from '@/use/fields';
 
 interface LoginFormData extends FormDataDefinition {
   email: string;
@@ -80,9 +71,10 @@ const fields: FormInputFields<LoginFormData> = {
   },
   'password-group': {
     type: 'group',
-    columnClass: {
+    containerClass: {
       'bg-secondary': true,
       'py-5': true,
+      'px-3': true,
       'my-5': true,
     },
     fields: {

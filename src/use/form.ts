@@ -36,10 +36,8 @@ export type FormInputFields<T extends FormDataDefinition> = Partial<{
 
 export type FormInputGroup<T extends FormDataDefinition> = {
   type: 'group';
-  /**
-   * Class for the group element. Usually a row.
-   */
-  class?: { [key: string]: boolean };
+  containerClass?: { [key: string]: boolean };
+  wrapperClass?: { [key: string]: boolean };
   fields: FormInputFields<T>;
 };
 
@@ -70,7 +68,7 @@ export function isFormField<T extends FormDataDefinition>(
 export function isFormFieldGroup<T extends FormDataDefinition>(
   field: FormField | FormInputGroup<T>,
 ): field is FormInputGroup<T> {
-  return field.type === 'group';
+  return field && field.type === 'group';
 }
 
 export function getFormFieldGroups<T extends FormDataDefinition>(

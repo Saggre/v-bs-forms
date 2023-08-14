@@ -25,13 +25,20 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import AppForm from '@/components/Form.vue';
-import { FormCallbacks, FormDefinition, FormInputFields } from '@/use/form';
+import {
+  FormCallbacks,
+  FormDefinition,
+  FormInputFields,
+  FormInputGroup,
+  FormInputGroups,
+} from '@/use/form';
 import {
   FormDataDefinition,
   ValidationResult,
   ValidationSuccess,
 } from '@/use/fields/base';
 import { useInertiaForm } from '@/composables/inertiaForm';
+import { FormField } from '@/use/fields';
 
 interface LoginFormData extends FormDataDefinition {
   email: string;
@@ -71,55 +78,65 @@ const fields: FormInputFields<LoginFormData> = {
       placement: 'top',
     },
   },
-  password: {
-    type: 'password',
-    title: 'Password',
-    id: 'password-id',
-    autocomplete: 'password',
-    autofocus: true,
-    disabled: false,
+  'password-group': {
+    type: 'group',
     columnClass: {
-      'col-12': true,
-      'col-md-6': true,
+      'bg-secondary': true,
+      'py-5': true,
+      'my-5': true,
     },
-    toggleable: {
-      icons: {
-        show: '🙈',
-        hide: '🙉',
+    fields: {
+      password: {
+        type: 'password',
+        title: 'Password',
+        id: 'password-id',
+        autocomplete: 'password',
+        autofocus: true,
+        disabled: false,
+        columnClass: {
+          'col-12': true,
+          'col-md-6': true,
+        },
+        toggleable: {
+          icons: {
+            show: '🙈',
+            hide: '🙉',
+          },
+        },
+        validate: (value: string | undefined): ValidationResult => {
+          if (value && value.length < 8) {
+            return {
+              message: 'Password must be at least 8 characters',
+              valid: false,
+            };
+          }
+
+          return {
+            valid: true,
+          };
+        },
       },
-    },
-    validate: (value: string): ValidationResult => {
-      if (value.length < 8) {
-        return {
-          message: 'Password must be at least 8 characters',
-          valid: false,
-        };
-      }
+      password2: {
+        type: 'password',
+        title: 'Password',
+        columnClass: {
+          'col-12': true,
+          'col-md-6': true,
+        },
+        toggleable: true,
+        validate: (value: string | undefined): ValidationResult => {
+          if (value && value.length < 8) {
+            return {
+              message: 'Password must be at least 8 characters',
+              valid: false,
+            };
+          }
 
-      return {
-        valid: true,
-      };
-    },
-  },
-  password2: {
-    type: 'password',
-    title: 'Password',
-    columnClass: {
-      'col-12': true,
-      'col-md-6': true,
-    },
-    toggleable: true,
-    validate: (value: string): ValidationResult => {
-      if (value.length < 8) {
-        return {
-          message: 'Password must be at least 8 characters',
-          valid: false,
-        };
-      }
-
-      return {
-        valid: true,
-      };
+          return {
+            valid: true,
+          };
+        },
+      },
     },
   },
   role: {
@@ -178,7 +195,7 @@ const fields: FormInputFields<LoginFormData> = {
     type: 'checkbox',
     title: 'Checkbox',
     required: true,
-    validate: (value: boolean): ValidationResult => {
+    validate: (value: boolean | undefined): ValidationResult => {
       if (!value) {
         return {
           message: 'Checkbox must be checked',

@@ -6,26 +6,12 @@
     @submit="onSubmit"
   >
     <slot name="head" />
-    <div class="row">
-      <div
-        v-for="(field, key) in form.fields"
-        :key="key"
-        :class="field?.columnClass ?? {}"
-      >
-        <slot name="before-field" :field-key="`${key}`" :field="field" />
-        <FormFieldComponent
-          v-if="field && isFieldVisible(field)"
-          :form-key="`${key}`"
-          :field="{
-            ...field,
-            // TODO: More robust process for default values.
-            name: field && field.name ? field.name : key,
-          }"
-          :form="form"
-        />
-        <slot name="after-field" :field-key="`${key}`" :field="field" />
-      </div>
-    </div>
+    <FormFieldGroup
+      :fields="form.fields"
+      :form="form"
+      :group-component="groupComponent"
+    >
+    </FormFieldGroup>
     <slot />
     <div v-if="loading" class="v-bs-form-glasspane-container">
       <slot name="glasspane">
@@ -50,15 +36,20 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { AbstractFormDefinition } from '@/use/form';
-import FormFieldComponent from '@/components/fields/FormField.vue';
-import { FormField } from '@/use/fields';
+import { AbstractFormDefinition, isFormFieldGroup } from '@/use/form';
+import FormFieldGroup from '@/components/FormFieldGroup.vue';
 
 export default defineComponent({
   components: {
-    FormFieldComponent,
+    FormFieldGroup,
   },
   props: {
+    groupComponent: {
+      type: [Object, String] as PropType<
+        ReturnType<typeof defineComponent> | string
+      >,
+      default: 'div',
+    },
     form: {
       type: Object as PropType<AbstractFormDefinition>,
       required: true,
@@ -92,15 +83,7 @@ export default defineComponent({
     this.form.callbacks?.onRender?.(this.form);
   },
   methods: {
-    isFieldVisible(field: FormField): boolean {
-      if (field.type === 'html') {
-        return false;
-      }
-
-      return field.visible instanceof Function
-        ? field.visible(this.form)
-        : field.visible ?? true;
-    },
+    isFormFieldGroup,
     async onSubmit(event: Event) {
       if (this.preventDefault) {
         event.preventDefault();

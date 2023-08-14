@@ -31,11 +31,12 @@ export interface FormCallbacks<T extends FormDataDefinition> {
 
 export type FormInputFields<T extends FormDataDefinition> = Partial<{
   // TODO: Allow form field types based on defined value type.
-  [K in keyof T]: FormField;
+  [K in keyof T]: FormField | FormInputGroup<T>;
 }>;
 
 export type FormInputGroup<T extends FormDataDefinition> = {
   type: 'group';
+  columnClass?: { [key: string]: boolean };
   fields: FormInputFields<T>;
 };
 
@@ -44,7 +45,7 @@ export type FormInputGroups<T extends FormDataDefinition> = {
 };
 
 export type FormDefinition<T extends FormDataDefinition> = {
-  fields: FormInputFields<T> & FormInputGroups<T>;
+  fields: FormInputFields<T>;
   accessors: FormAccessors<T>;
   callbacks: FormCallbacks<T>;
 };
@@ -52,7 +53,7 @@ export type FormDefinition<T extends FormDataDefinition> = {
 export type AbstractFormDefinition = FormDefinition<{ [key: string]: any }>;
 
 export type PartialFormDefinition<T extends FormDataDefinition> = Partial<{
-  fields: Partial<FormInputFields<T> | FormInputGroups<T>>;
+  fields: Partial<FormInputFields<T>>;
   accessors: Partial<FormAccessors<T>>;
   callbacks: Partial<FormCallbacks<T>>;
 }>;
@@ -74,7 +75,7 @@ export function getFormFieldGroups<T extends FormDataDefinition>(
 ): FormInputGroups<T> {
   return Object.fromEntries(
     Object.entries(form.fields).filter(([, field]) => {
-      return isFormFieldGroup(field);
+      return field && isFormFieldGroup(field);
     }),
   ) as FormInputGroups<T>;
 }
@@ -93,7 +94,9 @@ export function getFormFields<T extends FormDataDefinition>(
   fields = {
     ...fields,
     ...Object.fromEntries(
-      Object.entries(form.fields).filter(([, field]) => isFormField<T>(field)),
+      Object.entries(form.fields).filter(
+        ([, field]) => field && isFormField<T>(field),
+      ),
     ),
   };
 

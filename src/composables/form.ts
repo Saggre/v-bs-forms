@@ -1,10 +1,8 @@
 import { FormDataDefinition } from '@/use/fields/base';
 import {
-  FormAccessorErrors,
   FormAccessors,
   FormCallbacks,
   FormDefinition,
-  FormInputFields,
   onSubmitValidation,
   PartialFormDefinition,
   resetFormErrors,
@@ -69,19 +67,23 @@ export const useForm = <T extends FormDataDefinition>(
   form.callbacks.onSubmit = async form => {
     resetFormErrors(form);
 
-    try {
-      await onSubmitValidation(form);
-      await onSubmit(form);
-    } catch (errors) {
+    const validationErrors = onSubmitValidation(form);
+
+    if (Object.keys(validationErrors).length > 0) {
       form.accessors.errors = {
         ...form.accessors.errors,
-        ...(errors as FormAccessorErrors<T>),
+        ...validationErrors,
       };
 
       form.callbacks.onError?.(form.accessors.errors, form);
 
-      throw errors;
+      throw {
+        message: 'Validation errors',
+        errors: form.accessors.errors,
+      };
     }
+
+    await onSubmit(form);
   };
 
   return form;

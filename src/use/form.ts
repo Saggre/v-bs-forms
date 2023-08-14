@@ -69,7 +69,7 @@ export function isFormFieldGroup<T extends FormDataDefinition>(
   return field.type === 'group';
 }
 
-function getFormFieldGroups<T extends FormDataDefinition>(
+export function getFormFieldGroups<T extends FormDataDefinition>(
   form: FormDefinition<T>,
 ): FormInputGroups<T> {
   return Object.fromEntries(
@@ -84,7 +84,7 @@ function getFormFieldGroups<T extends FormDataDefinition>(
  *
  * @param form
  */
-function getFormFields<T extends FormDataDefinition>(
+export function getFormFields<T extends FormDataDefinition>(
   form: FormDefinition<T>,
 ): FormInputFields<T> {
   let fields = {} as FormInputFields<T>;
@@ -99,7 +99,7 @@ function getFormFields<T extends FormDataDefinition>(
 
   // Get all fields from groups.
   Object.values(getFormFieldGroups<T>(form)).forEach(group => {
-    fields = { ...fields, ...Object.values(group.fields) };
+    fields = { ...fields, ...group.fields };
   });
 
   return fields;
@@ -110,9 +110,9 @@ function getFormFields<T extends FormDataDefinition>(
  *
  * @param form
  */
-function validateFields<T extends FormDataDefinition>(
+export function validateFields<T extends FormDataDefinition>(
   form: FormDefinition<T>,
-): Record<keyof T, ValidationResult> {
+): FormAccessorErrors<T> {
   const results = {} as Record<keyof T, ValidationResult>;
   const fields = getFormFields(form);
 
@@ -120,7 +120,7 @@ function validateFields<T extends FormDataDefinition>(
     const field = fields[key] as FormField;
 
     if (field.validate) {
-      const value = form.accessors.data[key];
+      const value = form.accessors?.data?.[key];
       results[key] = field.validate(value as never);
     }
   }
@@ -144,7 +144,7 @@ export const resetFormErrors = <T extends FormDataDefinition>(
  *
  * @param validationResults
  */
-const getValidationErrors = <T extends FormDataDefinition>(
+export const getValidationErrors = <T extends FormDataDefinition>(
   validationResults: FormAccessorErrors<T>,
 ): FormAccessorErrors<T> => {
   return Object.fromEntries(
@@ -155,13 +155,13 @@ const getValidationErrors = <T extends FormDataDefinition>(
 };
 
 /**
- * Validates a form and throws an error if there are any validation errors.
+ * Validates a form returns its errors.
  *
  * @param form
  */
-export const onSubmitValidation = async <T extends FormDataDefinition>(
+export const onSubmitValidation = <T extends FormDataDefinition>(
   form: FormDefinition<T>,
-) => {
+): FormAccessorErrors<T> => {
   const validationResults = validateFields(form);
   let validationErrors = getValidationErrors(validationResults);
 
@@ -169,7 +169,5 @@ export const onSubmitValidation = async <T extends FormDataDefinition>(
     validationErrors = form.callbacks.onValidate(validationErrors, form);
   }
 
-  if (Object.keys(validationErrors).length > 0) {
-    throw validationErrors;
-  }
+  return validationErrors;
 };

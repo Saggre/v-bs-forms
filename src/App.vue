@@ -1,11 +1,6 @@
 <template>
   <div class="container py-5">
-    <AppForm
-      :form="loginForm"
-      class="foobar"
-      :prevent-default="true"
-      ref="form"
-    >
+    <AppForm :form="loginForm" class="foobar" ref="form">
       <template #before-field="{ fieldKey }">
         <h1 v-if="fieldKey === 'password'">Password?</h1>
       </template>
@@ -166,8 +161,8 @@ const fields: FormInputFields<LoginFormData> = {
     rows: 5,
     maxlength: 140,
     required: true,
-    validate: (value: string): ValidationResult => {
-      if (value.length < 140) {
+    validate: (value: string | undefined): ValidationResult => {
+      if (value && value.length < 140) {
         return {
           message: 'Textarea must be at least 10 characters',
           valid: false,
@@ -313,13 +308,19 @@ const callbacks: FormCallbacks<LoginFormData> = {
     });
   },
   onRender: form => {
-    console.log('Render', form.accessors.data);
+    console.log('Render', {
+      ...form.accessors.data,
+    });
   },
   onCancel: form => {
-    console.log('Cancel', form.accessors.data);
+    console.log('Cancel', {
+      ...form.accessors.data,
+    });
   },
   onError: errors => {
-    console.log('Validation error', errors);
+    console.log('Validation error', {
+      ...errors,
+    });
   },
   onValidate: (errors, form) => {
     return {

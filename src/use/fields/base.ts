@@ -55,7 +55,7 @@ export interface GlobalFormField<V> {
   class?: { [key: string]: boolean };
   containerClass?: { [key: string]: boolean };
   columnClass?: { [key: string]: boolean };
-  validate?: (value: V) => ValidationResult;
+  validate?: (value: V | undefined) => ValidationResult;
   onChange?: (value: V, form: FormDefinition<any> | undefined) => void;
   onInput?: (value: V, form: FormDefinition<any> | undefined) => void;
   disabled?: boolean;

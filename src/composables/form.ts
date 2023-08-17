@@ -40,17 +40,50 @@ const getDefaultCallbacks = <
 export const createForm = <T extends FormDataDefinition>(
   formDefinition: PartialFormDefinition<T>,
 ): FormDefinition<T> => {
-  return {
+  const { data, errors } = getDefaultAccessors<T>();
+
+  const form = {
     fields: formDefinition.fields ?? {},
-    accessors: {
-      ...getDefaultAccessors<T>(),
-      ...(formDefinition.accessors ?? {}),
-    },
+    accessors: {}, // This is just an alias.
     callbacks: {
       ...getDefaultCallbacks<T>(),
       ...(formDefinition.callbacks ?? {}),
     },
+    data: {
+      ...data,
+      ...(formDefinition.accessors?.data ?? {}),
+      ...(formDefinition.data ?? {}),
+    },
+    errors: {
+      ...errors,
+      ...(formDefinition.accessors?.errors ?? {}),
+      ...(formDefinition.errors ?? {}),
+    },
   } as FormDefinition<T>;
+
+  Object.defineProperty(form.accessors, 'data', {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return form.data;
+    },
+    set(value) {
+      form.data = value;
+    },
+  });
+
+  Object.defineProperty(form.accessors, 'errors', {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return form.errors;
+    },
+    set(value) {
+      form.errors = value;
+    },
+  });
+
+  return form;
 };
 
 /**
@@ -70,16 +103,16 @@ export const useForm = <T extends FormDataDefinition>(
     const validationErrors = onSubmitValidation(form);
 
     if (Object.keys(validationErrors).length > 0) {
-      form.accessors.errors = {
-        ...form.accessors.errors,
+      form.errors = {
+        ...form.errors,
         ...validationErrors,
       };
 
-      form.callbacks.onError?.(form.accessors.errors, form);
+      form.callbacks.onError?.(form.errors, form);
 
       throw {
         message: 'Validation errors',
-        errors: form.accessors.errors,
+        errors: form.errors,
       };
     }
 

@@ -8,7 +8,7 @@ export const useValidation = (
 ) => {
   const validation = computed(
     (): ValidationResult =>
-      form.value.accessors.errors?.[key.value] ?? {
+      form.value.errors?.[key.value] ?? {
         valid: true,
       },
   );

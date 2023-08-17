@@ -5,7 +5,7 @@
       :field="field"
       :form-key="formKey"
       :form="form"
-      v-model="form.accessors.data[formKey]"
+      v-model="form.data[formKey]"
     ></component>
   </div>
 </template>

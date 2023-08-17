@@ -1,8 +1,8 @@
 import { FormDataDefinition, ValidationError } from '@/use/fields/base';
 import {
-  FormAccessorData,
-  FormAccessorErrors,
+  FormData,
   FormDefinition,
+  FormErrors,
   PartialFormDefinition,
 } from '@/use/form';
 import { Errors, VisitOptions } from '@inertiajs/core/types/types';
@@ -10,7 +10,7 @@ import { router } from '@inertiajs/core';
 import { useForm } from '@/composables/form';
 
 type CustomVisitOptions<T extends FormDataDefinition> = {
-  submitTransform?: (data: FormAccessorData<T>) => FormAccessorData<T>;
+  submitTransform?: (data: FormData<T>) => FormData<T>;
 };
 
 export interface VisitRouter {
@@ -39,8 +39,7 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
 ) => {
   await new Promise<void>((resolve, reject) => {
     getInertiaRouter().visit(url, {
-      data: (visitOptions.submitTransform?.(form.accessors.data) ??
-        form.accessors.data) as {},
+      data: (visitOptions.submitTransform?.(form.data) ?? form.data) as {},
       preserveState: true,
       ...visitOptions,
       onError: (errors: Errors) => {
@@ -52,12 +51,12 @@ const submitInertiaForm = async <T extends FormDataDefinition>(
               message,
             } as ValidationError,
           ]),
-        ) as FormAccessorErrors<T>;
+        ) as FormErrors<T>;
         visitOptions?.onError?.(errors);
         reject(errorObjects);
       },
       onSuccess: (page: any) => {
-        form.accessors.errors = {};
+        form.errors = {};
         visitOptions?.onSuccess?.(page);
         resolve();
       },
@@ -94,12 +93,12 @@ export const useInertiaForm = <T extends FormDataDefinition>(
         visitOptions,
       );
     } catch (errors) {
-      form.accessors.errors = {
-        ...form.accessors.errors,
-        ...(errors as FormAccessorErrors<T>),
+      form.errors = {
+        ...form.errors,
+        ...(errors as FormErrors<T>),
       };
 
-      form.callbacks.onError?.(form.accessors.errors, form);
+      form.callbacks.onError?.(form.errors, form);
 
       throw errors;
     }

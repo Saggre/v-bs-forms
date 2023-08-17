@@ -2,7 +2,6 @@ import {
   BaseFormFieldDefinition,
   CardFormFieldDefinition,
   HtmlFormFieldType,
-  ValidationResult,
 } from '@/use/fields/base';
 
 export type StandardFormField = BaseFormFieldDefinition<string> & {

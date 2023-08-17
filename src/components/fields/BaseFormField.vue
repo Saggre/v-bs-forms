@@ -25,7 +25,7 @@ export default defineComponent({
     value(val) {
       this.$emit('update:modelValue', val);
     },
-    'form.accessors.data': {
+    'form.data': {
       handler(newData) {
         if (!this.formKey) {
           return;

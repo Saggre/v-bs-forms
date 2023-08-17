@@ -1,17 +1,30 @@
 import { FormDataDefinition, ValidationResult } from '@/use/fields/base';
 import { FormField } from '@/use/fields';
 
-export type FormAccessorData<T extends FormDataDefinition> = Partial<{
+export type FormData<T extends FormDataDefinition> = Partial<{
   [K in keyof T]: T[K];
 }>;
 
-export type FormAccessorErrors<T extends FormDataDefinition> = Partial<
+export type FormErrors<T extends FormDataDefinition> = Partial<
   Record<keyof T, ValidationResult>
 >;
 
+/**
+ * @deprecated Use FormErrors instead.
+ */
+export type FormAccessorErrors<T extends FormDataDefinition> = FormErrors<T>;
+
+/**
+ * @deprecated Use FormData instead.
+ */
+export type FormAccessorData<T extends FormDataDefinition> = FormData<T>;
+
+/**
+ * @deprecated Do not use accessors.
+ */
 export interface FormAccessors<T extends FormDataDefinition> {
-  data: FormAccessorData<T>;
-  errors: FormAccessorErrors<T>;
+  data: FormData<T>;
+  errors: FormErrors<T>;
 }
 
 export interface FormCallbacks<T extends FormDataDefinition> {
@@ -21,10 +34,10 @@ export interface FormCallbacks<T extends FormDataDefinition> {
    * The function can return errors to prevent the form from being submitted and to display custom errors.
    */
   onValidate?: (
-    errors: FormAccessorErrors<T>,
+    errors: FormErrors<T>,
     form: FormDefinition<T>,
-  ) => FormAccessorErrors<T>;
-  onError?: (errors: FormAccessorErrors<T>, form: FormDefinition<T>) => void;
+  ) => FormErrors<T>;
+  onError?: (errors: FormErrors<T>, form: FormDefinition<T>) => void;
   onRender?: (form: FormDefinition<T>) => void;
   onCancel?: (form: FormDefinition<T>) => void;
 }
@@ -47,16 +60,26 @@ export type FormInputGroups<T extends FormDataDefinition> = {
 
 export type FormDefinition<T extends FormDataDefinition> = {
   fields: FormInputFields<T>;
+  /**
+   * @deprecated Use 'data' and 'errors' directly.
+   */
   accessors: FormAccessors<T>;
   callbacks: FormCallbacks<T>;
+  data: FormData<T>;
+  errors: FormErrors<T>;
 };
 
 export type AbstractFormDefinition = FormDefinition<{ [key: string]: any }>;
 
 export type PartialFormDefinition<T extends FormDataDefinition> = Partial<{
   fields: Partial<FormInputFields<T>>;
+  /**
+   * @deprecated Use 'data' and 'errors' directly.
+   */
   accessors: Partial<FormAccessors<T>>;
   callbacks: Partial<FormCallbacks<T>>;
+  data: FormData<T>;
+  errors: FormErrors<T>;
 }>;
 
 export function isFormField<T extends FormDataDefinition>(
@@ -116,7 +139,7 @@ export function getFormFields<T extends FormDataDefinition>(
  */
 export function validateFields<T extends FormDataDefinition>(
   form: FormDefinition<T>,
-): FormAccessorErrors<T> {
+): FormErrors<T> {
   const results = {} as Record<keyof T, ValidationResult>;
   const fields = getFormFields(form);
 
@@ -124,7 +147,7 @@ export function validateFields<T extends FormDataDefinition>(
     const field = fields[key] as FormField;
 
     if (field.validate) {
-      const value = form.accessors?.data?.[key];
+      const value = form.data?.[key];
       results[key] = field.validate(value as never);
     }
   }
@@ -140,7 +163,7 @@ export function validateFields<T extends FormDataDefinition>(
 export const resetFormErrors = <T extends FormDataDefinition>(
   form: FormDefinition<T>,
 ) => {
-  form.accessors.errors = {};
+  form.errors = {};
 };
 
 /**
@@ -149,13 +172,13 @@ export const resetFormErrors = <T extends FormDataDefinition>(
  * @param validationResults
  */
 export const getValidationErrors = <T extends FormDataDefinition>(
-  validationResults: FormAccessorErrors<T>,
-): FormAccessorErrors<T> => {
+  validationResults: FormErrors<T>,
+): FormErrors<T> => {
   return Object.fromEntries(
     Object.entries(validationResults).filter(
       ([, validationResult]) => !validationResult?.valid,
     ),
-  ) as FormAccessorErrors<T>;
+  ) as FormErrors<T>;
 };
 
 /**
@@ -165,7 +188,7 @@ export const getValidationErrors = <T extends FormDataDefinition>(
  */
 export const onSubmitValidation = <T extends FormDataDefinition>(
   form: FormDefinition<T>,
-): FormAccessorErrors<T> => {
+): FormErrors<T> => {
   const validationResults = validateFields(form);
   let validationErrors = getValidationErrors(validationResults);
 

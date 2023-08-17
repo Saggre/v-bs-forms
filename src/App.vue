@@ -287,7 +287,7 @@ const fields: FormInputFields<LoginFormData> = {
           console.log(`Selected: ${value}`, form);
 
           if (form) {
-            form.accessors.data['number2'] = value * 2;
+            form.data['number2'] = value * 2;
           }
         },
       },
@@ -307,7 +307,7 @@ const fields: FormInputFields<LoginFormData> = {
           console.log(`Selected: ${value}`, form),
         visible: (form: LoginForm | undefined) => {
           if (form) {
-            return (form.accessors.data.number1 ?? 0) > 10;
+            return (form.data.number1 ?? 0) > 10;
           }
 
           return false;
@@ -319,7 +319,7 @@ const fields: FormInputFields<LoginFormData> = {
 
 const callbacks: FormCallbacks<LoginFormData> = {
   onSubmit: async (form: LoginForm) => {
-    console.log('Submit', form.accessors.data);
+    console.log('Submit', form.data);
     await new Promise<void>(resolve => {
       setTimeout(() => {
         console.log('Resolve submit');
@@ -329,12 +329,12 @@ const callbacks: FormCallbacks<LoginFormData> = {
   },
   onRender: form => {
     console.log('Render', {
-      ...form.accessors.data,
+      ...form.data,
     });
   },
   onCancel: form => {
     console.log('Cancel', {
-      ...form.accessors.data,
+      ...form.data,
     });
   },
   onError: errors => {
@@ -359,10 +359,8 @@ export const useLoginForm = () =>
     {},
     {
       fields,
-      accessors: {
-        data,
-        errors: {},
-      },
+      data,
+      errors: {},
       callbacks,
     },
   );

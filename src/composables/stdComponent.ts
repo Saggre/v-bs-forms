@@ -47,15 +47,22 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
       disabled: field.disabled || false,
       inputmode: field.inputmode || null,
       pattern: field.pattern || null,
+      // @ts-ignore
+      min: field.min || null,
+      // @ts-ignore
+      max: field.max || null,
+      // @ts-ignore
+      step: field.step || null,
+      // @ts-ignore
+      accept: field.accept || null,
       autocomplete: field.autocomplete || 'off',
       autofocus: field.autofocus || false,
       id: field.id || field.title,
       name: field.name || field.title,
       required: field.required || false,
       placeholder: getPlaceholder(field),
-      min: field.min ?? null,
-      max: field.max ?? null,
       ...tooltipAttributes,
+      ...field.attributes,
     })),
     events: {
       onChange,

@@ -5,7 +5,7 @@
         class="form-label"
         :for="attributes.id"
         :value="field.title"
-        :required="field.required || false"
+        :required="attributes.required || false"
       />
       <FieldInput
         ref="root"

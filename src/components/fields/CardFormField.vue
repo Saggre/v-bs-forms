@@ -4,7 +4,7 @@
     <div class="card-body">
       <h5 class="card-title" v-if="!!field.title">
         {{ field.title
-        }}<span v-if="field.required" class="ms-1 text-danger">*</span>
+        }}<span v-if="attributes.required" class="ms-1 text-danger">*</span>
       </h5>
       <h6 class="card-subtitle mb-2 text-muted" v-if="!!field.subtitle">
         {{ field.subtitle }}

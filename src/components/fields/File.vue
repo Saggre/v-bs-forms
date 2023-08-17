@@ -5,15 +5,9 @@
         class="form-label"
         :for="attributes.id"
         :value="field.title"
-        :required="field.required || false"
+        :required="attributes.required || false"
       />
-      <FieldInput
-        ref="root"
-        v-bind="attributes"
-        :accept="field.accept || 'image/*'"
-        v-model="value"
-        :type="field.type"
-      />
+      <FieldInput ref="root" v-bind="attributes" v-model="value" type="file" />
       <FieldInputError :validation="validation" />
     </div>
   </div>

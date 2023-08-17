@@ -5,12 +5,11 @@
         class="form-label"
         :for="attributes.id"
         :value="field.title"
-        :required="field.required || false"
+        :required="attributes.required || false"
       />
       <select
         ref="root"
         v-bind="attributes"
-        :id="field.id ?? field.title"
         v-model="value"
         class="form-select"
       >

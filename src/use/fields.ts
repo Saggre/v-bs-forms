@@ -8,16 +8,7 @@ export type StandardFormField = BaseFormFieldDefinition<string> & {
   type: HtmlFormFieldType[keyof HtmlFormFieldType];
 };
 
-export type MinMaxField<T> = {
-  min?: T;
-  max?: T;
-};
-
-export type NumberFormField = BaseFormFieldDefinition<number> &
-  MinMaxField<number> & {
-    type: 'number';
-    step?: number;
-  };
+export type NumberFormField = BaseFormFieldDefinition<number>;
 
 export interface ActionFormFieldTexts {
   submit: string;
@@ -30,20 +21,15 @@ export type ActionFormField = BaseFormFieldDefinition<boolean> &
     type: 'action';
     onSubmit: () => void;
     texts: ActionFormFieldTexts;
+    /** @deprecated */
     autocomplete?: never;
     onChange?: never;
     onInput?: never;
   };
 
-export type DateFormField = BaseFormFieldDefinition<string> &
-  MinMaxField<string> & {
-    type: 'date';
-  };
+export type DateFormField = BaseFormFieldDefinition<string>;
 
-export type TimeFormField = BaseFormFieldDefinition<string> &
-  MinMaxField<string> & {
-    type: 'time';
-  };
+export type TimeFormField = BaseFormFieldDefinition<string>;
 
 export interface ListItem {
   name: string;
@@ -60,6 +46,7 @@ export type ListGroupFormField = BaseFormFieldDefinition<ListItem> &
 
 export type CheckboxFormField = BaseFormFieldDefinition<boolean> & {
   type: 'checkbox';
+  /** @deprecated */
   indeterminate?: boolean;
   onChange?: never;
   onInput?: never;
@@ -74,8 +61,11 @@ export type DropdownFormField = BaseFormFieldDefinition<string[]> & {
 
 export type TextareaFormField = BaseFormFieldDefinition<string> & {
   type: 'textarea';
+  /** @deprecated */
   maxlength?: number;
+  /** @deprecated */
   minlength?: number;
+  /** @deprecated */
   rows?: number;
 };
 
@@ -93,6 +83,7 @@ export type PasswordFormField = BaseFormFieldDefinition<string> & {
 
 export type FileFormField = BaseFormFieldDefinition<string> & {
   type: 'file';
+  /** @deprecated */
   accept?: string;
   onChange?: never;
   onInput?: never;

@@ -1,5 +1,4 @@
 import { FormDefinition } from '@/use/form';
-import { MinMaxField } from '@/use/fields';
 
 export const enum HtmlFormFieldType {
   Text = 'text',
@@ -28,22 +27,6 @@ export interface ValidationError {
 
 export type ValidationResult = ValidationSuccess | ValidationError;
 
-/**
- * Attributes that are common for all input types.
- */
-export interface CommonHtmlAttributes {
-  class: string | object | null;
-  disabled: boolean | null;
-  inputmode: string | null;
-  pattern: string | null;
-  autocomplete: string | null;
-  autofocus: boolean | null;
-  id: string | null;
-  name: string | null;
-  required: boolean | null;
-  placeholder: string | null;
-}
-
 export interface TooltipOptions {
   title: string;
   placement: 'top' | 'bottom' | 'left' | 'right';
@@ -62,23 +45,33 @@ export interface GlobalFormField<V> {
    * Container for the input element. Usually a column (col).
    */
   containerClass?: { [key: string]: boolean };
-  /**
-   * @deprecated
-   */
+  /** @deprecated */
   columnClass?: { [key: string]: boolean };
   validate?: (value: V | undefined) => ValidationResult;
   onChange?: (value: V, form: FormDefinition | undefined) => void;
   onInput?: (value: V, form: FormDefinition | undefined) => void;
+  /** @deprecated */
   disabled?: boolean;
+  /** @deprecated */
   inputmode?: string;
+  /** @deprecated */
   pattern?: string;
+  /** @deprecated */
   autocomplete?: string;
+  /** @deprecated */
   autofocus?: boolean;
+  /** @deprecated */
   id?: string;
+  /** @deprecated */
   name?: string;
   tooltip?: TooltipOptions;
+  /** @deprecated */
   required?: boolean;
   visible?: boolean | ((form: FormDefinition) => boolean);
+  attributes?: Partial<
+    // TODO: Select conditionally with type.
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  >;
 }
 
 export interface CardFormFieldDefinition {
@@ -91,5 +84,4 @@ export interface CardFormFieldDefinition {
   required?: boolean;
 }
 
-export type BaseFormFieldDefinition<V> = GlobalFormField<V> &
-  Partial<MinMaxField<unknown>>;
+export type BaseFormFieldDefinition<V> = GlobalFormField<V>;

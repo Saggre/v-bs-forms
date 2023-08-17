@@ -5,7 +5,7 @@
         class="form-label"
         :for="attributes.id"
         :value="field.title"
-        :required="field.required || false"
+        :required="attributes.required || false"
       />
       <textarea
         ref="root"
@@ -13,9 +13,6 @@
         v-model="value"
         @change="events.onChange"
         @input="events.onInput"
-        :rows="field.rows ?? 3"
-        :maxlength="field.maxlength ?? null"
-        :minlength="field.minlength ?? null"
       />
       <FieldInputError :validation="validation" />
       <span

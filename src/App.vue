@@ -160,12 +160,16 @@ const fields: FormInputFields<LoginFormData> = {
         type: 'file',
         title: 'Profile image',
         required: true,
-        accept: 'image/*',
+        attributes: {
+          accept: 'image/*',
+        },
       },
       date: {
         type: 'date',
         title: 'Date',
-        min: '2022-01-01',
+        attributes: {
+          min: '2022-01-01',
+        },
         onChange: (value: string, form: LoginForm | undefined) =>
           console.log(`Selected: ${value}`, form),
       },
@@ -300,9 +304,11 @@ const fields: FormInputFields<LoginFormData> = {
       numberStep: {
         type: 'number',
         title: 'Number stepped',
-        step: 0.1,
-        min: 10,
-        max: 20,
+        attributes: {
+          step: '0.1',
+          min: '10',
+          max: '20',
+        },
         onInput: (value: number, form: LoginForm | undefined) =>
           console.log(`Selected: ${value}`, form),
         visible: (form: LoginForm | undefined) => {

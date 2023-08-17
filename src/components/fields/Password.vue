@@ -1,11 +1,6 @@
 <template>
   <div :class="wrapperClass">
-    <FieldLabel
-      class="form-label"
-      :for="attributes.id"
-      :value="field.title"
-      :required="field.required || false"
-    />
+    <FieldLabel class="form-label" :for="attributes.id" :value="field.title" />
     <div
       class="input-group"
       :class="{

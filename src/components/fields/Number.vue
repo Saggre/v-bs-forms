@@ -5,14 +5,11 @@
         class="form-label"
         :for="attributes.id"
         :value="field.title"
-        :required="field.required || false"
+        :required="attributes.required || false"
       />
       <input
         ref="root"
         v-bind="attributes"
-        :min="field.min || null"
-        :max="field.max || null"
-        :step="field.step || null"
         v-model="value"
         @change="events.onChange"
         @input="events.onInput"

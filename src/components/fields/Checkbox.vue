@@ -6,7 +6,7 @@
           class="form-label"
           :for="attributes.id"
           :value="field.title"
-          :required="field.required || false"
+          :required="attributes.required || false"
         />
         <input ref="root" v-bind="attributes" type="checkbox" v-model="value" />
         <FieldInputError :validation="validation" />

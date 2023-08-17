@@ -1,27 +1,34 @@
 <template>
-  <AppForm :form="loginForm" class="foobar" ref="form">
-    <template #before-field="{ fieldKey }">
-      <h1 v-if="fieldKey === 'password'">Password?</h1>
-    </template>
-    <div>
-      <div class="w-100">
-        <div class="mb-3">
-          <label class="form-label text-white" for="Email"
-            ><span>Extra field</span></label
-          >
-          <input
-            class="form-control"
-            id="extra"
-            autocomplete="off"
-            name="extra"
-            type="text"
-            placeholder="Extra field"
-          />
+  <div class="container bg-danger">
+    <AppForm
+      :form="loginForm"
+      class="foobar"
+      ref="form"
+      :teleport-enabled="true"
+    >
+      <template #before-field="{ fieldKey }">
+        <h1 v-if="fieldKey === 'password'">Password?</h1>
+      </template>
+      <div>
+        <div class="w-100">
+          <div class="mb-3">
+            <label class="form-label text-white" for="Email"
+              ><span>Extra field</span></label
+            >
+            <input
+              class="form-control"
+              id="extra"
+              autocomplete="off"
+              name="extra"
+              type="text"
+              placeholder="Extra field"
+            />
+          </div>
         </div>
+        <button type="submit" class="btn btn-primary w-100 mb-3">Send</button>
       </div>
-      <button type="submit" class="btn btn-primary w-100 mb-3">Send</button>
-    </div>
-  </AppForm>
+    </AppForm>
+  </div>
 </template>
 
 <script lang="ts">

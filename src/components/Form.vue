@@ -20,17 +20,23 @@
       </template>
       <slot />
     </FormFieldGroup>
-    <div v-if="loading" class="v-bs-form-glasspane-container">
-      <slot name="glasspane">
-        <div
-          class="v-bs-form-glasspane position-absolute start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center"
-        >
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">{{ 'Loading...' }}</span>
+    <Teleport to="body" :disabled="!teleportEnabled">
+      <div v-if="loading" class="v-bs-form-glasspane-container">
+        <slot name="glasspane">
+          <div
+            class="v-bs-form-glasspane start-0 end-0 top-0 bottom-0 d-flex h-100 justify-content-center align-items-center"
+            :class="{
+              'position-fixed': teleportEnabled,
+              'position-absolute': !teleportEnabled,
+            }"
+          >
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">{{ 'Loading...' }}</span>
+            </div>
           </div>
-        </div>
-      </slot>
-    </div>
+        </slot>
+      </div>
+    </Teleport>
   </form>
 </template>
 
@@ -75,6 +81,10 @@ export default defineComponent({
     preventDefault: {
       type: Boolean as PropType<boolean>,
       default: true,
+    },
+    teleportEnabled: {
+      type: Boolean as PropType<boolean>,
+      default: false,
     },
   },
   provide() {

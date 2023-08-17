@@ -80,11 +80,11 @@ export default defineComponent({
       default: 'div',
     },
     form: {
-      type: Object as PropType<FormDefinition<any>>,
+      type: Object as PropType<FormDefinition>,
       required: true,
     },
     fields: {
-      type: [Object] as PropType<FormInputFields<any>>,
+      type: [Object] as PropType<FormInputFields>,
       required: true,
     },
   },

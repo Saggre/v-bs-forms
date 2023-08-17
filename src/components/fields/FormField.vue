@@ -54,7 +54,7 @@ export default defineComponent({
       required: true,
     },
     form: {
-      type: Object as PropType<FormDefinition<any>>,
+      type: Object as PropType<FormDefinition>,
       required: true,
     },
     formKey: {

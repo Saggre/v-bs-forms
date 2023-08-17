@@ -3,7 +3,7 @@ import { FormDefinition } from '@/use/form';
 
 export const useInputEvents = <T, F extends GlobalFormField<T>>(
   field: F,
-  form: FormDefinition<any> | undefined,
+  form: FormDefinition | undefined,
 ) => {
   const onChange = (event: Event) => {
     const element = event.target as HTMLInputElement;

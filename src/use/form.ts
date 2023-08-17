@@ -42,36 +42,42 @@ export interface FormCallbacks<T extends FormDataDefinition> {
   onCancel?: (form: FormDefinition<T>) => void;
 }
 
-export type FormInputFields<T extends FormDataDefinition> = Partial<{
-  // TODO: Allow form field types based on defined value type.
-  [K in keyof T]: FormField | FormInputGroup<T>;
-}>;
+export type FormInputFields<T extends FormDataDefinition = FormDataDefinition> =
+  Partial<{
+    // TODO: Allow form field types based on defined value type.
+    [K in keyof T]: FormField | FormInputGroup<T>;
+  }>;
 
-export type FormInputGroup<T extends FormDataDefinition> = {
-  type: 'group';
-  containerClass?: { [key: string]: boolean };
-  wrapperClass?: { [key: string]: boolean };
-  fields: FormInputFields<T>;
-};
+export type FormInputGroup<T extends FormDataDefinition = FormDataDefinition> =
+  {
+    type: 'group';
+    containerClass?: { [key: string]: boolean };
+    wrapperClass?: { [key: string]: boolean };
+    fields: FormInputFields<T>;
+  };
 
-export type FormInputGroups<T extends FormDataDefinition> = {
-  [key: string]: FormInputGroup<T>;
-};
+export type FormInputGroups<T extends FormDataDefinition = FormDataDefinition> =
+  {
+    [key: string]: FormInputGroup<T>;
+  };
 
-export type FormDefinition<T extends FormDataDefinition> = {
-  fields: FormInputFields<T>;
-  /**
-   * @deprecated Use 'data' and 'errors' directly.
-   */
-  accessors: FormAccessors<T>;
-  callbacks: FormCallbacks<T>;
-  data: FormData<T>;
-  errors: FormErrors<T>;
-};
+export type FormDefinition<T extends FormDataDefinition = FormDataDefinition> =
+  {
+    fields: FormInputFields<T>;
+    /**
+     * @deprecated Use 'data' and 'errors' directly.
+     */
+    accessors: FormAccessors<T>;
+    callbacks: FormCallbacks<T>;
+    data: FormData<T>;
+    errors: FormErrors<T>;
+  };
 
 export type AbstractFormDefinition = FormDefinition<{ [key: string]: any }>;
 
-export type PartialFormDefinition<T extends FormDataDefinition> = Partial<{
+export type PartialFormDefinition<
+  T extends FormDataDefinition = FormDataDefinition,
+> = Partial<{
   fields: Partial<FormInputFields<T>>;
   /**
    * @deprecated Use 'data' and 'errors' directly.

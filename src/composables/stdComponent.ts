@@ -12,7 +12,7 @@ export interface StdComponentOptions {
 type BaseFormFieldProps<T, F extends BaseFormFieldDefinition<T>> = {
   formKey: string;
   field: F;
-  form: FormDefinition<any>;
+  form: FormDefinition;
 };
 
 export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(

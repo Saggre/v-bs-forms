@@ -67,8 +67,8 @@ export interface GlobalFormField<V> {
    */
   columnClass?: { [key: string]: boolean };
   validate?: (value: V | undefined) => ValidationResult;
-  onChange?: (value: V, form: FormDefinition<any> | undefined) => void;
-  onInput?: (value: V, form: FormDefinition<any> | undefined) => void;
+  onChange?: (value: V, form: FormDefinition | undefined) => void;
+  onInput?: (value: V, form: FormDefinition | undefined) => void;
   disabled?: boolean;
   inputmode?: string;
   pattern?: string;
@@ -78,7 +78,7 @@ export interface GlobalFormField<V> {
   name?: string;
   tooltip?: TooltipOptions;
   required?: boolean;
-  visible?: boolean | ((form: FormDefinition<any>) => boolean);
+  visible?: boolean | ((form: FormDefinition) => boolean);
 }
 
 export interface CardFormFieldDefinition {
@@ -92,4 +92,4 @@ export interface CardFormFieldDefinition {
 }
 
 export type BaseFormFieldDefinition<V> = GlobalFormField<V> &
-  Partial<MinMaxField<any>>;
+  Partial<MinMaxField<unknown>>;

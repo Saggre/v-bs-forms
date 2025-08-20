@@ -1,8 +1,14 @@
-import { BaseFormFieldDefinition } from '@/use/fields/base';
+import { BaseFormFieldDefinition, ValidationResult } from '@/use/fields/base';
 import { useTooltip } from '@/composables/tooltip';
 import { useInputEvents } from '@/composables/inputEvents';
 import { FormDefinition } from '@/use/form';
-import { computed, Ref } from 'vue';
+import {
+  computed,
+  InputHTMLAttributes,
+  Ref,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+} from 'vue';
 import { useValidation } from '@/composables/validation';
 
 export interface StdComponentOptions {
@@ -15,14 +21,37 @@ type BaseFormFieldProps<T, F extends BaseFormFieldDefinition<T>> = {
   form: FormDefinition;
 };
 
-export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
+type HTMLTypeName = 'input' | 'select' | 'textarea';
+type HTMLType<T> = T extends 'input'
+  ? InputHTMLAttributes
+  : T extends 'select'
+  ? SelectHTMLAttributes
+  : T extends 'textarea'
+  ? TextareaHTMLAttributes
+  : never;
+
+export interface StdComponent<H extends HTMLTypeName> {
+  attributes: Ref<HTMLType<H>>;
+  events: {
+    onChange: (event: Event) => void;
+    onInput: (event: Event) => void;
+  };
+  validation: Ref<ValidationResult>;
+}
+
+export const useStdComponent = <
+  T,
+  F extends BaseFormFieldDefinition<T>,
+  H extends HTMLTypeName,
+>(
+  type: H,
   props: {
     [key in keyof BaseFormFieldProps<T, F>]: Ref<BaseFormFieldProps<T, F>[key]>;
   },
   { baseClasses }: StdComponentOptions = {
     baseClasses: { 'form-control': true },
   },
-) => {
+): StdComponent<H> => {
   const field = props.field.value;
   const form = props.form.value;
   const { tooltipAttributes } = useTooltip(field.tooltip);
@@ -38,32 +67,35 @@ export const useStdComponent = <T, F extends BaseFormFieldDefinition<T>>(
   };
 
   return {
-    attributes: computed(() => ({
-      class: {
-        ...baseClasses,
-        'is-invalid': !validation.value.valid,
-        ...(field.class ?? {}),
-      },
-      disabled: field.disabled || false,
-      inputmode: field.inputmode || null,
-      pattern: field.pattern || null,
-      // @ts-ignore
-      min: field.min || null,
-      // @ts-ignore
-      max: field.max || null,
-      // @ts-ignore
-      step: field.step || null,
-      // @ts-ignore
-      accept: field.accept || null,
-      autocomplete: field.autocomplete || 'off',
-      autofocus: field.autofocus || false,
-      id: field.id || field.title,
-      name: field.name || field.title,
-      required: field.required || false,
-      placeholder: getPlaceholder(field),
-      ...tooltipAttributes,
-      ...field.attributes,
-    })),
+    attributes: computed(
+      () =>
+        ({
+          class: {
+            ...baseClasses,
+            'is-invalid': !validation.value.valid,
+            ...(field.class ?? {}),
+          },
+          disabled: field.disabled || false,
+          inputmode: field.inputmode || null,
+          pattern: field.pattern || null,
+          // @ts-ignore
+          min: field.min || null,
+          // @ts-ignore
+          max: field.max || null,
+          // @ts-ignore
+          step: field.step || null,
+          // @ts-ignore
+          accept: field.accept || null,
+          autocomplete: field.autocomplete || 'off',
+          autofocus: field.autofocus || false,
+          id: field.id || field.title,
+          name: field.name || field.title,
+          required: field.required || false,
+          placeholder: getPlaceholder(field),
+          ...tooltipAttributes,
+          ...field.attributes,
+        } as HTMLType<H>),
+    ),
     events: {
       onChange,
       onInput,

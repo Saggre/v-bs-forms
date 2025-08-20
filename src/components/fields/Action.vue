@@ -7,8 +7,8 @@
     }"
     :id="attributes.id"
     :attributes="{
-      'data-bs-toggle': attributes['data-bs-toggle'],
-      'data-bs-placement': attributes['data-bs-placement'],
+      'data-bs-toggle': (attributes as any)['data-bs-toggle'],
+      'data-bs-placement': (attributes as any)['data-bs-placement'],
       title: attributes['title'],
     }"
   >
@@ -69,7 +69,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    return useStdComponent(toRefs(props));
+    return useStdComponent('input', toRefs(props));
   },
 });
 </script>

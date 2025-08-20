@@ -44,7 +44,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    return useStdComponent(toRefs(props));
+    return useStdComponent('textarea', toRefs(props));
   },
 });
 </script>

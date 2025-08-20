@@ -17,7 +17,7 @@ export default defineComponent({
       default: '',
     },
     required: {
-      type: Boolean as PropType<boolean>,
+      type: Boolean as PropType<boolean | 'true' | 'false'>,
       default: false,
     },
   },

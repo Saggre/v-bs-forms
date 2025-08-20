@@ -37,7 +37,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    return useStdComponent(toRefs(props));
+    return useStdComponent('input', toRefs(props));
   },
 });
 </script>

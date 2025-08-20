@@ -66,7 +66,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { FormDefinition, FormInputFields, isFormFieldGroup } from '@/use/form';
+import {
+  FormDefinition,
+  FormInputFields,
+  FormInputGroup,
+  isFormFieldGroup,
+} from '@/use/form';
 import FormFieldComponent from '@/components/fields/FormField.vue';
 import { FormField } from '@/use/fields';
 
@@ -100,7 +105,9 @@ export default defineComponent({
         ? field.visible(this.form)
         : field.visible ?? true;
     },
-    getFieldWrapperClass(field: FormField): Record<string, boolean> {
+    getFieldWrapperClass(
+      field: FormField | FormInputGroup | undefined,
+    ): Record<string, boolean> {
       return (
         field?.wrapperClass ?? {
           'mb-3': true,
@@ -108,7 +115,10 @@ export default defineComponent({
         }
       );
     },
-    getClassForLevel(level: number, field: FormField): Record<string, boolean> {
+    getClassForLevel(
+      level: number,
+      field: FormField | FormInputGroup | undefined,
+    ): Record<string, boolean> {
       switch (level) {
         case 0:
           return {

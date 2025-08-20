@@ -1,17 +1,13 @@
 <template>
-  <div class="w-100">
-    <div :class="wrapperClass">
-      <div class="form-check">
-        <FieldLabel
-          class="form-label"
-          :for="attributes.id"
-          :value="field.title"
-          :required="attributes.required || false"
-        />
-        <input ref="root" v-bind="attributes" type="checkbox" v-model="value" />
-        <FieldInputError :validation="validation" />
-      </div>
-    </div>
+  <div class="form-check">
+    <FieldLabel
+      class="form-label"
+      :for="attributes.id"
+      :value="field.title"
+      :required="attributes.required || false"
+    />
+    <input ref="root" v-bind="attributes" type="checkbox" v-model="value" />
+    <FieldInputError :validation="validation" />
   </div>
 </template>
 

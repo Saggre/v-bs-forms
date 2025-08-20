@@ -1,30 +1,21 @@
 <template>
-  <div class="w-100">
-    <div :class="wrapperClass">
-      <FieldLabel
-        class="form-label"
-        :for="attributes.id"
-        :value="field.title"
-        :required="attributes.required || false"
-      />
-      <select
-        ref="root"
-        v-bind="attributes"
-        v-model="value"
-        class="form-select"
-      >
-        <option
-          v-for="(option, key) in field.options"
-          :key="key"
-          :value="key"
-          :selected="value === key"
-        >
-          {{ option }}
-        </option>
-      </select>
-      <FieldInputError :validation="validation" />
-    </div>
-  </div>
+  <FieldLabel
+    class="form-label"
+    :for="attributes.id"
+    :value="field.title"
+    :required="attributes.required || false"
+  />
+  <select ref="root" v-bind="attributes" v-model="value" class="form-select">
+    <option
+      v-for="(option, key) in field.options"
+      :key="key"
+      :value="key"
+      :selected="value === key"
+    >
+      {{ option }}
+    </option>
+  </select>
+  <FieldInputError :validation="validation" />
 </template>
 
 <script lang="ts">

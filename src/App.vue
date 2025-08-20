@@ -72,6 +72,10 @@ const data = {
 };
 
 const fields: FormInputFields<LoginFormData> = {
+  test: {
+    type: 'text',
+    title: 'Test field',
+  },
   'login-group': {
     type: 'group',
     fields: {
@@ -128,20 +132,25 @@ const fields: FormInputFields<LoginFormData> = {
       },
     },
   },
-  first_name: {
-    type: 'text',
-    title: 'First name',
-    required: false,
-    containerClass: {
-      'col col-6': true,
-    },
-  },
-  last_name: {
-    type: 'text',
-    title: 'Last name',
-    required: false,
-    containerClass: {
-      'col col-6': true,
+  names: {
+    type: 'group',
+    fields: {
+      first_name: {
+        type: 'text',
+        title: 'First name',
+        required: false,
+        containerClass: {
+          'col col-6': true,
+        },
+      },
+      last_name: {
+        type: 'text',
+        title: 'Last name',
+        required: false,
+        containerClass: {
+          'col col-6': true,
+        },
+      },
     },
   },
   'other-group': {

@@ -6,12 +6,7 @@
     @submit="onSubmit"
   >
     <slot name="head" />
-    <FormFieldGroup
-      :fields="form.fields"
-      :form="form"
-      :group-component="groupComponent"
-      :class="groupContainerClass"
-    >
+    <FormFieldGroup :fields="form.fields" :form="form">
       <template #before-field="{ fieldKey, field }">
         <slot name="before-field" :field-key="`${fieldKey}`" :field="field" />
       </template>
@@ -57,19 +52,6 @@ export default defineComponent({
     FormFieldGroup,
   },
   props: {
-    groupComponent: {
-      type: [Object, String] as PropType<
-        ReturnType<typeof defineComponent> | string
-      >,
-      default: 'div',
-    },
-    groupContainerClass: {
-      type: Object as PropType<Record<string, boolean>>,
-      // eslint-disable-next-line vue/require-valid-default-prop
-      default: {
-        row: true,
-      },
-    },
     form: {
       type: Object as PropType<AbstractFormDefinition>,
       required: true,

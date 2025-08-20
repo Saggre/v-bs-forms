@@ -1,16 +1,12 @@
 <template>
-  <div class="w-100">
-    <div :class="wrapperClass">
-      <FieldLabel
-        class="form-label"
-        :for="attributes.id"
-        :value="field.title"
-        :required="attributes.required || false"
-      />
-      <FieldInput ref="root" v-bind="attributes" v-model="value" type="file" />
-      <FieldInputError :validation="validation" />
-    </div>
-  </div>
+  <FieldLabel
+    class="form-label"
+    :for="attributes.id"
+    :value="field.title"
+    :required="attributes.required || false"
+  />
+  <FieldInput ref="root" v-bind="attributes" v-model="value" type="file" />
+  <FieldInputError :validation="validation" />
 </template>
 
 <script lang="ts">

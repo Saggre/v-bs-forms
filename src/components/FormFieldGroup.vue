@@ -1,59 +1,67 @@
 <template>
-  <div>
-    <div
-      v-for="(field, key) in fields"
-      :key="key"
-      :class="
-        field?.containerClass ?? {
-          col: true,
-          'col-12': true,
-        }
-      "
+  <div
+    v-for="(field, key) in fields"
+    :key="key"
+    :class="getClassForLevel(level, field)"
+    :level="level"
+  >
+    <FormFieldGroup
+      v-if="field && isFormFieldGroup(field)"
+      :fields="field.fields"
+      :form="form"
+      :level="level + 1"
     >
-      <component
-        :is="groupComponent"
-        v-if="field && isFormFieldGroup(field)"
-      >
-        <FormFieldGroup :fields="field.fields" :form="form">
-          <template
-            #before-field="//@ts-ignore
+      <!-- Form field group -->
+      <template
+        #before-field="//@ts-ignore
           { fieldKey, field }"
-          >
-            <slot
-              name="before-field"
-              :field-key="`${fieldKey}`"
-              :field="field"
-            />
-          </template>
-          <template
-            #after-field="//@ts-ignore
+      >
+        <slot name="before-field" :field-key="`${fieldKey}`" :field="field" />
+      </template>
+      <template
+        #after-field="//@ts-ignore
            { fieldKey, field }"
-          >
-            <slot
-              name="after-field"
-              :field-key="`${fieldKey}`"
-              :field="field"
-            />
-          </template>
-        </FormFieldGroup>
-      </component>
-      <div v-else>
-        <slot name="before-field" :field-key="`${key}`" :field="field" />
-        <FormFieldComponent
-          v-if="field && isFieldVisible(field)"
-          :form-key="`${key}`"
-          :field="{
-            ...field,
-            // TODO: More robust process for default values.
-            name: field && field.name ? field.name : key,
-          }"
-          :form="form"
-        />
-        <slot name="after-field" :field-key="`${key}`" :field="field" />
-      </div>
+      >
+        <slot name="after-field" :field-key="`${fieldKey}`" :field="field" />
+      </template>
+    </FormFieldGroup>
+    <FormFieldGroup
+      v-else-if="level === 0"
+      :fields="{ [key]: field }"
+      :form="form"
+      :level="level + 1"
+    >
+      <!-- Wrapped top-level field -->
+      <template
+        #before-field="//@ts-ignore
+          { fieldKey, field }"
+      >
+        <slot name="before-field" :field-key="`${fieldKey}`" :field="field" />
+      </template>
+      <template
+        #after-field="//@ts-ignore
+           { fieldKey, field }"
+      >
+        <slot name="after-field" :field-key="`${fieldKey}`" :field="field" />
+      </template>
+    </FormFieldGroup>
+    <div v-else :class="getFieldWrapperClass(field)">
+      <!-- Input field -->
+      <slot name="before-field" :field-key="`${key}`" :field="field" />
+      <FormFieldComponent
+        v-if="field && isFieldVisible(field)"
+        :form-key="`${key}`"
+        :field="{
+          ...field,
+          // TODO: More robust process for default values.
+          name: field && field.name ? field.name : key,
+        }"
+        :form="form"
+      />
+      <slot name="after-field" :field-key="`${key}`" :field="field" />
     </div>
-    <slot></slot>
   </div>
+  <slot></slot>
 </template>
 
 <script lang="ts">
@@ -68,11 +76,9 @@ export default defineComponent({
     FormFieldComponent,
   },
   props: {
-    groupComponent: {
-      type: [Object, String] as PropType<
-        ReturnType<typeof defineComponent> | string
-      >,
-      default: 'div',
+    level: {
+      type: Number as PropType<number>,
+      default: 0,
     },
     form: {
       type: Object as PropType<FormDefinition>,
@@ -93,6 +99,29 @@ export default defineComponent({
       return field.visible instanceof Function
         ? field.visible(this.form)
         : field.visible ?? true;
+    },
+    getFieldWrapperClass(field: FormField): Record<string, boolean> {
+      return (
+        field?.wrapperClass ?? {
+          'mb-3': true,
+          'w-100': true,
+        }
+      );
+    },
+    getClassForLevel(level: number, field: FormField): Record<string, boolean> {
+      switch (level) {
+        case 0:
+          return {
+            row: true,
+          };
+        default:
+          return (
+            field?.containerClass ?? {
+              col: true,
+              'col-12': true,
+            }
+          );
+      }
     },
   },
 });

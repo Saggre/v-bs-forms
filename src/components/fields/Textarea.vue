@@ -1,30 +1,26 @@
 <template>
-  <div class="w-100">
-    <div :class="wrapperClass">
-      <FieldLabel
-        class="form-label"
-        :for="attributes.id"
-        :value="field.title"
-        :required="attributes.required || false"
-      />
-      <textarea
-        ref="root"
-        v-bind="attributes"
-        v-model="value"
-        @change="events.onChange"
-        @input="events.onInput"
-      />
-      <FieldInputError :validation="validation" />
-      <span
-        v-if="field.maxlength"
-        :class="{
-          'text-danger': value?.length > field.maxlength,
-          'small text-muted': true,
-        }"
-        >{{ `${value?.length ?? 0} / ${field.maxlength}` }}</span
-      >
-    </div>
-  </div>
+  <FieldLabel
+    class="form-label"
+    :for="attributes.id"
+    :value="field.title"
+    :required="attributes.required || false"
+  />
+  <textarea
+    ref="root"
+    v-bind="attributes"
+    v-model="value"
+    @change="events.onChange"
+    @input="events.onInput"
+  />
+  <FieldInputError :validation="validation" />
+  <span
+    v-if="field.maxlength"
+    :class="{
+      'text-danger': value?.length > field.maxlength,
+      'small text-muted': true,
+    }"
+    >{{ `${value?.length ?? 0} / ${field.maxlength}` }}</span
+  >
 </template>
 
 <script lang="ts">

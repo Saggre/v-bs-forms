@@ -1,31 +1,29 @@
 <template>
-  <div :class="wrapperClass">
-    <FieldLabel class="form-label" :for="attributes.id" :value="field.title" />
-    <div
-      class="input-group"
-      :class="{
-        'is-invalid': attributes.class['is-invalid'],
-      }"
+  <FieldLabel class="form-label" :for="attributes.id" :value="field.title" />
+  <div
+    class="input-group"
+    :class="{
+      'is-invalid': attributes.class['is-invalid'],
+    }"
+  >
+    <FieldInput
+      ref="root"
+      v-bind="attributes"
+      v-model="value"
+      @change="events.onChange"
+      @input="events.onInput"
+      :type="showPassword ? 'text' : 'password'"
+    />
+    <button
+      v-if="field.toggleable"
+      class="btn btn-dark position-relative btn--password-toggle"
+      type="button"
+      @click="togglePassword"
     >
-      <FieldInput
-        ref="root"
-        v-bind="attributes"
-        v-model="value"
-        @change="events.onChange"
-        @input="events.onInput"
-        :type="showPassword ? 'text' : 'password'"
-      />
-      <button
-        v-if="field.toggleable"
-        class="btn btn-dark position-relative btn--password-toggle"
-        type="button"
-        @click="togglePassword"
-      >
-        <span>{{ showPassword ? icons.show : icons.hide }}</span>
-      </button>
-    </div>
-    <FieldInputError :validation="validation" />
+      <span>{{ showPassword ? icons.show : icons.hide }}</span>
+    </button>
   </div>
+  <FieldInputError :validation="validation" />
 </template>
 
 <style lang="css">

@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <component
-      :is="component"
-      :field="field"
-      :form-key="formKey"
-      :form="form"
-      v-model="form.data[formKey]"
-    ></component>
-  </div>
+  <component
+    :is="component"
+    :field="field"
+    :form-key="formKey"
+    :form="form"
+    v-model="form.data[formKey]"
+  ></component>
 </template>
 
 <script lang="ts">

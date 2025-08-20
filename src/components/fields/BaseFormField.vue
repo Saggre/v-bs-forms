@@ -36,15 +36,7 @@ export default defineComponent({
       deep: true,
     },
   },
-  computed: {
-    wrapperClass(): Record<string, boolean> {
-      return (
-        this.field.wrapperClass ?? {
-          'mb-3': true,
-        }
-      );
-    },
-  },
+  computed: {},
   data(props) {
     return {
       value: props.modelValue as any,

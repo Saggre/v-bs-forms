@@ -3,7 +3,6 @@
     v-for="(field, key) in fields"
     :key="key"
     :class="getClassForLevel(level, field)"
-    :level="level"
   >
     <FormFieldGroup
       v-if="field && isFormFieldGroup(field)"

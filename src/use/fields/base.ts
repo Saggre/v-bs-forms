@@ -45,8 +45,6 @@ export interface GlobalFormField<V> {
    * Container for the input element. Usually a column (col).
    */
   containerClass?: { [key: string]: boolean };
-  /** @deprecated */
-  columnClass?: { [key: string]: boolean };
   validate?: (value: V | undefined) => ValidationResult;
   onChange?: (value: V, form: FormDefinition | undefined) => void;
   onInput?: (value: V, form: FormDefinition | undefined) => void;

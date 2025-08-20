@@ -4,7 +4,7 @@
       v-for="(field, key) in fields"
       :key="key"
       :class="
-        field?.wrapperClass ?? {
+        field?.containerClass ?? {
           col: true,
           'col-12': true,
         }
@@ -12,11 +12,6 @@
     >
       <component
         :is="groupComponent"
-        :class="
-          field?.containerClass ?? {
-            row: true,
-          }
-        "
         v-if="field && isFormFieldGroup(field)"
       >
         <FormFieldGroup :fields="field.fields" :form="form">

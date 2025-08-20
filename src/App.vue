@@ -90,10 +90,6 @@ const fields: FormInputFields<LoginFormData> = {
         autocomplete: 'password',
         autofocus: true,
         disabled: false,
-        columnClass: {
-          'col-12': true,
-          'col-md-6': true,
-        },
         toggleable: {
           icons: {
             show: '🙈',
@@ -116,10 +112,6 @@ const fields: FormInputFields<LoginFormData> = {
       password2: {
         type: 'password',
         title: 'Password',
-        columnClass: {
-          'col-12': true,
-          'col-md-6': true,
-        },
         toggleable: true,
         validate: (value: string | undefined): ValidationResult => {
           if (value && value.length < 8) {
@@ -134,6 +126,22 @@ const fields: FormInputFields<LoginFormData> = {
           };
         },
       },
+    },
+  },
+  first_name: {
+    type: 'text',
+    title: 'First name',
+    required: false,
+    containerClass: {
+      'col col-6': true,
+    },
+  },
+  last_name: {
+    type: 'text',
+    title: 'Last name',
+    required: false,
+    containerClass: {
+      'col col-6': true,
     },
   },
   'other-group': {
@@ -153,7 +161,7 @@ const fields: FormInputFields<LoginFormData> = {
         title: 'Number',
         required: true,
         wrapperClass: {
-          'mb-0': true,
+          'mb-5': true,
         },
       },
       image: {
